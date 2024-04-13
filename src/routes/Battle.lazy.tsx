@@ -9,6 +9,8 @@ export const Route = createLazyFileRoute("/Battle")({
 
 interface GameState {
   turns: number;
+  turnState: "before" | "current" | "after";
+  enemy: Character;
   character: {
     pos1: Character | null;
     pos2: Character | null;
@@ -21,6 +23,8 @@ interface GameState {
 }
 
 interface CharacterState {
+  baseAtk: number;
+  baseHp: number;
   atk: number;
   hp: number;
   attributes: number;
@@ -82,6 +86,19 @@ interface CharacterBuff {}
 const useGameState = create<GameState>()(
   immer((set) => ({
     turns: 0,
+    turnState: "before",
+    enemy: {
+      baseAtk: 0,
+      baseHp: 100,
+      attributes: 0,
+      position: 0,
+      level: 0,
+      hpPotential: 0,
+      atkPotential: 0,
+      disclipline: 0,
+      stars: 0,
+      bond: 0,
+    },
     character: {
       pos1: null,
       pos2: null,
