@@ -5,10 +5,17 @@ import {
   Input,
   InputBase,
   Modal,
+  NumberInput,
   useCombobox,
+  Image,
+  Container,
+  Title,
+  Space,
+  ScrollArea,
 } from "@mantine/core";
 import { useState } from "react";
 import { create } from "zustand";
+import char from "./char_101.png";
 
 interface GameState {
   turns: number;
@@ -65,6 +72,7 @@ const useGameState = create<GameState>((set) => ({
 }));
 
 function App() {
+  const character = useGameState((state) => state.character);
   const selectCharacter = useGameState((state) => state.selectCharacter);
   const [open, setOpen] = useState(false);
 
@@ -92,15 +100,19 @@ function App() {
     disclipline: 1,
     stars: 1,
     bond: 1,
+    image: char,
   };
 
   return (
-    <>
+    <Container>
+      <Title>選擇角色</Title>
+      <Space h="lg" />
       <Modal opened={open} onClose={() => setOpen(false)} title="選擇角色">
         <Combobox
           store={combobox}
           onOptionSubmit={(val) => {
             setValue(val);
+            combobox.toggleDropdown();
           }}
         >
           <Combobox.Target>
@@ -119,6 +131,15 @@ function App() {
             <Combobox.Options>{options}</Combobox.Options>
           </Combobox.Dropdown>
         </Combobox>
+
+        <Space h="xs" />
+        <NumberInput label="星" min={3} max={5} />
+        <Space h="xs" />
+        <NumberInput label="潛力" min={1} max={12} />
+        <Space h="xs" />
+        <NumberInput label="絆" min={1} max={5} />
+        <Space h="xs" />
+        <Button onClick={() => setOpen(false)}>確定</Button>
       </Modal>
       <Group grow wrap="nowrap">
         <Button variant="filled" onClick={() => setOpen(true)}>
@@ -137,7 +158,20 @@ function App() {
           5
         </Button>
       </Group>
-    </>
+      <Space h="lg" />
+      <Group grow wrap="nowrap">
+        <Image src={""} fallbackSrc={char} />
+        <Image src={char} />
+        <Image src={char} />
+        <Image src={char} />
+        <Image src={char} />
+      </Group>
+      <Space h="lg" />
+      <ScrollArea h={250}>
+        fwqf
+        {character.pos2?.baseHp}
+      </ScrollArea>
+    </Container>
   );
 }
 
