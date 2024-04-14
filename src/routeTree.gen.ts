@@ -17,6 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const BattleLazyImport = createFileRoute('/Battle')()
+const BattleStartLazyImport = createFileRoute('/battle/start')()
 const BattleSelectLazyImport = createFileRoute('/battle/select')()
 
 // Create/Update Routes
@@ -25,6 +26,11 @@ const BattleLazyRoute = BattleLazyImport.update({
   path: '/Battle',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/Battle.lazy').then((d) => d.Route))
+
+const BattleStartLazyRoute = BattleStartLazyImport.update({
+  path: '/battle/start',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/battle/start.lazy').then((d) => d.Route))
 
 const BattleSelectLazyRoute = BattleSelectLazyImport.update({
   path: '/battle/select',
@@ -43,6 +49,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BattleSelectLazyImport
       parentRoute: typeof rootRoute
     }
+    '/battle/start': {
+      preLoaderRoute: typeof BattleStartLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -51,6 +61,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   BattleLazyRoute,
   BattleSelectLazyRoute,
+  BattleStartLazyRoute,
 ])
 
 /* prettier-ignore-end */

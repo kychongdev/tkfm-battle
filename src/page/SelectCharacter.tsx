@@ -16,6 +16,7 @@ import {
 import { useCallback, useState } from "react";
 import character from "../assets/character.json";
 import { produce } from "immer";
+import { useLocalStorage } from "react-use";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -23,7 +24,7 @@ import { produce } from "immer";
 //     as: "url",
 //   }),
 // );
-interface CharacterInit {
+export interface CharacterInit {
   id: string | null;
   position: number;
   level: number;
@@ -41,6 +42,8 @@ export default function SelectCharacterPage() {
   for (const [key, value] of Object.entries(character.name)) {
     characterOption.push({ value: key, label: value });
   }
+
+  const [value, setValue, remove] = useLocalStorage("last-session");
 
   const [opened, setOpened] = useState(false);
   const [position, setPosition] = useState<number>(1);
@@ -344,7 +347,15 @@ export default function SelectCharacterPage() {
         </Group>
       </Modal>
       <Space h="lg" />
-      <Button color="blue">開始戰鬥</Button>
+      <Button
+        color="blue"
+        onClick={() =>
+          // @ts-ignore
+          setValue(characterList)
+        }
+      >
+        開始戰鬥
+      </Button>
     </Container>
   );
 }
