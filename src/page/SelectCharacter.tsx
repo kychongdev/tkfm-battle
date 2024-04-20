@@ -17,6 +17,8 @@ import { useCallback, useState } from "react";
 import character from "../assets/character.json";
 import { produce } from "immer";
 import { useLocalStorage } from "react-use";
+import { initCharacterSelection } from "../battle/Data";
+import { CharacterSelect } from "../types/Character";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -24,18 +26,6 @@ import { useLocalStorage } from "react-use";
 //     as: "url",
 //   }),
 // );
-export interface CharacterInit {
-  id: string | null;
-  position: number;
-  level: number;
-  hpPotential: number;
-  hpSubPotential?: number;
-  atkPotential: number;
-  atkSubPotential: number;
-  disclipline: number;
-  stars: number;
-  bond: number;
-}
 
 export default function SelectCharacterPage() {
   let characterOption = [];
@@ -47,71 +37,16 @@ export default function SelectCharacterPage() {
 
   const [opened, setOpened] = useState(false);
   const [position, setPosition] = useState<number>(1);
-  const [characterList, setCharacterList] = useState<CharacterInit[]>([
-    {
-      id: null,
-      position: 1,
-      level: 60,
-      hpPotential: 12,
-      hpSubPotential: 6,
-      atkPotential: 12,
-      atkSubPotential: 6,
-      stars: 3,
-      bond: 1,
-      disclipline: 3,
-    },
-    {
-      id: null,
-      position: 2,
-      level: 60,
-      hpPotential: 12,
-      hpSubPotential: 6,
-      atkPotential: 12,
-      atkSubPotential: 6,
-      stars: 3,
-      bond: 1,
-      disclipline: 3,
-    },
-    {
-      id: null,
-      position: 3,
-      level: 60,
-      hpPotential: 12,
-      hpSubPotential: 6,
-      atkPotential: 12,
-      atkSubPotential: 6,
-      stars: 3,
-      bond: 1,
-      disclipline: 3,
-    },
-    {
-      id: null,
-      position: 4,
-      level: 60,
-      hpPotential: 12,
-      hpSubPotential: 6,
-      atkPotential: 12,
-      atkSubPotential: 6,
-      stars: 3,
-      bond: 1,
-      disclipline: 3,
-    },
-    {
-      id: null,
-      position: 5,
-      level: 60,
-      hpPotential: 12,
-      hpSubPotential: 6,
-      atkPotential: 12,
-      atkSubPotential: 6,
-      stars: 3,
-      bond: 1,
-      disclipline: 3,
-    },
+  const [characterList, setCharacterList] = useState<CharacterSelect[]>([
+    initCharacterSelection(0),
+    initCharacterSelection(1),
+    initCharacterSelection(2),
+    initCharacterSelection(3),
+    initCharacterSelection(4),
   ]);
 
   const updateCharacter = useCallback(
-    (position: number, characterSettings: CharacterInit) => {
+    (position: number, characterSettings: CharacterSelect) => {
       setCharacterList(
         produce((characterList) => {
           characterList[position] = characterSettings;
@@ -199,7 +134,7 @@ export default function SelectCharacterPage() {
           onChange={(value) => {
             updateCharacter(position, {
               ...characterList[position],
-              id: value,
+              id: value ? value : "",
             });
           }}
         />
