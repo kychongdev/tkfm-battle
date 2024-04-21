@@ -1,17 +1,17 @@
 enum Attribute {
-  None,
-  Fire,
-  Water,
-  Wind,
-  Light,
-  Dark,
+  FIRE,
+  WATER,
+  WIND,
+  LIGHT,
+  DARK,
+  NONE,
 }
 
 interface CharacterState {
   id: string;
   isExist: boolean;
-  baseAtk: number;
-  baseHp: number;
+  initAtk: number;
+  initHp: number;
   atk: number;
   hp: number;
   attribute: Attribute;
@@ -25,16 +25,15 @@ interface CharacterState {
   isSleep: boolean;
   isSilence: boolean;
   isDead: boolean;
+  buff: any[];
 }
 
 interface CharacterSelect {
   id: string;
   position: number;
   level: number;
-  hpPotential: number;
-  hpSubPotential?: number;
-  atkPotential: number;
-  atkSubPotential: number;
+  hpPot: number;
+  atkPot: number;
   disclipline: number;
   stars: number;
   bond: number;

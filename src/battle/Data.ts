@@ -3,11 +3,11 @@ import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
 const initCharacterState: CharacterState = {
   id: "",
   isExist: false,
-  baseAtk: 0,
-  baseHp: 0,
+  initHp: 0,
+  initAtk: 0,
   atk: 0,
   hp: 0,
-  attribute: Attribute.None,
+  attribute: Attribute.NONE,
   position: 0,
   shield: 0,
   isMoved: false,
@@ -18,6 +18,7 @@ const initCharacterState: CharacterState = {
   isSleep: false,
   isSilence: false,
   isDead: false,
+  buff: [],
 };
 
 function initCharacterSelection(position: number) {
@@ -25,11 +26,9 @@ function initCharacterSelection(position: number) {
     id: "",
     position: position,
     level: 60,
-    hpPotential: 12,
-    hpSubPotential: 6,
-    atkPotential: 12,
-    atkSubPotential: 6,
-    stars: 3,
+    hpPot: 100,
+    atkPot: 100,
+    stars: 5,
     bond: 1,
     disclipline: 3,
   };

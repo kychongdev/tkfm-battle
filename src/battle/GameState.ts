@@ -2,13 +2,16 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
-import { initCharacterSelection, initCharacterState } from "./Data";
+import { initCharacterState } from "./Data";
+import { triggerLeaderSkill } from "./LeaderSkill";
 
-interface GameState {
+export interface GameState {
   turns: number;
   turnsState: "before" | "during" | "after";
   characters: CharacterState[];
   init: (characters: CharacterState[]) => void;
+  initLeaderSkill: () => void;
+  addTurn: () => void;
   basicAttack: (position: number) => void;
 }
 
@@ -18,14 +21,6 @@ const initTeamState = [
   initCharacterState,
   initCharacterState,
   initCharacterState,
-];
-
-const InitCharacterSelectionTeam = [
-  initCharacterSelection,
-  initCharacterSelection,
-  initCharacterSelection,
-  initCharacterSelection,
-  initCharacterSelection,
 ];
 
 export const useGameState = create<GameState>()(
@@ -39,6 +34,18 @@ export const useGameState = create<GameState>()(
           state.characters = characters;
         });
       },
+      initLeaderSkill: () => {
+        set((state) => {
+          const skill = state.characters[0];
+          triggerLeaderSkill(parseInt(state.characters[0].id), state);
+        });
+      },
+      addTurn: () => {
+        set((state) => {
+          state.turns += 1;
+        });
+      },
+
       basicAttack: (position: number) => {
         set((state) => {
           state.characters[position].isMoved =

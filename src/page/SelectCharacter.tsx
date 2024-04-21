@@ -85,16 +85,8 @@ export default function SelectCharacterPage() {
             <Text>等級: {characterList[position].level}</Text>
             <Text>星數: {characterList[position].stars}</Text>
             <Text>絆數: {characterList[position].bond}</Text>
-          </Flex>
-          <Flex gap={"md"} wrap={"wrap"}>
-            <Text>
-              HP: {characterList[position].hpPotential}.
-              {characterList[position].hpSubPotential}
-            </Text>
-            <Text>
-              ATK: {characterList[position].atkPotential}.
-              {characterList[position].atkSubPotential}
-            </Text>
+            <Text>HP: {characterList[position].hpPot}%</Text>
+            <Text>ATK: {characterList[position].atkPot}%</Text>
           </Flex>
         </Card>
       </>
@@ -201,82 +193,41 @@ export default function SelectCharacterPage() {
         <Space h="xs" />
         <Group grow wrap="nowrap">
           <NumberInput
-            label="HP潛力"
+            label="HP潛力%"
             allowNegative={false}
             min={1}
             max={12}
-            value={characterList[position].hpPotential}
+            value={characterList[position].hpPot}
             onChange={(value) => {
               if (typeof value === "string") {
                 value = parseInt(value);
               }
               updateCharacter(position, {
                 ...characterList[position],
-                hpPotential: value,
+                hpPot: value,
               });
             }}
             isAllowed={(numberFormatValue) =>
-              validateNumber(numberFormatValue.value, 1, 12)
+              validateNumber(numberFormatValue.value, 0, 100)
             }
           />
           <NumberInput
-            label="HP副潛力"
-            allowNegative={false}
-            min={1}
-            max={6}
-            onChange={(value) => {
-              if (typeof value === "string") {
-                value = parseInt(value);
-              }
-              updateCharacter(position, {
-                ...characterList[position],
-                hpSubPotential: value,
-              });
-            }}
-            value={characterList[position].hpSubPotential}
-            isAllowed={(numberFormatValue) =>
-              validateNumber(numberFormatValue.value, 1, 6)
-            }
-          />
-        </Group>
-        <Space h="xs" />
-        <Group grow wrap="nowrap">
-          <NumberInput
-            label="ATK潛力"
+            label="ATK潛力%"
             allowNegative={false}
             min={1}
             max={12}
-            value={characterList[position].atkPotential}
+            value={characterList[position].atkPot}
             onChange={(value) => {
               if (typeof value === "string") {
                 value = parseInt(value);
               }
               updateCharacter(position, {
                 ...characterList[position],
-                atkPotential: value,
+                atkPot: value,
               });
             }}
             isAllowed={(numberFormatValue) =>
-              validateNumber(numberFormatValue.value, 1, 12)
-            }
-          />
-          <NumberInput
-            label="ATK副潛力"
-            allowNegative={false}
-            min={1}
-            max={6}
-            onChange={(value) => {
-              if (typeof value === "string") {
-                value = parseInt(value);
-              }
-              updateCharacter(position, {
-                ...characterList[position],
-                atkSubPotential: value,
-              });
-            }}
-            value={characterList[position].atkSubPotential}
-            isAllowed={(numberFormatValue) =>
-              validateNumber(numberFormatValue.value, 1, 6)
+              validateNumber(numberFormatValue.value, 0, 100)
             }
           />
         </Group>
