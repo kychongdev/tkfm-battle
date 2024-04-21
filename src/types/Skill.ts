@@ -3,17 +3,19 @@ interface Buff {
   type: BuffType;
   value: number;
   target: Target;
-  affect: AffectType;
+  affect?: AffectType;
   condition: Condition[];
-  duration: number;
-  durationType: DurationType;
+  duration?: number;
+  durationType?: DurationType;
 }
 
 enum AffectType {
   RAWATK,
   ATK,
   HP,
-  INCREASEDMG,
+  SHIELD,
+  INCREASE_DMG,
+  ULTIMATE_DAMAGE,
   FIRE,
   WATER,
   WIND,

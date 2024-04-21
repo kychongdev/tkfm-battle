@@ -1,3 +1,5 @@
+import { Buff } from "./Skill";
+
 enum Attribute {
   FIRE,
   WATER,
@@ -14,6 +16,7 @@ interface CharacterState {
   initHp: number;
   atk: number;
   hp: number;
+  bond: number;
   attribute: Attribute;
   position: number;
   shield: number;
@@ -25,7 +28,7 @@ interface CharacterState {
   isSleep: boolean;
   isSilence: boolean;
   isDead: boolean;
-  buff: any[];
+  buff: Buff[] | [];
 }
 
 interface CharacterSelect {

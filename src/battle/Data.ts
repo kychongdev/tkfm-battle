@@ -7,6 +7,7 @@ const initCharacterState: CharacterState = {
   initAtk: 0,
   atk: 0,
   hp: 0,
+  bond: 1,
   attribute: Attribute.NONE,
   position: 0,
   shield: 0,

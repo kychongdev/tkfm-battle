@@ -16,7 +16,7 @@ import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
 import favicon from "../assets/character/favicon.png";
 import { useGameState } from "../battle/GameState";
 import { IconEdit } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
 import { calculateStats } from "../battle/Calculate";
 
@@ -59,6 +59,7 @@ export default function Battle() {
             initHp: maxHp,
             atk: maxAtk,
             hp: maxHp,
+            bond: character.bond,
             attribute: characterDetail
               ? characterDetail.tags.attribute
               : Attribute.NONE,
@@ -82,6 +83,7 @@ export default function Battle() {
             initHp: 0,
             atk: 0,
             hp: 0,
+            bond: 1,
             attribute: Attribute.NONE,
             position: character.position,
             shield: 0,

@@ -12,6 +12,7 @@ export interface GameState {
   init: (characters: CharacterState[]) => void;
   initLeaderSkill: () => void;
   addTurn: () => void;
+  attack: (target: number, damage: number) => void;
   basicAttack: (position: number) => void;
 }
 
@@ -45,7 +46,11 @@ export const useGameState = create<GameState>()(
           state.turns += 1;
         });
       },
-
+      attack: (target: number, damage: number) => {
+        set((state) => {
+          state.characters[target].hp -= damage;
+        });
+      },
       basicAttack: (position: number) => {
         set((state) => {
           state.characters[position].isMoved =
