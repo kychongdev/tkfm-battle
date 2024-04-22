@@ -196,7 +196,7 @@ export default function SelectCharacterPage() {
             label="HP潛力%"
             allowNegative={false}
             min={1}
-            max={12}
+            max={100}
             value={characterList[position].hpPot}
             onChange={(value) => {
               if (typeof value === "string") {
@@ -215,7 +215,7 @@ export default function SelectCharacterPage() {
             label="ATK潛力%"
             allowNegative={false}
             min={1}
-            max={12}
+            max={100}
             value={characterList[position].atkPot}
             onChange={(value) => {
               if (typeof value === "string") {

@@ -1,7 +1,7 @@
 import { AffectType, BuffType } from "../types/Skill";
 import { GameState } from "./GameState";
 
-export function CalculateDamage(
+export function calculateDamage(
   position: number,
   attackPercentage: number,
   gameState: GameState,
@@ -9,10 +9,9 @@ export function CalculateDamage(
   let characterAtk = gameState.characters[position].initAtk;
   gameState.characters[position].buff.forEach((buff) => {
     if (buff.type === BuffType.BUFF && buff.affect === AffectType.ATK) {
-      characterAtk += characterAtk * buff.value;
+      characterAtk += characterAtk * (1 + buff.value);
     }
   });
-
-  // const characterAtk = gameState.characters[position].initAtk
-  // return damage;
+  const damage = characterAtk * attackPercentage;
+  return Math.floor(damage);
 }

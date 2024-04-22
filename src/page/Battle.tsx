@@ -28,6 +28,7 @@ export default function Battle() {
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
   const initCharacters = useGameState((state) => state.init);
+  const enemy = useGameState((state) => state.enemy);
   const character = useGameState((state) => state.characters);
   const activeLeader = useGameState((state) => state.initLeaderSkill);
 
@@ -43,7 +44,7 @@ export default function Battle() {
             character.level,
             character.stars,
             character.disclipline,
-            character.atkPot,
+            character.hpPot,
           );
           const maxAtk = calculateStats(
             characterDetail ? characterDetail.stats.initATK : 0,
@@ -52,6 +53,10 @@ export default function Battle() {
             character.disclipline,
             character.atkPot,
           );
+          if (character.id === "532") {
+            console.log(characterDetail?.stats.initHP);
+            console.log(maxHp);
+          }
           return {
             id: character.id,
             isExist: true,
@@ -114,7 +119,10 @@ export default function Battle() {
       <Space h="lg" />
       <Center>木樁</Center>
       <Text m="sm">第{turns}回合</Text>
-      <Progress value={50} m="sm" />
+      <Progress value={(enemy.hp / enemy.initHp) * 100} m="sm" />
+      <Text>
+        {enemy.hp}/ {enemy.initHp}{" "}
+      </Text>
       <Center m="xl">
         <Image src={favicon} />
       </Center>

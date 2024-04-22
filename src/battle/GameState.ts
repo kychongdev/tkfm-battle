@@ -4,16 +4,21 @@ import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
+import { calculateDamage } from "./Calculate";
+import { AffectType, BuffType } from "../types/Skill";
 
 export interface GameState {
   turns: number;
   turnsState: "before" | "during" | "after";
+  enemy: CharacterState;
   characters: CharacterState[];
   init: (characters: CharacterState[]) => void;
   initLeaderSkill: () => void;
+  activateHpBuff: () => void;
   addTurn: () => void;
-  attack: (target: number, damage: number) => void;
   basicAttack: (position: number) => void;
+  checkBuffEnd: () => void;
+  checkEndTurns: () => void;
 }
 
 const initTeamState = [
@@ -29,6 +34,11 @@ export const useGameState = create<GameState>()(
     immer((set) => ({
       turns: 0,
       turnsState: "before",
+      enemy: {
+        ...initCharacterState,
+        initHp: 10000000000,
+        hp: 10000000000,
+      },
       characters: initTeamState,
       init: (characters: CharacterState[]) => {
         set((state) => {
@@ -37,8 +47,28 @@ export const useGameState = create<GameState>()(
       },
       initLeaderSkill: () => {
         set((state) => {
-          const skill = state.characters[0];
           triggerLeaderSkill(parseInt(state.characters[0].id), state);
+          state.activateHpBuff();
+          // Immediate calculate max hp
+        });
+      },
+      activateHpBuff: () => {
+        set((state) => {
+          state.characters.forEach((character, index) => {
+            let hpBuff = 1;
+            character.buff.forEach((buff) => {
+              if (
+                buff.type === BuffType.BUFF &&
+                buff.affect === AffectType.HP
+              ) {
+                hpBuff += buff.value;
+              }
+            });
+            state.characters[index].hp = Math.ceil(character.hp * hpBuff);
+            state.characters[index].initHp = Math.ceil(
+              character.initHp * hpBuff,
+            );
+          });
         });
       },
       addTurn: () => {
@@ -46,15 +76,22 @@ export const useGameState = create<GameState>()(
           state.turns += 1;
         });
       },
-      attack: (target: number, damage: number) => {
-        set((state) => {
-          state.characters[target].hp -= damage;
-        });
-      },
       basicAttack: (position: number) => {
         set((state) => {
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
+
+          const damage = calculateDamage(position, 1, state);
+          state.enemy.hp -= damage;
+        });
+      },
+      checkBuffEnd: () => {
+        set((state) => {
+          state.characters.forEach((character) => {
+            if (character.buff.length > 0) {
+              character.buff.forEach((buff) => {});
+            }
+          });
         });
       },
       checkEndTurns: () => {

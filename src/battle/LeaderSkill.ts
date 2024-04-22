@@ -103,8 +103,8 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             condition: [Condition.ULTIMATE],
           },
         ];
-        gameState.characters[3].buff = [...gameState.characters[3].buff, ...x];
-        gameState.characters[5].buff = [...gameState.characters[5].buff, ...x];
+        gameState.characters[2].buff = [...gameState.characters[2].buff, ...x];
+        gameState.characters[4].buff = [...gameState.characters[4].buff, ...x];
       }
       break;
     default:
