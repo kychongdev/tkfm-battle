@@ -1,5 +1,6 @@
 import { AspectRatio, Image, Overlay, Progress, Stack } from "@mantine/core";
 import { useGameState } from "../battle/GameState";
+import { formatNumber } from "../battle/utilies";
 
 export function CharacterBattleButton(props: { position: number }) {
   const basicAttack = useGameState((state) => state.basicAttack);
@@ -18,7 +19,7 @@ export function CharacterBattleButton(props: { position: number }) {
         ) : null}
       </AspectRatio>
       <Progress value={(character.hp / character.initHp) * 100} />
-      <div>{character.initHp}</div>
+      <div>{formatNumber(character.hp)}</div>
     </Stack>
   );
 }

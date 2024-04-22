@@ -58,7 +58,6 @@ export function activateUltimate(
             condition: Condition.NONE,
           },
         ];
-        gameState.attack(6, 3.97);
         // gameState.characters[position].attack = [
         //   ...gameState.characters[position].attack,
         //   {

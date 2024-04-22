@@ -19,6 +19,7 @@ import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
 import { calculateStats } from "../battle/Calculate";
+import { formatNumber } from "../battle/utilies";
 
 export default function Battle() {
   const [value] = useLocalStorage<CharacterSelect[]>("last-session");
@@ -109,7 +110,6 @@ export default function Battle() {
   }
 
   function startGame() {
-    console.log("start");
     activeLeader();
     addTurn();
   }
@@ -121,7 +121,7 @@ export default function Battle() {
       <Text m="sm">第{turns}回合</Text>
       <Progress value={(enemy.hp / enemy.initHp) * 100} m="sm" />
       <Text>
-        {enemy.hp}/ {enemy.initHp}{" "}
+        {formatNumber(enemy.hp)}/ {formatNumber(enemy.initHp)}
       </Text>
       <Center m="xl">
         <Image src={favicon} />

@@ -6,6 +6,7 @@ import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
 import { calculateDamage } from "./Calculate";
 import { AffectType, BuffType } from "../types/Skill";
+import { basicAttack } from "./BasicAttack";
 
 export interface GameState {
   turns: number;
@@ -48,8 +49,8 @@ export const useGameState = create<GameState>()(
       initLeaderSkill: () => {
         set((state) => {
           triggerLeaderSkill(parseInt(state.characters[0].id), state);
-          state.activateHpBuff();
           // Immediate calculate max hp
+          state.activateHpBuff();
         });
       },
       activateHpBuff: () => {
@@ -76,12 +77,30 @@ export const useGameState = create<GameState>()(
           state.turns += 1;
         });
       },
+      basicMove: (position: number) => {
+        set((state) => {
+          state.basicAttack(position);
+        });
+      },
+      ultimateMove: (position: number) => {
+        set((state) => {
+          state.characters[position].isMoved =
+            !state.characters[position].isMoved;
+        });
+      },
       basicAttack: (position: number) => {
         set((state) => {
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
+          basicAttack(state.characters[position].id, position, state);
+        });
+      },
+      ultimateAttack: (position: number) => {
+        set((state) => {
+          state.characters[position].isMoved =
+            !state.characters[position].isMoved;
 
-          const damage = calculateDamage(position, 1, state);
+          const damage = calculateDamage(position, 2, state);
           state.enemy.hp -= damage;
         });
       },
