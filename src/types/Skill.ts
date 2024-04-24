@@ -6,6 +6,8 @@ interface Buff {
   affect?: AffectType;
   condition: Condition;
   valueModfiy?: string;
+  stack?: number;
+  maxStack?: number;
   duration?: number;
   durationType?: DurationType;
   unique_id?: string;
@@ -64,6 +66,7 @@ enum Target {
 enum DurationType {
   PERMANENT,
   TEMPORARY,
+  STACK,
 }
 
 export type { Buff };

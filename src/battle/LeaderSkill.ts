@@ -1,5 +1,11 @@
 import { GameState } from "./GameState";
-import { AffectType, BuffType, Condition, Target } from "../types/Skill";
+import {
+  AffectType,
+  BuffType,
+  Condition,
+  DurationType,
+  Target,
+} from "../types/Skill";
 
 export function triggerLeaderSkill(leader: number, gameState: GameState) {
   switch (leader) {
@@ -61,7 +67,10 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.05,
             affect: AffectType.DARK,
             target: Target.ENEMY,
-            condition: Condition.ATTACK,
+            condition: Condition.ULTIMATE,
+            durationType: DurationType.STACK,
+            maxStack: 3,
+            unique_id: "532_1",
           },
           {
             name: "必殺時，觸發「使目標受到水屬性傷害增加5%(最多3層)」",
@@ -69,7 +78,10 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.05,
             affect: AffectType.WATER,
             target: Target.ENEMY,
-            condition: Condition.ATTACK,
+            condition: Condition.ULTIMATE,
+            maxStack: 3,
+            durationType: DurationType.STACK,
+            unique_id: "532_2",
           },
           {
             name: "攻擊時，觸發「以自身攻擊力40%使我方全體攻擊力增加 (1回合)」",

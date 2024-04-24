@@ -1,4 +1,11 @@
-import { AffectType, Buff, BuffType, Condition, Target } from "../types/Skill";
+import {
+  AffectType,
+  Buff,
+  BuffType,
+  Condition,
+  DurationType,
+  Target,
+} from "../types/Skill";
 import { GameState } from "./GameState";
 
 export function calculateStats(
@@ -66,19 +73,25 @@ export function triggerPassive(
   switch (buff.type) {
     case BuffType.APPLYBUFF:
       //if (buff.target === Target.ENEMY)
-      if (buff.target === Target.SELF) {
-        gameState.characters[position].buff = [
-          ...gameState.characters[position].buff,
-          {
-            name: `以自身最大HP${buff.value * 100}%對我方全體施放護盾(${buff.duration}回合)`,
-            type: BuffType.BUFF,
-            value: buff.value,
-            affect: AffectType.SHIELD,
-            target: Target.SELF,
-            duration: buff.duration,
-            condition: Condition.NONE,
-          },
-        ];
+      if (buff.target === Target.ALL) {
+        const buffValue =
+          buff.valueModfiy === "maxHp"
+            ? Math.ceil(gameState.characters[position].initHp * buff.value)
+            : buff.value;
+        gameState.characters.forEach((_, index) => {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              name: `${buffValue}護盾 (${buff.duration}回合)`,
+              type: BuffType.BUFF,
+              value: buffValue,
+              affect: AffectType.SHIELD,
+              target: Target.SELF,
+              duration: buff.duration,
+              condition: Condition.NONE,
+            },
+          ];
+        });
       }
       break;
     case BuffType.APPLYDEBUFF:
@@ -88,19 +101,65 @@ export function triggerPassive(
             ? `受到傷害增加${buff.value * 100}%`
             : buff.affect === AffectType.ULTIMATE_DAMAGE
               ? `受到必殺技傷害增加${buff.value * 100}%`
-              : "";
-        gameState.enemy.buff = [
-          ...gameState.enemy.buff,
-          {
-            name,
-            type: BuffType.DEBUFF,
-            value: buff.value,
-            affect: buff.affect,
-            target: Target.SELF,
-            duration: buff.duration,
-            condition: Condition.NONE,
-          },
-        ];
+              : buff.affect === AffectType.DARK
+                ? `受到暗屬性傷害增加${buff.value * 100}%`
+                : buff.affect === AffectType.WATER
+                  ? `受到水屬性傷害增加${buff.value * 100}%`
+                  : "";
+        if (buff.durationType === DurationType.STACK) {
+          const isExist = gameState.enemy.buff.some((othersBuff) => {
+            return buff.unique_id + "_ACTIVATE" == othersBuff.unique_id;
+          });
+          if (!isExist) {
+            gameState.enemy.buff = [
+              ...gameState.enemy.buff,
+              {
+                name: name + `1層 (${buff.maxStack}層)`,
+                type: BuffType.DEBUFF,
+                value: buff.value,
+                affect: buff.affect,
+                target: Target.SELF,
+                stack: 1,
+                maxStack: buff.maxStack,
+                duration: buff.duration,
+                condition: Condition.NONE,
+                unique_id: buff.unique_id + "_ACTIVATE",
+              },
+            ];
+          } else if (isExist) {
+            //Check existing buff and increase stack
+            gameState.enemy.buff = gameState.enemy.buff.map((othersBuff) => {
+              if (
+                othersBuff.unique_id === buff.unique_id + "_ACTIVATE" &&
+                //@ts-ignore
+                othersBuff.stack < buff.maxStack
+              ) {
+                return {
+                  ...othersBuff,
+                  name:
+                    //@ts-ignore
+                    name + ` ${othersBuff.stack + 1}層 (${buff.maxStack}層)`,
+                  //@ts-ignore
+                  stack: othersBuff.stack + 1,
+                };
+              }
+              return othersBuff;
+            });
+          }
+        } else {
+          gameState.enemy.buff = [
+            ...gameState.enemy.buff,
+            {
+              name,
+              type: BuffType.DEBUFF,
+              value: buff.value,
+              affect: buff.affect,
+              target: Target.SELF,
+              duration: buff.duration,
+              condition: Condition.NONE,
+            },
+          ];
+        }
       }
 
       break;

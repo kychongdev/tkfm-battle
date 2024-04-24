@@ -101,8 +101,8 @@ export const useGameState = create<GameState>()(
       },
       ultimateMove: (position: number) => {
         set((state) => {
-          state.characters[position].isMoved =
-            !state.characters[position].isMoved;
+          // state.characters[position].isMoved =
+          //   !state.characters[position].isMoved;
           parseCondition(position, Condition.ULTIMATE, state);
         });
       },

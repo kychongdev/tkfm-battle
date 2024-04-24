@@ -23,9 +23,9 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           type: BuffType.APPLYBUFF,
           value: 0.07,
           valueModfiy: "maxHp",
-          affect: AffectType.INCREASE_DMG_RECEIVED,
-          target: Target.ENEMY,
-          duration: 7,
+          affect: AffectType.SHIELD,
+          target: Target.ALL,
+          duration: 1,
           condition: Condition.ULTIMATE,
         },
         {
