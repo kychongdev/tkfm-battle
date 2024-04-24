@@ -54,10 +54,6 @@ export default function Battle() {
             character.disclipline,
             character.atkPot,
           );
-          if (character.id === "532") {
-            console.log(characterDetail?.stats.initHP);
-            console.log(maxHp);
-          }
           return {
             id: character.id,
             isExist: true,

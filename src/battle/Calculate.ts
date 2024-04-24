@@ -1,4 +1,4 @@
-import { AffectType, BuffType } from "../types/Skill";
+import { AffectType, Buff, BuffType, Condition, Target } from "../types/Skill";
 import { GameState } from "./GameState";
 
 export function calculateStats(
@@ -8,11 +8,6 @@ export function calculateStats(
   room: number,
   pot: number,
 ) {
-  console.log("initStats", initStats);
-  console.log("level", level);
-  console.log("star", star);
-  console.log("room", room);
-  console.log("pot", pot);
   const starStats = star === 3 ? 1 : star === 4 ? 1.125 : star === 5 ? 1.25 : 1;
   const roomStats =
     room === 1 ? 1.05 : room === 2 ? 1.15 : room === 3 ? 1.3 : 1;
@@ -48,4 +43,69 @@ export function checkHpBuff(gameState: GameState) {
     });
     character.hp = Math.ceil(character.hp * hpBuff);
   });
+}
+
+export function parseCondition(
+  position: number,
+  condition: Condition,
+  state: GameState,
+) {
+  state.characters[position].buff.forEach((buff) => {
+    if (buff.condition === condition) {
+      console.log("trigger buff");
+      triggerPassive(buff, state, position);
+    }
+  });
+}
+
+export function triggerPassive(
+  buff: Buff,
+  gameState: GameState,
+  position: number,
+) {
+  switch (buff.type) {
+    case BuffType.APPLYBUFF:
+      //if (buff.target === Target.ENEMY)
+      if (buff.target === Target.SELF) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            name: `以自身最大HP${buff.value * 100}%對我方全體施放護盾(${buff.duration}回合)`,
+            type: BuffType.BUFF,
+            value: buff.value,
+            affect: AffectType.SHIELD,
+            target: Target.SELF,
+            duration: buff.duration,
+            condition: Condition.NONE,
+          },
+        ];
+      }
+      break;
+    case BuffType.APPLYDEBUFF:
+      if (buff.target === Target.ENEMY) {
+        const name =
+          buff.affect === AffectType.INCREASE_DMG_RECEIVED
+            ? `受到傷害增加${buff.value * 100}%`
+            : buff.affect === AffectType.ULTIMATE_DAMAGE
+              ? `受到必殺技傷害增加${buff.value * 100}%`
+              : "";
+        gameState.enemy.buff = [
+          ...gameState.enemy.buff,
+          {
+            name,
+            type: BuffType.DEBUFF,
+            value: buff.value,
+            affect: buff.affect,
+            target: Target.SELF,
+            duration: buff.duration,
+            condition: Condition.NONE,
+          },
+        ];
+      }
+
+      break;
+    case BuffType.BUFF:
+      console.log("buff");
+      break;
+  }
 }

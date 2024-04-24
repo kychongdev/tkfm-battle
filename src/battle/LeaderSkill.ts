@@ -26,7 +26,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.2,
             affect: AffectType.HP,
             target: Target.SELF,
-            condition: [Condition.NONE],
+            condition: Condition.NONE,
           },
         ];
         character.buff = [
@@ -37,7 +37,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.8,
             affect: AffectType.ATK,
             target: Target.SELF,
-            condition: [Condition.NONE],
+            condition: Condition.NONE,
           },
         ];
       });
@@ -53,7 +53,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.6,
             affect: AffectType.ATK,
             target: Target.SELF,
-            condition: [Condition.NONE],
+            condition: Condition.NONE,
           },
           {
             name: "必殺時，觸發「使目標受到闇屬性傷害增加5%(最多3層)、",
@@ -61,7 +61,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.05,
             affect: AffectType.DARK,
             target: Target.ENEMY,
-            condition: [Condition.ATTACK],
+            condition: Condition.ATTACK,
           },
           {
             name: "必殺時，觸發「使目標受到水屬性傷害增加5%(最多3層)」",
@@ -69,7 +69,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.05,
             affect: AffectType.WATER,
             target: Target.ENEMY,
-            condition: [Condition.ATTACK],
+            condition: Condition.ATTACK,
           },
           {
             name: "攻擊時，觸發「以自身攻擊力40%使我方全體攻擊力增加 (1回合)」",
@@ -77,7 +77,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.4,
             affect: AffectType.RAWATK,
             target: Target.ALL,
-            condition: [Condition.ATTACK],
+            condition: Condition.ATTACK,
           },
         ];
       }
@@ -93,14 +93,14 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
             value: 0.3,
             affect: AffectType.INCREASE_DMG,
             target: Target.SELF,
-            condition: [Condition.NONE],
+            condition: Condition.NONE,
           },
           {
             name: "必殺時，追加「以自身攻擊力40%對目標造成傷害」",
             type: BuffType.ATTACK,
             value: 0.4,
             target: Target.ENEMY,
-            condition: [Condition.ULTIMATE],
+            condition: Condition.ULTIMATE,
           },
         ];
         gameState.characters[2].buff = [...gameState.characters[2].buff, ...x];

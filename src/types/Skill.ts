@@ -4,9 +4,11 @@ interface Buff {
   value: number;
   target: Target;
   affect?: AffectType;
-  condition: Condition[];
+  condition: Condition;
+  valueModfiy?: string;
   duration?: number;
   durationType?: DurationType;
+  unique_id?: string;
 }
 
 enum AffectType {
@@ -15,6 +17,7 @@ enum AffectType {
   HP,
   SHIELD,
   INCREASE_DMG,
+  INCREASE_DMG_RECEIVED,
   ULTIMATE_DAMAGE,
   FIRE,
   WATER,

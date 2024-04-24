@@ -4,9 +4,10 @@ import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
-import { calculateDamage } from "./Calculate";
-import { AffectType, BuffType } from "../types/Skill";
+import { calculateDamage, parseCondition, triggerPassive } from "./Calculate";
+import { AffectType, BuffType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
+import { initPassiveSkill } from "./Passive";
 
 export interface GameState {
   turns: number;
@@ -18,6 +19,9 @@ export interface GameState {
   activateHpBuff: () => void;
   addTurn: () => void;
   basicAttack: (position: number) => void;
+  ultimateAttack: (position: number) => void;
+  ultimateMove: (position: number) => void;
+  // triggerPassive: (position: number, condition: Condition) => void;
   checkBuffEnd: () => void;
   checkEndTurns: () => void;
 }
@@ -51,6 +55,9 @@ export const useGameState = create<GameState>()(
           triggerLeaderSkill(parseInt(state.characters[0].id), state);
           // Immediate calculate max hp
           state.activateHpBuff();
+          initPassiveSkill(0, state);
+          initPassiveSkill(1, state);
+          initPassiveSkill(2, state);
         });
       },
       activateHpBuff: () => {
@@ -77,6 +84,16 @@ export const useGameState = create<GameState>()(
           state.turns += 1;
         });
       },
+      // triggerPassive: (position: number, condition: Condition) => {
+      //   set((state) => {
+      //     state.characters[position].buff.forEach((buff) => {
+      //       if (buff.condition === condition) {
+      //         console.log("trigger buff");
+      //         triggerPassive(buff, state);
+      //       }
+      //     });
+      //   });
+      // },
       basicMove: (position: number) => {
         set((state) => {
           state.basicAttack(position);
@@ -86,6 +103,7 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
+          parseCondition(position, Condition.ULTIMATE, state);
         });
       },
       basicAttack: (position: number) => {
@@ -99,10 +117,12 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
-
           const damage = calculateDamage(position, 2, state);
           state.enemy.hp -= damage;
         });
+      },
+      applyDebuff: (position: number) => {
+        set((state) => {});
       },
       checkBuffEnd: () => {
         set((state) => {
