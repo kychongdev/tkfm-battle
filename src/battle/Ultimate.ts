@@ -38,26 +38,26 @@ export function activateUltimate(
                   ? { value: 0.3, name: "護盾效果增加30%" }
                   : { value: 0, name: "" };
       if (gameState.characters[position].bond == 1) {
-        gameState.characters[position].buff = [
-          ...gameState.characters[position].buff,
-          {
-            name: skillLevel.name,
-            type: BuffType.BUFF,
-            value: skillLevel.value,
-            affect: AffectType.ULTIMATE_DAMAGE,
-            target: Target.SELF,
-            duration: 3,
-            condition: Condition.NONE,
-          },
-          {
-            name: skillLevel2.name,
-            value: skillLevel2.value,
-            affect: AffectType.SHIELD,
-            target: Target.SELF,
-            duration: 3,
-            condition: Condition.NONE,
-          },
-        ];
+        // gameState.characters[position].buff = [
+        //   ...gameState.characters[position].buff,
+        //   {
+        //     name: skillLevel.name,
+        //     type: BuffType.BUFF,
+        //     value: skillLevel.value,
+        //     affect: AffectType.ULTIMATE_DAMAGE,
+        //     target: Target.SELF,
+        //     duration: 3,
+        //     condition: Condition.NONE,
+        //   },
+        //   {
+        //     name: skillLevel2.name,
+        //     value: skillLevel2.value,
+        //     affect: AffectType.SHIELD,
+        //     target: Target.SELF,
+        //     duration: 3,
+        //     condition: Condition.NONE,
+        //   },
+        // ];
         // gameState.characters[position].attack = [
         //   ...gameState.characters[position].attack,
         //   {

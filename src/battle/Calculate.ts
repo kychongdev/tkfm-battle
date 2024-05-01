@@ -5,6 +5,7 @@ import {
   Condition,
   DurationType,
   Target,
+  ValueType,
 } from "../types/Skill";
 import { GameState } from "./GameState";
 
@@ -59,10 +60,45 @@ export function parseCondition(
 ) {
   state.characters[position].buff.forEach((buff) => {
     if (buff.condition === condition) {
-      console.log("trigger buff");
       triggerPassive(buff, state, position);
     }
   });
+}
+
+function parseAffectName(affectType: AffectType | undefined) {
+  switch (affectType) {
+    case AffectType.INCREASE_DMG:
+      return "造成傷害增加";
+    case AffectType.INCREASE_DMG_RECEIVED:
+      return "受到傷害增加";
+    case AffectType.ULTIMATE_DAMAGE:
+      return "受到必殺技傷害增加";
+    case AffectType.DARK:
+      return "受到暗屬性傷害增加";
+    case AffectType.WATER:
+      return "受到水屬性傷害增加";
+    case AffectType.SHIELD:
+      return "護盾";
+    default:
+      return "";
+  }
+}
+
+function parseBuffValue(buff: Buff, gameState: GameState, position: number) {
+  switch (buff.valueType) {
+    case ValueType.MAXHP:
+      return Math.ceil(gameState.characters[position].initHp * buff.value);
+    case ValueType.SKILL:
+      const valueMultiply = gameState.characters[position].buff.filter(
+        (othersBuff) => {
+          return othersBuff.unique_id === buff.valueTarget;
+        },
+      ).length;
+      return buff.value * valueMultiply;
+
+    default:
+      return buff.value;
+  }
 }
 
 export function triggerPassive(
@@ -70,28 +106,90 @@ export function triggerPassive(
   gameState: GameState,
   position: number,
 ) {
+  const buffValue = parseBuffValue(buff, gameState, position);
+  const buffName = parseAffectName(buff.affect);
+
   switch (buff.type) {
     case BuffType.APPLYBUFF:
-      //if (buff.target === Target.ENEMY)
       if (buff.target === Target.ALL) {
-        const buffValue =
-          buff.valueModfiy === "maxHp"
-            ? Math.ceil(gameState.characters[position].initHp * buff.value)
-            : buff.value;
         gameState.characters.forEach((_, index) => {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
             {
-              name: `${buffValue}護盾 (${buff.duration}回合)`,
+              name: `${buffValue}% ${buffName}(${buff.duration}回合)`,
               type: BuffType.BUFF,
               value: buffValue,
-              affect: AffectType.SHIELD,
+              affect: buff.affect,
               target: Target.SELF,
               duration: buff.duration,
+              durationType: buff.durationType,
               condition: Condition.NONE,
             },
           ];
         });
+      }
+      if (buff.target === Target.SELF) {
+        if (buff.durationType === DurationType.STACK) {
+          const isExist = gameState.characters[position].buff.some(
+            (othersBuff) => {
+              return buff.unique_id + "_ACTIVATE" == othersBuff.unique_id;
+            },
+          );
+          if (!isExist) {
+            gameState.characters[position].buff = [
+              ...gameState.characters[position].buff,
+              {
+                name: `${buffName} ${buffValue} ${buff.stack}層 (${buff.maxStack}層)`,
+                type: BuffType.BUFF,
+                value: buffValue,
+                affect: buff.affect,
+                target: Target.SELF,
+                stack: buff.increaseStack,
+                maxStack: buff.maxStack,
+                duration: buff.duration,
+                condition: Condition.NONE,
+                unique_id: buff.unique_id + "_ACTIVATE",
+              },
+            ];
+          } else if (isExist) {
+            //Check existing buff and increase stack
+            gameState.characters[position].buff = gameState.characters[
+              position
+            ].buff.map((othersBuff) => {
+              // IF this is not working then might be data errors
+              if (
+                othersBuff.unique_id === buff.unique_id + "_ACTIVATE" &&
+                othersBuff.stack &&
+                buff.maxStack
+              ) {
+                return {
+                  ...othersBuff,
+                  stack:
+                    othersBuff.stack + 1 > buff.maxStack
+                      ? buff.maxStack
+                      : othersBuff.stack + 1,
+                  name: `${buffName} ${buffValue} ${buff.stack}層 (${buff.maxStack}層)`,
+                };
+              }
+              return othersBuff;
+            });
+          }
+        }
+
+        // Simple Apply Buff to Self
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            name: buffName,
+            type: BuffType.BUFF,
+            value: buffValue,
+            affect: buff.affect,
+            target: Target.SELF,
+            duration: buff.duration,
+            durationType: DurationType.TEMPORARY,
+            condition: Condition.NONE,
+          },
+        ];
       }
       break;
     case BuffType.APPLYDEBUFF:
@@ -132,7 +230,7 @@ export function triggerPassive(
               if (
                 othersBuff.unique_id === buff.unique_id + "_ACTIVATE" &&
                 //@ts-ignore
-                othersBuff.stack < buff.maxStack
+                othersBuff.stack <= buff.maxStack
               ) {
                 return {
                   ...othersBuff,
@@ -166,5 +264,38 @@ export function triggerPassive(
     case BuffType.BUFF:
       console.log("buff");
       break;
+  }
+}
+
+export function checkEndTurn(state: GameState) {
+  const isEnd = state.characters.every((character) => {
+    return (
+      character.isDead ||
+      character.isMoved ||
+      character.isGuard ||
+      character.isSleep ||
+      character.isSilence ||
+      character.isParalysis
+    );
+  });
+
+  if (isEnd) {
+    state.turns += 1;
+
+    state.characters.forEach((character) => {
+      character.buff.forEach((buff) => {
+        if (buff.duration && buff.type === BuffType.BUFF) {
+          buff.duration -= 1;
+        }
+      });
+    });
+    state.characters.map((character) => {
+      character.buff = character.buff.filter((buff) => {
+        return buff.duration !== 0 || buff.duration === undefined;
+      });
+    });
+    state.characters.forEach((character) => {
+      character.isMoved = false;
+    });
   }
 }

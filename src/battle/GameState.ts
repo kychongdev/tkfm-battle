@@ -4,7 +4,12 @@ import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
-import { calculateDamage, parseCondition, triggerPassive } from "./Calculate";
+import {
+  calculateDamage,
+  checkEndTurn,
+  parseCondition,
+  triggerPassive,
+} from "./Calculate";
 import { AffectType, BuffType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
@@ -58,6 +63,8 @@ export const useGameState = create<GameState>()(
           initPassiveSkill(0, state);
           initPassiveSkill(1, state);
           initPassiveSkill(2, state);
+          initPassiveSkill(3, state);
+          initPassiveSkill(4, state);
         });
       },
       activateHpBuff: () => {
@@ -101,9 +108,10 @@ export const useGameState = create<GameState>()(
       },
       ultimateMove: (position: number) => {
         set((state) => {
-          // state.characters[position].isMoved =
-          //   !state.characters[position].isMoved;
+          state.characters[position].isMoved =
+            !state.characters[position].isMoved;
           parseCondition(position, Condition.ULTIMATE, state);
+          checkEndTurn(state);
         });
       },
       basicAttack: (position: number) => {
@@ -111,6 +119,7 @@ export const useGameState = create<GameState>()(
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
           basicAttack(state.characters[position].id, position, state);
+          checkEndTurn(state);
         });
       },
       ultimateAttack: (position: number) => {

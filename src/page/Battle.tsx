@@ -20,11 +20,14 @@ import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
 import { calculateStats } from "../battle/Calculate";
 import { formatNumber } from "../battle/utilies";
+import { BuffList } from "../components/StatsModal";
 
 export default function Battle() {
   const [value] = useLocalStorage<CharacterSelect[]>("last-session");
   const [saved] = useLocalStorage<CharacterSelect[]>("saved-team");
   const [opened, setOpened] = useState(false);
+  const [statsWindow, setStatsOpened] = useState(false);
+  const [statsPosition, setStatsPosition] = useState(0);
 
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
@@ -129,6 +132,49 @@ export default function Battle() {
         <CharacterBattleButton position={3} />
         <CharacterBattleButton position={4} />
       </Group>
+
+      <Group grow wrap="nowrap" gap="xs">
+        <Button
+          onClick={() => {
+            setStatsOpened(true);
+            setStatsPosition(0);
+          }}
+        >
+          1
+        </Button>
+        <Button
+          onClick={() => {
+            setStatsOpened(true);
+            setStatsPosition(1);
+          }}
+        >
+          2
+        </Button>
+        <Button
+          onClick={() => {
+            setStatsOpened(true);
+            setStatsPosition(2);
+          }}
+        >
+          3
+        </Button>
+        <Button
+          onClick={() => {
+            setStatsOpened(true);
+            setStatsPosition(3);
+          }}
+        >
+          4
+        </Button>
+        <Button
+          onClick={() => {
+            setStatsOpened(true);
+            setStatsPosition(4);
+          }}
+        >
+          5
+        </Button>
+      </Group>
       <Space h="sm" />
       <Group justify="end">
         <Button onClick={() => startGame()}>開始</Button>
@@ -151,6 +197,9 @@ export default function Battle() {
           <Image src={char} />
           <Image src={char} />
         </Group>
+      </Modal>
+      <Modal opened={statsWindow} onClose={() => setStatsOpened(false)}>
+        <BuffList position={statsPosition} />
       </Modal>
     </Container>
   );

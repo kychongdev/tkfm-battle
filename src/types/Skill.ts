@@ -2,15 +2,29 @@ interface Buff {
   name: string;
   type: BuffType;
   value: number;
+  valueType?: ValueType;
+  //if valueType is skill, then value target must be defined
+  valueTarget?: string;
   target: Target;
   affect?: AffectType;
   condition: Condition;
-  valueModfiy?: string;
+  conditionTurn?: number;
   stack?: number;
+  increaseStack?: number;
   maxStack?: number;
+  stackTarget?: string;
+  //if undefined means infinite
   duration?: number;
+  //if durationType is stack, then stack, increaseStack and maxstack must be defined
   durationType?: DurationType;
   unique_id?: string;
+}
+
+enum ValueType {
+  // Just take original value
+  NONE,
+  MAXHP,
+  SKILL,
 }
 
 enum AffectType {
@@ -47,6 +61,8 @@ enum Condition {
   ATTACKED,
   BASIC_ATTACK,
   ULTIMATE,
+  TURN,
+  EVERY_X_TURN,
   NONE,
 }
 
@@ -70,4 +86,4 @@ enum DurationType {
 }
 
 export type { Buff };
-export { BuffType, Condition, Target, AffectType, DurationType };
+export { BuffType, Condition, Target, AffectType, DurationType, ValueType };
