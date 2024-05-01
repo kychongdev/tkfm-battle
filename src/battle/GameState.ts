@@ -4,12 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
-import {
-  calculateDamage,
-  checkEndTurn,
-  parseCondition,
-  triggerPassive,
-} from "./Calculate";
+import { checkEndTurn, parseCondition } from "./Calculate";
 import { AffectType, BuffType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
@@ -24,12 +19,8 @@ export interface GameState {
   initLeaderSkill: () => void;
   activateHpBuff: () => void;
   addTurn: () => void;
-  basicAttack: (position: number) => void;
-  ultimateAttack: (position: number) => void;
+  basicMove: (position: number) => void;
   ultimateMove: (position: number) => void;
-  // triggerPassive: (position: number, condition: Condition) => void;
-  checkBuffEnd: () => void;
-  checkEndTurns: () => void;
 }
 
 const initTeamState = [
@@ -98,19 +89,12 @@ export const useGameState = create<GameState>()(
           state.turns += 1;
         });
       },
-      // triggerPassive: (position: number, condition: Condition) => {
-      //   set((state) => {
-      //     state.characters[position].buff.forEach((buff) => {
-      //       if (buff.condition === condition) {
-      //         console.log("trigger buff");
-      //         triggerPassive(buff, state);
-      //       }
-      //     });
-      //   });
-      // },
       basicMove: (position: number) => {
         set((state) => {
-          state.basicAttack(position);
+          state.characters[position].isMoved =
+            !state.characters[position].isMoved;
+          basicAttack(state.characters[position].id, position, state);
+          checkEndTurn(state);
         });
       },
       ultimateMove: (position: number) => {
@@ -122,51 +106,14 @@ export const useGameState = create<GameState>()(
           state.characters[position].cd = state.characters[position].maxCd;
         });
       },
-      basicAttack: (position: number) => {
-        set((state) => {
-          state.characters[position].isMoved =
-            !state.characters[position].isMoved;
-          basicAttack(state.characters[position].id, position, state);
-          checkEndTurn(state);
-        });
-      },
-      ultimateAttack: (position: number) => {
-        set((state) => {
-          state.characters[position].isMoved =
-            !state.characters[position].isMoved;
-          const damage = calculateDamage(position, 2, state);
-          state.enemy.hp -= damage;
-        });
-      },
-      applyDebuff: (position: number) => {
-        set((state) => {});
-      },
-      checkBuffEnd: () => {
-        set((state) => {
-          state.characters.forEach((character) => {
-            if (character.buff.length > 0) {
-              character.buff.forEach((buff) => {});
-            }
-          });
-        });
-      },
-      checkEndTurns: () => {
-        set((state) => {
-          if (
-            state.characters[0].isDead &&
-            state.characters[1].isDead &&
-            state.characters[2].isDead &&
-            state.characters[3].isDead &&
-            state.characters[4].isDead
-          ) {
-            state.turns += 1;
-            state.turnsState = "before";
-          }
-          if (state.characters[0].isMoved && state.characters[1].isMoved) {
-            state.turnsState = "after";
-          }
-        });
-      },
+      // ultimateAttack: (position: number) => {
+      //   set((state) => {
+      //     state.characters[position].isMoved =
+      //       !state.characters[position].isMoved;
+      //     const damage = calculateDamage(position, 2, state);
+      //     state.enemy.hp -= damage;
+      //   });
+      // },
     })),
     {
       name: "game-state",
