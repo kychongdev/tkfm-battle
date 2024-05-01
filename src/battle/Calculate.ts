@@ -300,6 +300,7 @@ export function checkEndTurn(state: GameState) {
           buff.duration -= 1;
         }
       });
+      character.cd = character.cd > 0 ? character.cd - 1 : 0;
     });
 
     state.enemy.buff = state.enemy.buff.filter((buff) => {

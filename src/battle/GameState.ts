@@ -119,6 +119,7 @@ export const useGameState = create<GameState>()(
             !state.characters[position].isMoved;
           parseCondition(position, Condition.ULTIMATE, state);
           checkEndTurn(state);
+          state.characters[position].cd = state.characters[position].maxCd;
         });
       },
       basicAttack: (position: number) => {

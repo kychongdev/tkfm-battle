@@ -30,7 +30,7 @@ export function CharacterBattleButton(props: { position: number }) {
       <div>{formatNumber(character.hp)}</div>
       <Button
         onClick={() => ultimateAttack(props.position)}
-        disabled={character.isMoved}
+        disabled={character.isMoved || character.cd !== 0}
       >
         必殺
       </Button>
