@@ -29,6 +29,9 @@ interface CharacterState {
   isSilence: boolean;
   isDead: boolean;
   buff: Buff[] | [];
+  cd: number;
+  maxCd: number;
+  ultimateName: string;
 }
 
 interface CharacterSelect {

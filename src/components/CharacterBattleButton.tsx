@@ -1,4 +1,11 @@
-import { AspectRatio, Image, Overlay, Progress, Stack } from "@mantine/core";
+import {
+  AspectRatio,
+  Button,
+  Image,
+  Overlay,
+  Progress,
+  Stack,
+} from "@mantine/core";
 import { useGameState } from "../battle/GameState";
 import { formatNumber } from "../battle/utilies";
 
@@ -11,7 +18,7 @@ export function CharacterBattleButton(props: { position: number }) {
     <Stack>
       <AspectRatio ratio={167 / 512}>
         <Image
-          onClick={() => ultimateAttack(props.position)}
+          onClick={() => basicAttack(props.position)}
           src={`/src/assets/character/char_${character.id}.png`}
           fallbackSrc="/src/assets/character/char_nr.png"
         />
@@ -21,6 +28,12 @@ export function CharacterBattleButton(props: { position: number }) {
       </AspectRatio>
       <Progress value={(character.hp / character.initHp) * 100} />
       <div>{formatNumber(character.hp)}</div>
+      <Button
+        onClick={() => ultimateAttack(props.position)}
+        disabled={character.isMoved}
+      >
+        必殺
+      </Button>
     </Stack>
   );
 }

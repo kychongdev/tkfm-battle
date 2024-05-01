@@ -282,13 +282,30 @@ export function checkEndTurn(state: GameState) {
   if (isEnd) {
     state.turns += 1;
 
+    state.enemy.buff.forEach((buff) => {
+      if (
+        buff.duration &&
+        (buff.type === BuffType.BUFF || buff.type === BuffType.DEBUFF)
+      ) {
+        buff.duration -= 1;
+      }
+    });
+
     state.characters.forEach((character) => {
       character.buff.forEach((buff) => {
-        if (buff.duration && buff.type === BuffType.BUFF) {
+        if (
+          buff.duration &&
+          (buff.type === BuffType.BUFF || buff.type === BuffType.DEBUFF)
+        ) {
           buff.duration -= 1;
         }
       });
     });
+
+    state.enemy.buff = state.enemy.buff.filter((buff) => {
+      return buff.duration !== 0 || buff.duration === undefined;
+    });
+
     state.characters.map((character) => {
       character.buff = character.buff.filter((buff) => {
         return buff.duration !== 0 || buff.duration === undefined;

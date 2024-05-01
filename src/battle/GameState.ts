@@ -13,6 +13,7 @@ import {
 import { AffectType, BuffType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
+import { initUltimateSkill } from "./Ultimate";
 
 export interface GameState {
   turns: number;
@@ -65,6 +66,12 @@ export const useGameState = create<GameState>()(
           initPassiveSkill(2, state);
           initPassiveSkill(3, state);
           initPassiveSkill(4, state);
+
+          initUltimateSkill(0, state);
+          initUltimateSkill(1, state);
+          initUltimateSkill(2, state);
+          initUltimateSkill(3, state);
+          initUltimateSkill(4, state);
         });
       },
       activateHpBuff: () => {

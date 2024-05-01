@@ -58,6 +58,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           condition: Condition.NONE,
         },
         {
+          // TODO fix to 531 unit
           name: "必殺時，根據《破碎蒼空》的造成傷害效果層數觸發「使目標受到時御者伊娜絲傷害增加10%(4回合)」",
           type: BuffType.APPLYDEBUFF,
           value: 0.1,
