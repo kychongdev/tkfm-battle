@@ -5,6 +5,7 @@ import {
   Modal,
   Overlay,
   Progress,
+  Space,
   Stack,
 } from "@mantine/core";
 import { useGameState } from "../battle/GameState";
@@ -42,19 +43,22 @@ export function CharacterBattleButton(props: { position: number }) {
       <Progress value={(character.hp / character.initHp) * 100} radius={0} />
       <div>{formatNumber(character.hp)}</div>
 
+      <Space h="xs" />
       <Button
         onClick={() => ultimateMove(props.position)}
         disabled={character.isMoved || character.cd !== 0}
       >
         必殺
       </Button>
+      <Space h="xs" />
       <Button onClick={() => console.log("guard")}>防御</Button>
+      <Space h="xs" />
       <Button
         onClick={() => {
           setOpened(true);
         }}
       >
-        {props.position + 1}
+        狀態
       </Button>
     </Stack>
   );
