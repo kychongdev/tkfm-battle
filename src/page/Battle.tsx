@@ -10,6 +10,8 @@ import {
   Button,
   Modal,
   Text,
+  Stack,
+  Card,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
 import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
@@ -25,6 +27,7 @@ export default function Battle() {
   const [value] = useLocalStorage<CharacterSelect[]>("last-session");
   const [saved] = useLocalStorage<CharacterSelect[]>("saved-team");
   const [opened, setOpened] = useState(false);
+  const [enemyStatus, setEnemyStatus] = useState(false);
 
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
@@ -118,6 +121,21 @@ export default function Battle() {
 
   return (
     <Container>
+      <Modal
+        padding={"xs"}
+        opened={enemyStatus}
+        onClose={() => {
+          setEnemyStatus(false);
+        }}
+      >
+        <Stack gap={5}>
+          {enemy.buff.map((buff, index) => (
+            <Card key={index} py={5} px={10}>
+              {buff.name}
+            </Card>
+          ))}
+        </Stack>
+      </Modal>
       <Space h="lg" />
       <Center>木樁</Center>
       <Text m="sm">第{turns}回合</Text>
@@ -129,7 +147,7 @@ export default function Battle() {
         <Image
           src={favicon}
           onClick={() => {
-            console.log(enemy.buff);
+            setEnemyStatus(true);
           }}
         />
       </Center>

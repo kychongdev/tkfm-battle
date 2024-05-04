@@ -62,7 +62,8 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           name: "必殺時，根據《破碎蒼空》的造成傷害效果層數觸發「使目標受到時御者伊娜絲傷害增加10%(4回合)」",
           type: BuffType.APPLYDEBUFF,
           value: 0.1,
-          affect: AffectType.INCREASE_DMG_RECEIVED,
+          affect: AffectType.OTHER,
+          affectTarget: "531",
           valueType: ValueType.SKILL,
           valueTarget: "531_1",
           target: Target.ENEMY,
@@ -109,6 +110,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           affect: AffectType.INCREASE_DMG_RECEIVED,
           target: Target.ENEMY,
           duration: 7,
+          durationType: DurationType.TEMPORARY,
           condition: Condition.ULTIMATE,
         },
         {
@@ -120,6 +122,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           affect: AffectType.SHIELD,
           target: Target.ALL,
           duration: 1,
+          durationType: DurationType.TEMPORARY,
           condition: Condition.ULTIMATE,
         },
         {
@@ -130,6 +133,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           affect: AffectType.ULTIMATE_DAMAGE,
           target: Target.ENEMY,
           duration: 7,
+          durationType: DurationType.TEMPORARY,
           condition: Condition.ULTIMATE,
         },
         {

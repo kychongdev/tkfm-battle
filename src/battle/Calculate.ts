@@ -108,20 +108,25 @@ export function parseCondition(
   });
 }
 
-function parseAffectName(affectType: AffectType | undefined) {
-  switch (affectType) {
+function parseAffectName(
+  buffValue: number,
+  buffAffect?: AffectType | undefined,
+) {
+  switch (buffAffect) {
     case AffectType.INCREASE_DMG:
-      return "造成傷害增加";
+      return "造成傷害增加" + buffValue * 100 + "% ";
     case AffectType.INCREASE_DMG_RECEIVED:
-      return "受到傷害增加";
+      return "受到傷害增加" + buffValue * 100 + "% ";
     case AffectType.ULTIMATE_DAMAGE:
-      return "受到必殺技傷害增加";
+      return "受到必殺技傷害增加" + buffValue * 100 + "% ";
     case AffectType.DARK:
-      return "受到暗屬性傷害增加";
+      return "受到暗屬性傷害增加" + buffValue * 100 + "% ";
     case AffectType.WATER:
-      return "受到水屬性傷害增加";
+      return "受到水屬性傷害增加" + buffValue * 100 + "% ";
     case AffectType.SHIELD:
-      return "護盾";
+      return buffValue + "護盾";
+    case AffectType.OTHER:
+      return "其他";
     default:
       return "";
   }
@@ -150,7 +155,6 @@ export function triggerPassive(
   position: number,
 ) {
   const buffValue = parseBuffValue(buff, gameState, position);
-  const buffName = parseAffectName(buff.affect);
 
   switch (buff.type) {
     case BuffType.APPLYBUFF:
@@ -159,7 +163,7 @@ export function triggerPassive(
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
             {
-              name: `${buffValue}% ${buffName}(${buff.duration}回合)`,
+              name: parseAffectName(buffValue, buff.affect),
               type: BuffType.BUFF,
               value: buffValue,
               affect: buff.affect,
@@ -182,7 +186,7 @@ export function triggerPassive(
             gameState.characters[position].buff = [
               ...gameState.characters[position].buff,
               {
-                name: `${buffName} ${buffValue} ${buff.stack}層 (${buff.maxStack}層)`,
+                name: parseAffectName(buff.durationType, buffValue),
                 type: BuffType.BUFF,
                 value: buffValue,
                 affect: buff.affect,
@@ -205,13 +209,18 @@ export function triggerPassive(
                 othersBuff.stack &&
                 buff.maxStack
               ) {
+                const increaseStack = othersBuff.increaseStack ?? 1;
+                let stack = othersBuff.stack + increaseStack;
+                if (buff.maxStack) {
+                  stack =
+                    othersBuff.stack + increaseStack > buff.maxStack
+                      ? buff.maxStack
+                      : othersBuff.stack + increaseStack;
+                }
                 return {
                   ...othersBuff,
-                  stack:
-                    othersBuff.stack + 1 > buff.maxStack
-                      ? buff.maxStack
-                      : othersBuff.stack + 1,
-                  name: `${buffName} ${buffValue} ${buff.stack}層 (${buff.maxStack}層)`,
+                  stack,
+                  name: parseAffectName(buffValue, buff.affect),
                 };
               }
               return othersBuff;
@@ -223,12 +232,13 @@ export function triggerPassive(
         gameState.characters[position].buff = [
           ...gameState.characters[position].buff,
           {
-            name: buffName,
+            name: parseAffectName(buffValue, buff.affect),
             type: BuffType.BUFF,
             value: buffValue,
             affect: buff.affect,
             target: Target.SELF,
             duration: buff.duration,
+            stack: buff.increaseStack ?? 1,
             durationType: DurationType.TEMPORARY,
             condition: Condition.NONE,
           },
@@ -237,16 +247,6 @@ export function triggerPassive(
       break;
     case BuffType.APPLYDEBUFF:
       if (buff.target === Target.ENEMY) {
-        const name =
-          buff.affect === AffectType.INCREASE_DMG_RECEIVED
-            ? `受到傷害增加${buff.value * 100}%`
-            : buff.affect === AffectType.ULTIMATE_DAMAGE
-              ? `受到必殺技傷害增加${buff.value * 100}%`
-              : buff.affect === AffectType.DARK
-                ? `受到暗屬性傷害增加${buff.value * 100}%`
-                : buff.affect === AffectType.WATER
-                  ? `受到水屬性傷害增加${buff.value * 100}%`
-                  : "";
         if (buff.durationType === DurationType.STACK) {
           const isExist = gameState.enemy.buff.some((othersBuff) => {
             return buff.unique_id + "_ACTIVATE" == othersBuff.unique_id;
@@ -255,12 +255,12 @@ export function triggerPassive(
             gameState.enemy.buff = [
               ...gameState.enemy.buff,
               {
-                name: name + `1層 (${buff.maxStack}層)`,
+                name: parseAffectName(buffValue, buff.affect),
                 type: BuffType.DEBUFF,
                 value: buff.value,
                 affect: buff.affect,
                 target: Target.SELF,
-                stack: 1,
+                stack: buff.increaseStack ?? 1,
                 maxStack: buff.maxStack,
                 duration: buff.duration,
                 condition: Condition.NONE,
@@ -272,16 +272,20 @@ export function triggerPassive(
             gameState.enemy.buff = gameState.enemy.buff.map((othersBuff) => {
               if (
                 othersBuff.unique_id === buff.unique_id + "_ACTIVATE" &&
-                //@ts-ignore
-                othersBuff.stack <= buff.maxStack
+                othersBuff.stack
               ) {
+                const increaseStack = othersBuff.increaseStack ?? 1;
+                let stack = othersBuff.stack + increaseStack;
+                if (buff.maxStack) {
+                  stack =
+                    othersBuff.stack + increaseStack > buff.maxStack
+                      ? buff.maxStack
+                      : othersBuff.stack + increaseStack;
+                }
                 return {
                   ...othersBuff,
-                  name:
-                    //@ts-ignore
-                    name + ` ${othersBuff.stack + 1}層 (${buff.maxStack}層)`,
-                  //@ts-ignore
-                  stack: othersBuff.stack + 1,
+                  stack,
+                  name: parseAffectName(buffValue, buff.affect),
                 };
               }
               return othersBuff;
@@ -291,7 +295,7 @@ export function triggerPassive(
           gameState.enemy.buff = [
             ...gameState.enemy.buff,
             {
-              name,
+              name: parseAffectName(buffValue, buff.affect),
               type: BuffType.DEBUFF,
               value: buff.value,
               affect: buff.affect,

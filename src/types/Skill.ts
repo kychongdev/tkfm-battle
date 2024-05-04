@@ -7,6 +7,8 @@ interface Buff {
   valueTarget?: string;
   target: Target;
   affect?: AffectType;
+  // Only exist for reading character
+  affectTarget?: string;
   condition: Condition;
   conditionTurn?: number;
   stack?: number;
