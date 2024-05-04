@@ -49,6 +49,8 @@ export const useGameState = create<GameState>()(
       },
       initLeaderSkill: () => {
         set((state) => {
+          state.enemy.hp = state.enemy.initHp;
+          state.turns = 0;
           triggerLeaderSkill(parseInt(state.characters[0].id), state);
           // Immediate calculate max hp
           state.activateHpBuff();
@@ -94,6 +96,7 @@ export const useGameState = create<GameState>()(
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
           basicAttack(state.characters[position].id, position, state);
+          parseCondition(position, Condition.BASIC_ATTACK, state);
           checkEndTurn(state);
         });
       },

@@ -126,7 +126,12 @@ export default function Battle() {
         {formatNumber(enemy.hp)}/ {formatNumber(enemy.initHp)}
       </Text>
       <Center m="xl">
-        <Image src={favicon} />
+        <Image
+          src={favicon}
+          onClick={() => {
+            console.log(enemy.buff);
+          }}
+        />
       </Center>
       <Group grow wrap="nowrap" gap="xs">
         <CharacterBattleButton position={0} />

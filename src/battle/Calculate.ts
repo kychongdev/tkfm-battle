@@ -25,22 +25,64 @@ export function calculateStats(
   );
 }
 
-export function calculateDamage(
+export function calculateBasicDamage(
   position: number,
   attackPercentage: number,
   gameState: GameState,
 ) {
   let characterAtk = gameState.characters[position].initAtk;
-  let atkbuff = 1;
+  //攻擊力
+  let atkBuff = 1;
+  //傷害增加
+  let increaseDmgBuff = 1;
   gameState.characters[position].buff.forEach((buff) => {
     if (buff.type === BuffType.BUFF && buff.affect === AffectType.ATK) {
       // characterAtk += characterAtk * (1 + buff.value);
-      atkbuff += buff.value;
+      atkBuff += buff.value;
+    }
+    if (
+      buff.type === BuffType.BUFF &&
+      buff.affect === AffectType.INCREASE_DMG
+    ) {
+      increaseDmgBuff += buff.value;
     }
   });
-  return Math.ceil(characterAtk * atkbuff * attackPercentage);
+
+  gameState.enemy.buff.forEach((buff) => {
+    if (
+      buff.type === BuffType.DEBUFF &&
+      buff.affect === AffectType.INCREASE_DMG_RECEIVED
+    ) {
+      increaseDmgBuff += buff.value;
+    }
+  });
+  return Math.ceil(characterAtk * atkBuff * attackPercentage);
 }
 
+export function calculateUltimateDamage(
+  position: number,
+  attackPercentage: number,
+  gameState: GameState,
+) {}
+
+// export function BasicAttack(
+//   position: number,
+//   gameState: GameState,
+//   target: number,
+// ) {
+//   calculateBasicDamage(position, 1, gameState);
+//   if (target == 5) {
+//     gameState.enemy.hp -= calculateBasicDamage(position, 1, gameState);
+//   } else {
+//     gameState.characters[target].hp -= calculateBasicDamage(
+//       position,
+//       1,
+//       gameState,
+//     );
+//   }
+// }
+
+// Only initiate once
 export function checkHpBuff(gameState: GameState) {
   gameState.characters.forEach((character) => {
     let hpBuff = 1;
@@ -53,6 +95,7 @@ export function checkHpBuff(gameState: GameState) {
   });
 }
 
+// When activate condition
 export function parseCondition(
   position: number,
   condition: Condition,
@@ -93,9 +136,9 @@ function parseBuffValue(buff: Buff, gameState: GameState, position: number) {
         (othersBuff) => {
           return othersBuff.unique_id === buff.valueTarget;
         },
-      ).length;
-      return buff.value * valueMultiply;
-
+      );
+      const skillStack = valueMultiply[0].stack ?? 1;
+      return buff.value * skillStack;
     default:
       return buff.value;
   }
