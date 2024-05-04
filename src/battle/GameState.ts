@@ -8,7 +8,7 @@ import { checkEndTurn, parseCondition } from "./Calculate";
 import { AffectType, BuffType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
-import { initUltimateSkill } from "./Ultimate";
+import { activateUltimate, initUltimateSkill } from "./Ultimate";
 
 export interface GameState {
   turns: number;
@@ -104,6 +104,7 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
+          activateUltimate(position, state);
           parseCondition(position, Condition.ULTIMATE, state);
           checkEndTurn(state);
           state.characters[position].cd = state.characters[position].maxCd;
