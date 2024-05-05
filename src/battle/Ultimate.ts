@@ -1,6 +1,6 @@
 // import { AffectType, BuffType, Condition, Target } from "../types/Skill";
 import { AffectType, BuffType, Condition, Target } from "../types/Skill";
-import { parseCondition } from "./Calculate";
+import { calculateUltimateDamage, parseCondition } from "./Calculate";
 import { GameState } from "./GameState";
 
 export function initUltimateSkill(position: number, gameState: GameState) {
@@ -104,6 +104,24 @@ export function activateUltimate(position: number, gameState: GameState) {
           condition: Condition.NONE,
         },
       ];
+
+      const percentage =
+        bond == 1
+          ? 2.65
+          : bond == 2
+            ? 2.98
+            : bond == 3
+              ? 3.31
+              : bond == 4
+                ? 3.64
+                : bond == 5
+                  ? 3.97
+                  : 0;
+
+      const damage = calculateUltimateDamage(position, percentage, gameState);
+      console.log("damage", damage);
+      gameState.enemy.hp -= damage;
+
       break;
     default:
       break;

@@ -22,6 +22,7 @@ import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
 import { calculateStats } from "../battle/Calculate";
 import { formatNumber } from "../battle/utilies";
+import { BuffList } from "../components/BuffList";
 
 export default function Battle() {
   const [value] = useLocalStorage<CharacterSelect[]>("last-session");
@@ -65,6 +66,7 @@ export default function Battle() {
             atk: maxAtk,
             hp: maxHp,
             bond: character.bond,
+            class: characterDetail ? characterDetail.tags.position : 0,
             attribute: characterDetail
               ? characterDetail.tags.attribute
               : Attribute.NONE,
@@ -94,6 +96,7 @@ export default function Battle() {
             bond: 1,
             attribute: Attribute.NONE,
             position: character.position,
+            class: 0,
             cd: 0,
             maxCd: 0,
             ultimateName: "",
@@ -128,28 +131,7 @@ export default function Battle() {
           setEnemyStatus(false);
         }}
       >
-        <Stack gap={5}>
-          {enemy.buff.map((buff, index) => (
-            <Group
-              key={index}
-              grow
-              wrap="nowrap"
-              gap="xs"
-              preventGrowOverflow={false}
-            >
-              <Card py={5} px={10}>
-                {buff.name}
-                {buff.stack ? `${buff.stack}層` : ""}
-                {buff.maxStack ? `【最多${buff.maxStack}層】` : ""}
-              </Card>
-              <Card py={5} px={10} style={{ maxWidth: "2.5em" }}>
-                <div style={{ alignSelf: "center" }}>
-                  {buff.duration ?? "-"}
-                </div>
-              </Card>
-            </Group>
-          ))}
-        </Stack>
+        <BuffList character={enemy} />
       </Modal>
       <Space h="lg" />
       <Center>木樁</Center>

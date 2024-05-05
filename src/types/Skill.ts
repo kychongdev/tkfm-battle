@@ -17,9 +17,11 @@ interface Buff {
   stackTarget?: string;
   //if undefined means infinite
   duration?: number;
+  applyBuffDuration?: number;
   //if durationType is stack, then stack, increaseStack and maxstack must be defined
   durationType?: DurationType;
   unique_id?: string;
+  trigger?: boolean;
 }
 
 enum ValueType {
@@ -43,6 +45,7 @@ enum AffectType {
   DARK,
   LIGHT,
   OTHER,
+  OTHER_CHARACTER_INCREASE_DAMAGE,
   NONE,
 }
 

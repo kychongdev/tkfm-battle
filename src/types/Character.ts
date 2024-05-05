@@ -8,6 +8,13 @@ enum Attribute {
   DARK,
   NONE,
 }
+export enum CharacterClass {
+  ATTACKER,
+  PROTECTOR,
+  HEALER,
+  OBSTRUCTER,
+  SUPPORT,
+}
 
 interface CharacterState {
   id: string;
@@ -17,6 +24,7 @@ interface CharacterState {
   atk: number;
   hp: number;
   bond: number;
+  class: CharacterClass;
   attribute: Attribute;
   position: number;
   shield: number;

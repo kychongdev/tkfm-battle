@@ -1,11 +1,10 @@
 import { Card, Group, Stack } from "@mantine/core";
-import { useGameState } from "../battle/GameState";
+import { CharacterState } from "../types/Character";
 
-export function BuffList(props: { position: number }) {
-  const buff = useGameState((state) => state.characters[props.position].buff);
+export function BuffList(props: { character: CharacterState }) {
   return (
     <Stack gap={5}>
-      {buff.map((buff, index) => (
+      {props.character.buff.map((buff, index) => (
         <Group
           key={index}
           grow

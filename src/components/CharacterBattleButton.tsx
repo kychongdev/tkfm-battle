@@ -28,7 +28,7 @@ export function CharacterBattleButton(props: { position: number }) {
           setOpened(false);
         }}
       >
-        <BuffList position={props.position} />
+        <BuffList character={character} />
       </Modal>
       <AspectRatio ratio={167 / 512}>
         <Image

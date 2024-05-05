@@ -6,9 +6,68 @@ import {
   DurationType,
   Target,
 } from "../types/Skill";
+import { CharacterClass } from "../types/Character";
 
-export function triggerLeaderSkill(leader: number, gameState: GameState) {
+export function triggerLeaderSkill(leader: string, gameState: GameState) {
   switch (leader) {
+    // 我方全體HP增加25%
+    // 我方全體攻擊力增加90%
+    // 我方全體攻擊者造成傷害增加40%
+    // 我方全體妨礙者造成傷害增加40%
+    // 自身攻擊力增加90%
+    case "531":
+      gameState.characters.forEach((character) => {
+        character.buff = [
+          ...character.buff,
+          {
+            name: "最大HP增加25%",
+            type: BuffType.BUFF,
+            value: 0.25,
+            affect: AffectType.HP,
+            target: Target.SELF,
+            condition: Condition.NONE,
+          },
+        ];
+        character.buff = [
+          ...character.buff,
+          {
+            name: "攻擊力增加90%",
+            type: BuffType.BUFF,
+            value: 0.9,
+            affect: AffectType.ATK,
+            target: Target.SELF,
+            condition: Condition.NONE,
+          },
+        ];
+        if (
+          character.class === CharacterClass.ATTACKER ||
+          character.class === CharacterClass.OBSTRUCTER
+        ) {
+          character.buff = [
+            ...character.buff,
+            {
+              name: "造成傷害增加40%",
+              type: BuffType.BUFF,
+              value: 0.4,
+              affect: AffectType.INCREASE_DMG,
+              target: Target.SELF,
+              condition: Condition.NONE,
+            },
+          ];
+        }
+        gameState.characters[0].buff = [
+          ...gameState.characters[0].buff,
+          {
+            name: "攻擊力增加90%",
+            type: BuffType.BUFF,
+            value: 0.9,
+            affect: AffectType.ATK,
+            target: Target.SELF,
+            condition: Condition.NONE,
+          },
+        ];
+      });
+      break;
     // 532 : 幽夜女爵 卡蒂雅
     // 我方全體最大HP增加20%
     // 我方全體攻擊力增加80%
@@ -22,7 +81,7 @@ export function triggerLeaderSkill(leader: number, gameState: GameState) {
     // 《傭兵的準則》
     // 造成傷害增加30%
     // 必殺時，追加「以自身攻擊力40%對目標造成傷害」
-    case 532:
+    case "532":
       gameState.characters.forEach((character) => {
         character.buff = [
           ...character.buff,

@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
-import { checkEndTurn, parseCondition } from "./Calculate";
+import { checkEndTurn, onTurnStart, parseCondition } from "./Calculate";
 import { AffectType, BuffType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
@@ -51,7 +51,7 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.enemy.hp = state.enemy.initHp;
           state.turns = 0;
-          triggerLeaderSkill(parseInt(state.characters[0].id), state);
+          triggerLeaderSkill(state.characters[0].id, state);
           // Immediate calculate max hp
           state.activateHpBuff();
           initPassiveSkill(0, state);
@@ -89,6 +89,7 @@ export const useGameState = create<GameState>()(
       addTurn: () => {
         set((state) => {
           state.turns += 1;
+          onTurnStart(state);
         });
       },
       basicMove: (position: number) => {
