@@ -11,6 +11,98 @@ import { GameState } from "./GameState";
 export function initPassiveSkill(position: number, gameState: GameState) {
   const id = gameState.characters[position].id;
   switch (id) {
+    case "527":
+      // 第一回合時，觸發「使自身必殺技當前CD減少30回合」
+      // 行動時，觸發「使自身必殺技當前CD減少1回合」
+      // 普攻時 ，觸發「《強制入睡》」
+      //
+      // 《強制入睡》
+      // 使自身以外我方全體獲得攻擊時，觸發「以自身攻擊力25%對目標造成傷害」(1回合)
+      // 第4回合時，觸發「使我方全體必殺技傷害增加30%(16回合)」
+      // 第7回合時，觸發「使我方全體必殺技傷害增加30%(13回合)」
+      // 第10回合時，觸發「使我方全體必殺技傷害增加40%(10回合)」
+      // 使自身攻擊力增加10%
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          name: "第一回合時，觸發「使自身必殺技當前CD減少30回合」",
+          type: BuffType.DECREASECD,
+          value: 30,
+          affect: AffectType.NONE,
+          target: Target.SELF,
+          condition: Condition.TURN,
+          conditionTurn: 1,
+        },
+        {
+          name: "行動時，觸發「使自身必殺技當前CD減少1回合」",
+          type: BuffType.DECREASECD,
+          value: 1,
+          affect: AffectType.NONE,
+          target: Target.SELF,
+          durationType: DurationType.PERMANENT,
+          condition: Condition.MOVE,
+        },
+        {
+          name: "普攻時 ，觸發「《強制入睡》」",
+          type: BuffType.TRIGGERATTACK,
+          value: 0,
+          affect: AffectType.NONE,
+          target: Target.SELF,
+          durationType: DurationType.PERMANENT,
+          condition: Condition.BASIC_ATTACK,
+        },
+        {
+          name: "《強制入睡》",
+          type: BuffType.APPLYWHOLEBUFF,
+          affect: AffectType.NONE,
+          target: Target.ALLEXCEPTSELF,
+          condition: Condition.ATTACK,
+          applyBuff: {
+            name: "以自身攻擊力25%對目標造成傷害",
+            type: BuffType.BASICATTACK,
+            value: 0.25,
+            target: Target.ENEMY,
+            durationType: DurationType.TEMPORARY,
+            applyBuffDuration: 1,
+            condition: Condition.ATTACK,
+          },
+        },
+        {
+          name: "第4回合時，觸發「使我方全體必殺技傷害增加30%」",
+          type: BuffType.APPLYBUFF,
+          value: 0.3,
+          affect: AffectType.ULTIMATE_DAMAGE,
+          target: Target.ALL,
+          applyBuffDuration: 16,
+          durationType: DurationType.TEMPORARY,
+          condition: Condition.TURN,
+          conditionTurn: 4,
+        },
+        {
+          name: "第7回合時，觸發「使我方全體必殺技傷害增加30%」",
+          type: BuffType.APPLYBUFF,
+          value: 0.3,
+          affect: AffectType.ULTIMATE_DAMAGE,
+          target: Target.ALL,
+          applyBuffDuration: 13,
+          durationType: DurationType.TEMPORARY,
+          condition: Condition.TURN,
+          conditionTurn: 7,
+        },
+        {
+          name: "第10回合時，觸發「使我方全體必殺技傷害增加40%」",
+          type: BuffType.APPLYBUFF,
+          value: 0.4,
+          affect: AffectType.ULTIMATE_DAMAGE,
+          target: Target.ALL,
+          applyBuffDuration: 10,
+          durationType: DurationType.TEMPORARY,
+          condition: Condition.TURN,
+          conditionTurn: 10,
+        },
+      ];
+      break;
+
     // 第一回合時，觸發「使自身造成傷害增加4%(最多5層)」
     // 每經過三回合時，觸發「使自身《破碎蒼空》的造成傷害效果增加2層」
     // :detail_passive: 時空支配
@@ -74,7 +166,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         },
         {
           name: "普攻時，追加「以自身攻擊力70%對目標造成傷害」",
-          type: BuffType.ATTACK,
+          type: BuffType.BASICATTACK,
           value: 0.7,
           target: Target.ENEMY,
           durationType: DurationType.PERMANENT,
@@ -82,7 +174,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         },
         {
           name: "必殺時，追加「以自身攻擊力70%對目標造成傷害」",
-          type: BuffType.ATTACK,
+          type: BuffType.ULTIMATEATTACK,
           value: 0.7,
           target: Target.ENEMY,
           durationType: DurationType.PERMANENT,

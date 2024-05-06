@@ -1,7 +1,8 @@
 interface Buff {
   name: string;
   type: BuffType;
-  value: number;
+  applyBuff?: Buff;
+  value?: number;
   valueType?: ValueType;
   //if valueType is skill, then value target must be defined
   valueTarget?: string;
@@ -54,10 +55,15 @@ enum BuffType {
   DEBUFF,
   APPLYBUFF,
   APPLYDEBUFF,
-  ATTACK,
+  BASICATTACK,
+  ULTIMATEATTACK,
+  TRIGGERAPPLYBUFF,
+  TRIGGERATTACK,
   HEAL,
   ATKBUFF,
   ATTRIBUTE,
+  DECREASECD,
+  APPLYWHOLEBUFF,
   NONE,
 }
 
@@ -68,6 +74,7 @@ enum Condition {
   ULTIMATE,
   TURN,
   EVERY_X_TURN,
+  MOVE,
   NONE,
 }
 
@@ -75,6 +82,7 @@ enum Target {
   SELF,
   ENEMY,
   ALL,
+  ALLEXCEPTSELF,
   ATTACKER,
   PROTECTOR,
   HEALER,

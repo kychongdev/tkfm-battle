@@ -49,6 +49,8 @@ export function initUltimateSkill(position: number, gameState: GameState) {
 export function activateUltimate(position: number, gameState: GameState) {
   let bond = 1;
   switch (gameState.characters[position].id) {
+    case "531":
+      break;
     // CD3
     // 532 : 幽夜女爵 卡蒂雅
     // 使我方全體造成必殺技傷害增加20/30/40/50/60%(3回合)、

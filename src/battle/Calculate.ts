@@ -66,7 +66,6 @@ export function calculateUltimateDamage(
   gameState: GameState,
 ) {
   let characterAtk = gameState.characters[position].initAtk;
-  console.log("characterAtk", characterAtk);
   //攻擊力
   let atkBuff = 1;
   //傷害增加
@@ -159,10 +158,8 @@ function parseAffectName(
     case AffectType.SHIELD:
       return buffValue + "護盾";
     case AffectType.OTHER_CHARACTER_INCREASE_DAMAGE:
-      console.log(affectTarget);
       //@ts-ignore
       const name = character.name[affectTarget];
-      console.log(character.name["532"]);
       return (
         "受到" +
         (name ?? "無法讀取") +
@@ -182,7 +179,6 @@ function parseBuffValue(buff: Buff, gameState: GameState, position: number) {
     case ValueType.SKILL:
       const valueMultiply = gameState.characters[position].buff.filter(
         (othersBuff) => {
-          console.log(othersBuff.unique_id);
           return othersBuff.unique_id === buff.valueTarget + "_ACTIVATE";
         },
       );
@@ -199,7 +195,6 @@ export function triggerPassive(
   position: number,
 ) {
   const buffValue = parseBuffValue(buff, gameState, position);
-
   switch (buff.type) {
     case BuffType.APPLYBUFF:
       if (buff.target === Target.ALL) {
@@ -376,8 +371,19 @@ export function triggerPassive(
       }
 
       break;
-    case BuffType.BUFF:
-      console.log("buff");
+    case BuffType.BASICATTACK:
+      const damage = calculateBasicDamage(position, buff.value, gameState);
+      gameState.enemy.hp -= damage;
+      break;
+    case BuffType.ULTIMATEATTACK:
+      const ultimateDamage = calculateUltimateDamage(
+        position,
+        buff.value,
+        gameState,
+      );
+      gameState.enemy.hp -= ultimateDamage;
+      break;
+    default:
       break;
   }
 }

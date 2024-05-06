@@ -168,7 +168,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           },
           {
             name: "必殺時，追加「以自身攻擊力40%對目標造成傷害」",
-            type: BuffType.ATTACK,
+            type: BuffType.ULTIMATEATTACK,
             value: 0.4,
             target: Target.ENEMY,
             condition: Condition.ULTIMATE,
