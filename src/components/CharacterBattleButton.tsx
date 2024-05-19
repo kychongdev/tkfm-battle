@@ -40,7 +40,7 @@ export function CharacterBattleButton(props: { position: number }) {
           <Overlay color="#000" backgroundOpacity={0.85} />
         ) : null}
       </AspectRatio>
-      <Progress value={(character.hp / character.initHp) * 100} radius={0} />
+      <Progress value={(character.hp / character.maxHp) * 100} radius={0} />
       <div>{formatNumber(character.hp)}</div>
 
       <Space h="xs" />

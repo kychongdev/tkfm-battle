@@ -31,7 +31,7 @@ export function calculateBasicDamage(
   attackPercentage: number,
   gameState: GameState,
 ) {
-  let characterAtk = gameState.characters[position].initAtk;
+  let characterAtk = gameState.characters[position].maxAtk;
   //攻擊力
   let atkBuff = 1;
   //傷害增加
@@ -65,7 +65,7 @@ export function calculateUltimateDamage(
   attackPercentage: number,
   gameState: GameState,
 ) {
-  let characterAtk = gameState.characters[position].initAtk;
+  let characterAtk = gameState.characters[position].maxAtk;
   //攻擊力
   let atkBuff = 1;
   //傷害增加
@@ -175,7 +175,7 @@ function parseAffectName(
 function parseBuffValue(buff: Buff, gameState: GameState, position: number) {
   switch (buff.valueType) {
     case ValueType.MAXHP:
-      return Math.ceil(gameState.characters[position].initHp * buff.value);
+      return Math.ceil(gameState.characters[position].maxHp * buff.value);
     case ValueType.SKILL:
       const valueMultiply = gameState.characters[position].buff.filter(
         (othersBuff) => {

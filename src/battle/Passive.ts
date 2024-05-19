@@ -53,7 +53,8 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         },
         {
           name: "《強制入睡》",
-          type: BuffType.APPLYWHOLEBUFF,
+          type: BuffType.APPLYRAWBUFF,
+          value: 0,
           affect: AffectType.NONE,
           target: Target.ALLEXCEPTSELF,
           condition: Condition.ATTACK,

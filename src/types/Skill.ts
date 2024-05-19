@@ -1,16 +1,26 @@
 interface Buff {
   name: string;
   type: BuffType;
+  // 條件
+  condition: Condition;
+  // 0 表示沒在用
+  value: number;
+  // 直接添加BUFF
+  // For recursive use
   applyBuff?: Buff;
-  value?: number;
+  // 取X屬性當成數值
   valueType?: ValueType;
-  //if valueType is skill, then value target must be defined
+  cdValue?: number;
+  // if valueType is skill, then value target must be defined
+  // 取X角色的技能當成數值
   valueTarget?: string;
+  // 目標
   target: Target;
+  // 影響的屬性
   affect?: AffectType;
   // Only exist for reading character
   affectTarget?: string;
-  condition: Condition;
+  // 如果條件是回合
   conditionTurn?: number;
   stack?: number;
   increaseStack?: number;
@@ -63,7 +73,7 @@ enum BuffType {
   ATKBUFF,
   ATTRIBUTE,
   DECREASECD,
-  APPLYWHOLEBUFF,
+  APPLYRAWBUFF,
   NONE,
 }
 

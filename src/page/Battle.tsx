@@ -61,8 +61,10 @@ export default function Battle() {
           return {
             id: character.id,
             isExist: true,
-            initAtk: maxAtk,
-            initHp: maxHp,
+            baseAtk: characterDetail ? characterDetail.stats.initATK : 0,
+            baseHp: characterDetail ? characterDetail.stats.initHP : 0,
+            maxAtk: maxAtk,
+            maxHp: maxHp,
             atk: maxAtk,
             hp: maxHp,
             bond: character.bond,
@@ -89,8 +91,10 @@ export default function Battle() {
           return {
             id: character.id,
             isExist: false,
-            initAtk: 0,
-            initHp: 0,
+            baseAtk: 0,
+            baseHp: 0,
+            maxHp: 0,
+            maxAtk: 0,
             atk: 0,
             hp: 0,
             bond: 1,
@@ -136,9 +140,9 @@ export default function Battle() {
       <Space h="lg" />
       <Center>木樁</Center>
       <Text m="sm">第{turns}回合</Text>
-      <Progress value={(enemy.hp / enemy.initHp) * 100} m="sm" />
+      <Progress value={(enemy.hp / enemy.maxHp) * 100} m="sm" />
       <Text>
-        {formatNumber(enemy.hp)}/ {formatNumber(enemy.initHp)}
+        {formatNumber(enemy.hp)}/ {formatNumber(enemy.maxHp)}
       </Text>
       <Center m="xl">
         <Image

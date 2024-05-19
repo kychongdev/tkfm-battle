@@ -19,8 +19,10 @@ export enum CharacterClass {
 interface CharacterState {
   id: string;
   isExist: boolean;
-  initAtk: number;
-  initHp: number;
+  baseAtk: number;
+  baseHp: number;
+  maxAtk: number;
+  maxHp: number;
   atk: number;
   hp: number;
   bond: number;

@@ -3,8 +3,8 @@ import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
 const initCharacterState: CharacterState = {
   id: "",
   isExist: false,
-  initHp: 0,
-  initAtk: 0,
+  maxHp: 0,
+  maxAtk: 0,
   atk: 0,
   hp: 0,
   bond: 1,
