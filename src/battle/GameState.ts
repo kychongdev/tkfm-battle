@@ -5,7 +5,7 @@ import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./LeaderSkill";
 import { checkEndTurn, onTurnStart, parseCondition } from "./Calculate";
-import { AffectType, BuffType, Condition } from "../types/Skill";
+import { AffectType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
 import { activateUltimate, initUltimateSkill } from "./Ultimate";
@@ -38,7 +38,7 @@ export const useGameState = create<GameState>()(
       turnsState: "before",
       enemy: {
         ...initCharacterState,
-        initHp: 10000000000,
+        maxHp: 10000000000,
         hp: 10000000000,
       },
       characters: initTeamState,
@@ -49,41 +49,25 @@ export const useGameState = create<GameState>()(
       },
       initLeaderSkill: () => {
         set((state) => {
-          state.enemy.hp = state.enemy.initHp;
           state.turns = 0;
-          triggerLeaderSkill(state.characters[0].id, state);
-          // Immediate calculate max hp
           state.activateHpBuff();
-          initPassiveSkill(0, state);
-          initPassiveSkill(1, state);
-          initPassiveSkill(2, state);
-          initPassiveSkill(3, state);
-          initPassiveSkill(4, state);
-
-          initUltimateSkill(0, state);
-          initUltimateSkill(1, state);
-          initUltimateSkill(2, state);
-          initUltimateSkill(3, state);
-          initUltimateSkill(4, state);
         });
       },
       activateHpBuff: () => {
         set((state) => {
-          state.characters.forEach((character, index) => {
-            let hpBuff = 1;
-            character.buff.forEach((buff) => {
-              if (
-                buff.type === BuffType.BUFF &&
-                buff.affect === AffectType.HP
-              ) {
-                hpBuff += buff.value;
-              }
-            });
-            state.characters[index].hp = Math.ceil(character.hp * hpBuff);
-            state.characters[index].initHp = Math.ceil(
-              character.initHp * hpBuff,
-            );
-          });
+          // state.characters.forEach((character, index) => {
+          //   let hpBuff = 1;
+          //   character.buff.forEach((buff) => {
+          //     if (
+          //       buff.type === BuffType.BUFF &&
+          //       buff.affect === AffectType.HP
+          //     ) {
+          //       hpBuff += buff.value;
+          //     }
+          //   });
+          //   state.characters[index].hp = Math.ceil(character.hp * hpBuff);
+          //   state.characters[index].maxHp = Math.ceil(character.maxHp * hpBuff);
+          // });
         });
       },
       addTurn: () => {
@@ -111,14 +95,6 @@ export const useGameState = create<GameState>()(
           state.characters[position].cd = state.characters[position].maxCd;
         });
       },
-      // ultimateAttack: (position: number) => {
-      //   set((state) => {
-      //     state.characters[position].isMoved =
-      //       !state.characters[position].isMoved;
-      //     const damage = calculateDamage(position, 2, state);
-      //     state.enemy.hp -= damage;
-      //   });
-      // },
     })),
     {
       name: "game-state",
