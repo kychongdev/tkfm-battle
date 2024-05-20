@@ -1,5 +1,5 @@
-import { CharacterClass } from "./Character";
-import { AffectType, Buff, Condition, Target } from "./Skill";
+import type { CharacterClass } from "./Character";
+import type { AffectType, Buff, Condition, Target } from "./Skill";
 
 // 只是BUFF
 export interface _0 {
