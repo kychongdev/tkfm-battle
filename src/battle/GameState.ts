@@ -8,7 +8,7 @@ import { checkEndTurn, onTurnStart, parseCondition } from "./Calculate";
 import { AffectType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
-import { activateUltimate, initUltimateSkill } from "./Ultimate";
+import { activateUltimate } from "./ultimate";
 
 export interface GameState {
   turns: number;

@@ -60,7 +60,6 @@ enum Target {
   SELF,
   ENEMY,
   ALL,
-  ALLEXCEPTSELF,
   CHARACTER,
   NONE,
 }

@@ -140,7 +140,9 @@ export function triggerPassive(
     case 0:
       break;
     case 1:
+      // 攻擊
       if (!buff._1) {
+        console.log("Wrong data");
         break;
       }
       if (buff._1.damageType === 0) {
@@ -166,17 +168,14 @@ export function triggerPassive(
       }
       break;
     case 2:
-      // name: "必殺時,觸發 以自身攻擊力25%使我方攻擊者攻擊力增加(1回合)",
-      // value: 0.25,
-      // type: 3,
-      // condition: Condition.ULTIMATE,
-      // target: Target.ATTACKER,
-      // affectType: AffectType.RAWATK,
-      console.log("buff._2");
-      console.log(buff._2?.target);
+      if (!buff._2) {
+        console.log("Wrong data");
+        break;
+      }
+      // 傳功
       gameState.characters.forEach((character, index) => {
         const rawAttBuff = applyRawAttBuff(gameState, position);
-        console.log(character.class);
+        // 需要增加更多條件
         if (character.class === buff._2?.target) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
@@ -187,7 +186,7 @@ export function triggerPassive(
               condition: Condition.ULTIMATE,
               duration: 1,
               _0: {
-                value: rawAttBuff,
+                value: rawAttBuff * buff._2?.value,
                 affectType: buff._2?.affectType,
               },
             },
@@ -202,7 +201,7 @@ export function triggerPassive(
               condition: Condition.ULTIMATE,
               duration: 1,
               _0: {
-                value: rawAttBuff,
+                value: rawAttBuff * buff._2?.value,
                 affectType: buff._2?.affectType,
               },
             },
@@ -213,7 +212,7 @@ export function triggerPassive(
 }
 
 //傳功
-function applyRawAttBuff(gameState: GameState, position: number) {
+export function applyRawAttBuff(gameState: GameState, position: number) {
   let tempAtk = gameState.characters[position].atk;
   let atkPercentage = 0;
 
