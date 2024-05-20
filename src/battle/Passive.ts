@@ -64,9 +64,9 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             {
               id: "525-5",
               name: "必殺時，追加『以自身攻擊力100%對目標造成傷害』(50回合)",
-              type: 2,
+              type: 1,
               condition: Condition.ULTIMATE,
-              duration: 1,
+              duration: 50,
               _1: {
                 value: 1,
                 isTrigger: false,

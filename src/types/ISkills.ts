@@ -1,18 +1,17 @@
+import { CharacterClass } from "./Character";
 import { AffectType, Buff, Condition, Target } from "./Skill";
 
-// 給予角色的Buff
+// 只是BUFF
 export interface _0 {
-  name: string;
-  type: number;
-  condition: Condition;
-  rawBuff: Buff;
+  affectType: AffectType;
+  value: number;
 }
 
 // 純攻擊
 export interface _1 {
   value: number;
   isTrigger: boolean;
-  target: Target.ENEMY;
+  target: Target | CharacterClass;
   // 0 is basic, 1 is ultimate
   damageType: 0 | 1;
 }
@@ -24,5 +23,11 @@ export interface _2 {
   value: number;
   affectType: AffectType;
   condition: Condition;
-  target: Target;
+  target: Target | CharacterClass;
+}
+
+// RAW BUFF 純數值
+export interface _3 {
+  affectType: AffectType;
+  value: number;
 }

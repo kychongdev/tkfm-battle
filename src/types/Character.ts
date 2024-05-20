@@ -9,7 +9,7 @@ enum Attribute {
   NONE,
 }
 export enum CharacterClass {
-  ATTACKER,
+  ATTACKER = 5,
   PROTECTOR,
   HEALER,
   OBSTRUCTER,

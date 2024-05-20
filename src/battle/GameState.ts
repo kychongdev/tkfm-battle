@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
-import { triggerLeaderSkill } from "./LeaderSkill";
+import { triggerLeaderSkill } from "./leader";
 import { checkEndTurn, onTurnStart, parseCondition } from "./Calculate";
 import { AffectType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
@@ -51,6 +51,8 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.turns = 0;
           state.activateHpBuff();
+          triggerLeaderSkill(state.characters[0].id, state);
+          initPassiveSkill(0, state);
         });
       },
       activateHpBuff: () => {

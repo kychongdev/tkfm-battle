@@ -25,7 +25,7 @@ enum ValueType {
 enum AffectType {
   RAWATK,
   ATK,
-  HP,
+  MAXHP,
   SHIELD,
   INCREASE_DMG,
   INCREASE_DMG_RECEIVED,
@@ -52,15 +52,15 @@ enum Condition {
 }
 
 enum Target {
-  SELF,
-  ENEMY,
-  ALL,
-  ALLEXCEPTSELF,
-  ATTACKER,
+  ATTACKER = 5,
   PROTECTOR,
   HEALER,
   OBSTRUCTER,
   SUPPORT,
+  SELF,
+  ENEMY,
+  ALL,
+  ALLEXCEPTSELF,
   CHARACTER,
   NONE,
 }

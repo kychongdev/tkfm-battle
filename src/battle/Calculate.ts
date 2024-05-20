@@ -1,4 +1,4 @@
-import { Buff, Condition, Target } from "../types/Skill";
+import { AffectType, Buff, Condition, Target } from "../types/Skill";
 import character from "../assets/character.json";
 import { GameState } from "./GameState";
 
@@ -137,9 +137,9 @@ export function triggerPassive(
 ) {
   // const buffValue = parseBuffValue(buff, gameState, position);
   switch (buff.type) {
-    case 1:
+    case 0:
       break;
-    case 2:
+    case 1:
       if (!buff._1) {
         break;
       }
@@ -165,30 +165,90 @@ export function triggerPassive(
         }
       }
       break;
+    case 2:
+      // name: "必殺時,觸發 以自身攻擊力25%使我方攻擊者攻擊力增加(1回合)",
+      // value: 0.25,
+      // type: 3,
+      // condition: Condition.ULTIMATE,
+      // target: Target.ATTACKER,
+      // affectType: AffectType.RAWATK,
+      console.log("buff._2");
+      console.log(buff._2?.target);
+      gameState.characters.forEach((character, index) => {
+        const rawAttBuff = applyRawAttBuff(gameState, position);
+        console.log(character.class);
+        if (character.class === buff._2?.target) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "525-2",
+              name: buff._2?.name,
+              type: 0,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _0: {
+                value: rawAttBuff,
+                affectType: buff._2?.affectType,
+              },
+            },
+          ];
+        } else if (buff._2?.target === Target.ALL) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "525-2",
+              name: buff._2?.name,
+              type: 0,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _0: {
+                value: rawAttBuff,
+                affectType: buff._2?.affectType,
+              },
+            },
+          ];
+        }
+      });
   }
 }
 
+//傳功
+function applyRawAttBuff(gameState: GameState, position: number) {
+  let tempAtk = gameState.characters[position].atk;
+  let atkPercentage = 0;
+
+  gameState.characters[position].buff.forEach((buff) => {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._0?.value;
+    }
+  });
+  return gameState.characters[position].atk * atkPercentage + tempAtk;
+}
+
 export function onTurnStart(gameState: GameState) {
-  // gameState.characters.forEach((character, position) => {
-  //   character.buff.forEach((buff) => {
-  //     if (
-  //       buff.condition === Condition.EVERY_X_TURN &&
-  //       buff.conditionTurn &&
-  //       gameState.turns > 1
-  //     ) {
-  //       if ((gameState.turns - 1) % buff.conditionTurn === 0) {
-  //         triggerPassive(buff, gameState, position);
-  //       }
-  //     }
-  //     if (buff.condition === Condition.TURN) {
-  //       if (buff.conditionTurn) {
-  //         if (gameState.turns === buff.conditionTurn) {
-  //           triggerPassive(buff, gameState, position);
-  //         }
-  //       }
-  //     }
-  //   });
-  // });
+  gameState.characters.forEach((character, position) => {
+    character.buff.forEach((buff) => {
+      if (
+        buff.condition === Condition.EVERY_X_TURN &&
+        buff.conditionTurn &&
+        gameState.turns > 1
+      ) {
+        if ((gameState.turns - 1) % buff.conditionTurn === 0) {
+          triggerPassive(buff, gameState, position);
+        }
+      }
+      if (buff.condition === Condition.TURN) {
+        if (buff.conditionTurn) {
+          if (gameState.turns === buff.conditionTurn) {
+            triggerPassive(buff, gameState, position);
+          }
+        }
+      }
+    });
+  });
 }
 
 export function checkEndTurn(state: GameState) {
@@ -205,22 +265,14 @@ export function checkEndTurn(state: GameState) {
 
   if (isEnd) {
     state.enemy.buff.forEach((buff) => {
-      if (
-        buff.duration &&
-        (buff.type === BuffType.BUFF || buff.type === BuffType.DEBUFF) &&
-        buff.duration !== 100
-      ) {
+      if (buff.duration && buff.type === 0 && buff.duration !== 100) {
         buff.duration -= 1;
       }
     });
 
     state.characters.forEach((character) => {
       character.buff.forEach((buff) => {
-        if (
-          buff.duration &&
-          (buff.type === BuffType.BUFF || buff.type === BuffType.DEBUFF) &&
-          buff.duration !== 100
-        ) {
+        if (buff.duration && buff.type === 0 && buff.duration !== 100) {
           buff.duration -= 1;
         }
       });
