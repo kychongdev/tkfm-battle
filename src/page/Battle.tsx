@@ -12,7 +12,8 @@ import {
   Text,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
-import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
+import type { CharacterSelect, CharacterState } from "../types/Character";
+import { Attribute } from "../types/Character";
 import favicon from "../assets/character/favicon.png";
 import { useGameState } from "../battle/GameState";
 import { IconEdit } from "@tabler/icons-react";

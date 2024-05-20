@@ -1,6 +1,6 @@
 import { AffectType, Buff, Condition, Target } from "../types/Skill";
 import character from "../assets/character.json";
-import { GameState } from "./GameState";
+import type { GameState } from "./GameState";
 
 export function calculateStats(
   initStats: number,
@@ -54,15 +54,15 @@ export function calcUltDamage(
 
 // Only initiate once
 export function checkHpBuff(gameState: GameState) {
-  gameState.characters.forEach((character) => {
-    // let hpBuff = 1;
-    // character.buff.forEach((buff) => {
-    //   if (buff.affect === AffectType.HP) {
-    //     hpBuff += buff.value;
-    //   }
-    // });
-    // character.hp = Math.ceil(character.hp * hpBuff);
-  });
+  // gameState.characters.forEach((character) => {
+  // let hpBuff = 1;
+  // character.buff.forEach((buff) => {
+  //   if (buff.affect === AffectType.HP) {
+  //     hpBuff += buff.value;
+  //   }
+  // });
+  // character.hp = Math.ceil(character.hp * hpBuff);
+  //   });
 }
 
 // When activate condition
@@ -71,11 +71,17 @@ export function parseCondition(
   condition: Condition,
   state: GameState,
 ) {
-  state.characters[position].buff.forEach((buff) => {
-    if (buff.condition === condition) {
-      triggerPassive(buff, state, position);
+  for (const char of state.characters[position].buff) {
+    if (char.condition === condition) {
+      triggerPassive(char, state, position);
     }
-  });
+  }
+
+  // state.characters[position].buff.forEach((buff) => {
+  //   if (buff.condition === condition) {
+  //     triggerPassive(buff, state, position);
+  //   }
+  // });
 }
 
 // function parseAffectName(
@@ -216,20 +222,20 @@ export function applyRawAttBuff(gameState: GameState, position: number) {
   let tempAtk = gameState.characters[position].atk;
   let atkPercentage = 0;
 
-  gameState.characters[position].buff.forEach((buff) => {
+  for (const buff of gameState.characters[position].buff) {
     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
       atkPercentage += buff._0?.value;
     }
     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
       tempAtk += buff._0?.value;
     }
-  });
+  }
   return gameState.characters[position].atk * atkPercentage + tempAtk;
 }
 
 export function onTurnStart(gameState: GameState) {
   gameState.characters.forEach((character, position) => {
-    character.buff.forEach((buff) => {
+    for (const buff of character.buff) {
       if (
         buff.condition === Condition.EVERY_X_TURN &&
         buff.conditionTurn &&
@@ -246,7 +252,7 @@ export function onTurnStart(gameState: GameState) {
           }
         }
       }
-    });
+    }
   });
 }
 
@@ -263,20 +269,20 @@ export function checkEndTurn(state: GameState) {
   });
 
   if (isEnd) {
-    state.enemy.buff.forEach((buff) => {
+    for (const buff of state.enemy.buff) {
       if (buff.duration && buff.type === 0 && buff.duration !== 100) {
         buff.duration -= 1;
       }
-    });
+    }
 
-    state.characters.forEach((character) => {
-      character.buff.forEach((buff) => {
+    for (const character of state.characters) {
+      for (const buff of character.buff) {
         if (buff.duration && buff.type === 0 && buff.duration !== 100) {
           buff.duration -= 1;
         }
-      });
+      }
       character.cd = character.cd > 0 ? character.cd - 1 : 0;
-    });
+    }
 
     state.enemy.buff = state.enemy.buff.filter((buff) => {
       return buff.duration !== 0 || buff.duration === undefined;
@@ -287,9 +293,9 @@ export function checkEndTurn(state: GameState) {
         return buff.duration !== 0 || buff.duration === undefined;
       });
     });
-    state.characters.forEach((character) => {
+    for (const character of state.characters) {
       character.isMoved = false;
-    });
+    }
     state.turns += 1;
     onTurnStart(state);
   }

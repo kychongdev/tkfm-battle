@@ -1,4 +1,4 @@
-import { GameState } from "./GameState";
+import type { GameState } from "./GameState";
 import { AffectType, Condition } from "../types/Skill";
 
 export function triggerLeaderSkill(leader: string, gameState: GameState) {
