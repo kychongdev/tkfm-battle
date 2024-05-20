@@ -5,7 +5,7 @@ import { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./leader";
 import { checkEndTurn, onTurnStart, parseCondition } from "./Calculate";
-import { AffectType, Condition } from "../types/Skill";
+import { Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
 import { activateUltimate } from "./ultimate";
@@ -51,6 +51,9 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.turns = 0;
           state.activateHpBuff();
+          state.characters.forEach((_, index) => {
+            state.characters[index].cd = state.characters[index].maxCd;
+          });
           triggerLeaderSkill(state.characters[0].id, state);
           initPassiveSkill(0, state);
         });

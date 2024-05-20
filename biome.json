@@ -1,0 +1,9 @@
+{
+  "json": {
+    "formatter": {
+      "trailingCommas": "none",
+      "indentStyle": "space",
+      "indentWidth": 2
+    }
+  }
+}

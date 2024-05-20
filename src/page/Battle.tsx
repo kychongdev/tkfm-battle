@@ -10,8 +10,6 @@ import {
   Button,
   Modal,
   Text,
-  Stack,
-  Card,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
 import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
@@ -68,14 +66,14 @@ export default function Battle() {
             atk: maxAtk,
             hp: maxHp,
             bond: character.bond,
-            class: characterDetail ? characterDetail.tags.position : 0,
+            class: characterDetail ? characterDetail.tags.position : 5,
             attribute: characterDetail
               ? characterDetail.tags.attribute
               : Attribute.NONE,
             position: character.position,
             shield: 0,
-            cd: 0,
-            maxCd: 0,
+            cd: characterDetail?.stats.cd ?? 0,
+            maxCd: characterDetail?.stats.cd ?? 0,
             ultimateName: "",
             isMoved: false,
             isGuard: false,
@@ -100,7 +98,7 @@ export default function Battle() {
             bond: 1,
             attribute: Attribute.NONE,
             position: character.position,
-            class: 0,
+            class: 5,
             cd: 0,
             maxCd: 0,
             ultimateName: "",
