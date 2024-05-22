@@ -54,6 +54,7 @@ export const useGameState = create<GameState>()(
       initLeaderSkill: () => {
         set((state) => {
           state.turns = 0;
+          state.enemy.hp = state.enemy.maxHp;
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });

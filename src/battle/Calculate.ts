@@ -145,7 +145,7 @@ export function triggerPassive(
               condition: Condition.ULTIMATE,
               duration: 1,
               _0: {
-                value: rawAttBuff * buff._2?.value,
+                value: Math.ceil(rawAttBuff * buff._2?.value),
                 affectType: buff._2?.affectType,
               },
             },
@@ -160,7 +160,7 @@ export function triggerPassive(
               condition: Condition.ULTIMATE,
               duration: 1,
               _0: {
-                value: rawAttBuff * buff._2?.value,
+                value: Math.ceil(rawAttBuff * buff._2?.value),
                 affectType: buff._2?.affectType,
               },
             },

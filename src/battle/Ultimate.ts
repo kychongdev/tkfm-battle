@@ -15,7 +15,7 @@ export function activateUltimate(position: number, gameState: GameState) {
         {
           // 使自身攻擊力增加200/200/250/250/300%(1回合)，以自身攻擊力25/30/35/40/45%使自身攻擊力增加(1回合)，再以自身攻擊力25%使我方攻擊者、妨礙者攻擊力增加(1回合)，CD:3
           id: "525-ult-1",
-          name: "使自身攻擊力增加200%(1回合)",
+          name: "攻擊力增加200%(1回合)",
           type: 0,
           condition: Condition.NONE,
           duration: 1,
@@ -44,17 +44,18 @@ export function activateUltimate(position: number, gameState: GameState) {
           duration: 1,
           _0: {
             affectType: AffectType.RAWATK,
-            value:
+            value: Math.ceil(
               applyRawAttBuff(gameState, position) *
-              (bond === 1
-                ? 0.25
-                : bond === 2
-                  ? 0.3
-                  : bond === 3
-                    ? 0.35
-                    : bond === 4
-                      ? 0.4
-                      : 0.45),
+                (bond === 1
+                  ? 0.25
+                  : bond === 2
+                    ? 0.3
+                    : bond === 3
+                      ? 0.35
+                      : bond === 4
+                        ? 0.4
+                        : 0.45),
+            ),
           },
         },
       ];
@@ -73,7 +74,7 @@ export function activateUltimate(position: number, gameState: GameState) {
               duration: 1,
               _0: {
                 affectType: AffectType.RAWATK,
-                value: applyRawAttBuff(gameState, position) * 0.25,
+                value: Math.ceil(applyRawAttBuff(gameState, position) * 0.25),
               },
             },
           ];
