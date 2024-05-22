@@ -3,7 +3,7 @@
 // import { calculateUltimateDamage, parseCondition } from "./Calculate";
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition } from "../types/Skill";
-import { applyRawAttBuff } from "./Calculate";
+import { applyRawAttBuff } from "./calculate";
 import { GameState } from "./GameState";
 
 export function activateUltimate(position: number, gameState: GameState) {

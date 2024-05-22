@@ -19,7 +19,7 @@ import { useGameState } from "../battle/GameState";
 import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
-import { calculateStats } from "../battle/Calculate";
+import { calculateStats } from "../battle/calculate";
 import { formatNumber } from "../battle/utilies";
 import { BuffList } from "../components/BuffList";
 

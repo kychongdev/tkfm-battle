@@ -1,11 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { CharacterState } from "../types/Character";
+import type { CharacterState } from "../types/Character";
 import { initCharacterState } from "./Data";
 import { triggerLeaderSkill } from "./leader";
-import { checkEndTurn, onTurnStart, parseCondition } from "./Calculate";
-import { Condition } from "../types/Skill";
+import {
+  checkEndTurn,
+  applyHpBuff,
+  onTurnStart,
+  parseCondition,
+} from "./calculate";
+import { AffectType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./Passive";
 import { activateUltimate } from "./ultimate";
@@ -17,7 +22,6 @@ export interface GameState {
   characters: CharacterState[];
   init: (characters: CharacterState[]) => void;
   initLeaderSkill: () => void;
-  activateHpBuff: () => void;
   addTurn: () => void;
   basicMove: (position: number) => void;
   ultimateMove: (position: number) => void;
@@ -50,29 +54,12 @@ export const useGameState = create<GameState>()(
       initLeaderSkill: () => {
         set((state) => {
           state.turns = 0;
-          state.activateHpBuff();
+          applyHpBuff(state);
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });
           triggerLeaderSkill(state.characters[0].id, state);
           initPassiveSkill(0, state);
-        });
-      },
-      activateHpBuff: () => {
-        set((state) => {
-          // state.characters.forEach((character, index) => {
-          //   let hpBuff = 1;
-          //   character.buff.forEach((buff) => {
-          //     if (
-          //       buff.type === BuffType.BUFF &&
-          //       buff.affect === AffectType.HP
-          //     ) {
-          //       hpBuff += buff.value;
-          //     }
-          //   });
-          //   state.characters[index].hp = Math.ceil(character.hp * hpBuff);
-          //   state.characters[index].maxHp = Math.ceil(character.maxHp * hpBuff);
-          // });
         });
       },
       addTurn: () => {

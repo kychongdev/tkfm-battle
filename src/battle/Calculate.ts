@@ -1,5 +1,6 @@
-import { AffectType, Buff, Condition, Target } from "../types/Skill";
-import character from "../assets/character.json";
+import type { Buff } from "../types/Skill";
+import { AffectType, Condition, Target } from "../types/Skill";
+// import character from "../assets/character.json";
 import type { GameState } from "./GameState";
 
 export function calculateStats(
@@ -18,51 +19,19 @@ export function calculateStats(
   );
 }
 
-export function calcBasicDamage(
-  position: number,
-  attackPercentage: number,
-  gameState: GameState,
-) {
-  return 5;
-}
-
-export function calcUltDamage(
-  position: number,
-  attackPercentage: number,
-  gameState: GameState,
-  isTrigger: boolean,
-): number {
-  return 10;
-}
-
-// export function BasicAttack(
-//   position: number,
-//   gameState: GameState,
-//   target: number,
-// ) {
-//   calculateBasicDamage(position, 1, gameState);
-//   if (target == 5) {
-//     gameState.enemy.hp -= calculateBasicDamage(position, 1, gameState);
-//   } else {
-//     gameState.characters[target].hp -= calculateBasicDamage(
-//       position,
-//       1,
-//       gameState,
-//     );
-//   }
-// }
-
 // Only initiate once
-export function checkHpBuff(gameState: GameState) {
-  // gameState.characters.forEach((character) => {
-  // let hpBuff = 1;
-  // character.buff.forEach((buff) => {
-  //   if (buff.affect === AffectType.HP) {
-  //     hpBuff += buff.value;
-  //   }
-  // });
-  // character.hp = Math.ceil(character.hp * hpBuff);
-  //   });
+export function applyHpBuff(gameState: GameState) {
+  console.log("applyHpBuff");
+  gameState.characters.forEach((character, index) => {
+    let hpBuff = 1;
+    character.buff.forEach((buff) => {
+      if (buff.type === 0 && buff._0?.affectType === AffectType.MAXHP) {
+        hpBuff += buff._0?.value;
+      }
+    });
+    gameState.characters[index].hp = Math.ceil(character.hp * hpBuff);
+    gameState.characters[index].maxHp = Math.ceil(character.hp * hpBuff);
+  });
 }
 
 // When activate condition
@@ -76,65 +45,7 @@ export function parseCondition(
       triggerPassive(char, state, position);
     }
   }
-
-  // state.characters[position].buff.forEach((buff) => {
-  //   if (buff.condition === condition) {
-  //     triggerPassive(buff, state, position);
-  //   }
-  // });
 }
-
-// function parseAffectName(
-//   buffValue: number,
-//   buffAffect: AffectType | undefined,
-//   affectTarget: string | undefined,
-//   buffStack?: number,
-// ) {
-//   const stack = buffStack ?? 1;
-//   switch (buffAffect) {
-//     case AffectType.INCREASE_DMG:
-//       return "造成傷害增加" + buffValue * 100 * stack + "% ";
-//     case AffectType.INCREASE_DMG_RECEIVED:
-//       return "受到傷害增加" + buffValue * 100 * stack + "% ";
-//     case AffectType.ULTIMATE_DAMAGE:
-//       return "受到必殺技傷害增加" + buffValue * 100 * stack + "% ";
-//     case AffectType.DARK:
-//       return "受到暗屬性傷害增加" + buffValue * 100 * stack + "% ";
-//     case AffectType.WATER:
-//       return "受到水屬性傷害增加" + buffValue * 100 * stack + "% ";
-//     case AffectType.SHIELD:
-//       return buffValue + "護盾";
-//     case AffectType.OTHER_CHARACTER_INCREASE_DAMAGE:
-//       //@ts-ignore
-//       const name = character.name[affectTarget];
-//       return (
-//         "受到" +
-//         (name ?? "無法讀取") +
-//         "傷害增加" +
-//         buffValue * 100 * stack +
-//         "% "
-//       );
-//     default:
-//       return "";
-//   }
-// }
-
-// function parseBuffValue(buff: Buff, gameState: GameState, position: number) {
-//   switch (buff.valueType) {
-//     case ValueType.MAXHP:
-//       return Math.ceil(gameState.characters[position].maxHp * buff.value);
-//     case ValueType.SKILL:
-//       const valueMultiply = gameState.characters[position].buff.filter(
-//         (othersBuff) => {
-//           return othersBuff.unique_id === buff.valueTarget + "_ACTIVATE";
-//         },
-//       );
-//       const skillStack = valueMultiply[0].stack ?? 1;
-//       return +(buff.value * skillStack).toFixed(2);
-//     default:
-//       return buff.value;
-//   }
-// }
 
 export function triggerPassive(
   buff: Buff,
