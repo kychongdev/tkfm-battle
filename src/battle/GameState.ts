@@ -54,11 +54,11 @@ export const useGameState = create<GameState>()(
       initLeaderSkill: () => {
         set((state) => {
           state.turns = 0;
-          applyHpBuff(state);
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });
           triggerLeaderSkill(state.characters[0].id, state);
+          applyHpBuff(state);
           initPassiveSkill(0, state);
         });
       },

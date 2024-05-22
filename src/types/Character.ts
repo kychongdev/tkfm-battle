@@ -1,19 +1,19 @@
-import { Buff } from "./Skill";
+import type { Buff } from "./Skill";
 
 enum Attribute {
-  FIRE,
-  WATER,
-  WIND,
-  LIGHT,
-  DARK,
-  NONE,
+  FIRE = 0,
+  WATER = 1,
+  WIND = 2,
+  LIGHT = 3,
+  DARK = 4,
+  NONE = 5,
 }
 export enum CharacterClass {
   ATTACKER = 5,
-  PROTECTOR,
-  HEALER,
-  OBSTRUCTER,
-  SUPPORT,
+  PROTECTOR = 6,
+  HEALER = 7,
+  OBSTRUCTER = 8,
+  SUPPORT = 9,
 }
 
 interface CharacterState {

@@ -21,16 +21,15 @@ export function calculateStats(
 
 // Only initiate once
 export function applyHpBuff(gameState: GameState) {
-  console.log("applyHpBuff");
   gameState.characters.forEach((character, index) => {
     let hpBuff = 1;
-    character.buff.forEach((buff) => {
+    for (const buff of character.buff) {
       if (buff.type === 0 && buff._0?.affectType === AffectType.MAXHP) {
         hpBuff += buff._0?.value;
       }
-    });
+    }
     gameState.characters[index].hp = Math.ceil(character.hp * hpBuff);
-    gameState.characters[index].maxHp = Math.ceil(character.hp * hpBuff);
+    gameState.characters[index].maxHp = Math.ceil(character.maxHp * hpBuff);
   });
 }
 
@@ -45,6 +44,49 @@ export function parseCondition(
       triggerPassive(char, state, position);
     }
   }
+}
+
+export function calcBasicDamage(
+  position: number,
+  value: number,
+  gameState: GameState,
+) {
+  let tempAtk = gameState.characters[position].atk;
+  let atkPercentage = 0;
+
+  for (const buff of gameState.characters[position].buff) {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._0?.value;
+    }
+  }
+  return (tempAtk * atkPercentage + tempAtk) * value;
+}
+
+export function calcUltDamage(
+  position: number,
+  value: number,
+  gameState: GameState,
+  isTrigger: boolean,
+) {
+  let tempAtk = gameState.characters[position].atk;
+  let atkPercentage = 0;
+
+  for (const buff of gameState.characters[position].buff) {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._0?.value;
+    }
+  }
+
+  if (isTrigger) {
+    return (tempAtk * atkPercentage + tempAtk) * value;
+  }
+  return (tempAtk * atkPercentage + tempAtk) * value;
 }
 
 export function triggerPassive(

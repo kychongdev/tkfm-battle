@@ -15,6 +15,7 @@ interface Buff extends IBuff {
   _2?: _2;
 }
 
+// biome-ignore lint/style/useEnumInitializers: <explanation>
 enum ValueType {
   // Just take original value
   NONE,
@@ -22,6 +23,7 @@ enum ValueType {
   SKILL,
 }
 
+// biome-ignore lint/style/useEnumInitializers: <explanation>
 enum AffectType {
   RAWATK,
   ATK,
@@ -41,33 +43,33 @@ enum AffectType {
 }
 
 enum Condition {
-  ATTACK,
-  ATTACKED,
-  BASIC_ATTACK,
-  ULTIMATE,
-  TURN,
-  EVERY_X_TURN,
-  MOVE,
-  NONE,
+  ATTACK = 0,
+  ATTACKED = 1,
+  BASIC_ATTACK = 2,
+  ULTIMATE = 3,
+  TURN = 4,
+  EVERY_X_TURN = 5,
+  MOVE = 6,
+  NONE = 7,
 }
 
 enum Target {
   ATTACKER = 5,
-  PROTECTOR,
-  HEALER,
-  OBSTRUCTER,
-  SUPPORT,
-  SELF,
-  ENEMY,
-  ALL,
-  CHARACTER,
-  NONE,
+  PROTECTOR = 6,
+  HEALER = 7,
+  OBSTRUCTER = 8,
+  SUPPORT = 9,
+  SELF = 10,
+  ENEMY = 11,
+  ALL = 12,
+  CHARACTER = 13,
+  NONE = 14,
 }
 
 enum DurationType {
-  PERMANENT,
-  TEMPORARY,
-  STACK,
+  PERMANENT = 0,
+  TEMPORARY = 1,
+  STACK = 2,
 }
 
 export type { Buff };
