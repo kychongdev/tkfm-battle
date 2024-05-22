@@ -7,7 +7,7 @@ export function BuffList(props: { character: CharacterState }) {
     <Stack gap={5}>
       {props.character.buff.map((buff) => (
         <Group
-          key={crypto.randomUUID()}
+          key={buff.id}
           grow
           wrap="nowrap"
           gap="xs"

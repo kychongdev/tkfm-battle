@@ -1,4 +1,4 @@
-import { _0, _1, _2 } from "./ISkills";
+import type { _0, _1, _2, _3, _4, _5, _6, _7, _8 } from "./ISkills";
 
 interface IBuff {
   id: string;
@@ -13,6 +13,12 @@ interface Buff extends IBuff {
   _0?: _0;
   _1?: _1;
   _2?: _2;
+  _3?: _3;
+  _4?: _4;
+  _5?: _5;
+  _6?: _6;
+  _7?: _7;
+  _8?: _8;
 }
 
 // biome-ignore lint/style/useEnumInitializers: <explanation>
@@ -28,9 +34,10 @@ enum AffectType {
   RAWATK,
   ATK,
   MAXHP,
-  SHIELD,
+  SHIELD_RATE_RECEIVED,
   INCREASE_DMG,
   INCREASE_DMG_RECEIVED,
+  DECREASE_DMG_RECEIVED,
   ULTIMATE_DAMAGE,
   FIRE,
   WATER,
@@ -50,7 +57,13 @@ enum Condition {
   TURN = 4,
   EVERY_X_TURN = 5,
   MOVE = 6,
-  NONE = 7,
+  ON_TURN_START = 7,
+  NONE = 8,
+}
+
+enum SpecialCondition {
+  HP_LOWER_THAN = 0,
+  SKILL_STACK = 1,
 }
 
 enum Target {
@@ -72,5 +85,19 @@ enum DurationType {
   STACK = 2,
 }
 
+enum SkillStackCondition {
+  HIGHER = 0,
+  LOWER = 1,
+  EQUAL = 2,
+}
+
 export type { Buff };
-export { Condition, Target, AffectType, DurationType, ValueType };
+export {
+  Condition,
+  Target,
+  AffectType,
+  DurationType,
+  ValueType,
+  SpecialCondition,
+  SkillStackCondition,
+};

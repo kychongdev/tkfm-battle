@@ -1,5 +1,12 @@
 import type { CharacterClass } from "./Character";
-import type { AffectType, Condition, Target } from "./Skill";
+import type {
+  AffectType,
+  Buff,
+  Condition,
+  SkillStackCondition,
+  SpecialCondition,
+  Target,
+} from "./Skill";
 
 // 只是BUFF
 export interface _0 {
@@ -16,7 +23,7 @@ export interface _1 {
   damageType: 0 | 1;
 }
 
-// 傳功
+// 雙條件傳功
 export interface _2 {
   name: string;
   type: number;
@@ -26,8 +33,50 @@ export interface _2 {
   target: Target | CharacterClass;
 }
 
-// RAW BUFF 純數值
+// Stack buff 層數BUFF
 export interface _3 {
+  id: string;
+  name: string;
+  stack: number;
+  maxStack: number;
   affectType: AffectType;
+}
+
+// increase _3 stack buff
+export interface _4 {
   value: number;
+  targetSkill: string;
+}
+
+// immediately effect buff
+// 立即生效的BUFF
+export interface _5 {
+  condition: SpecialCondition;
+  conditionValue: number;
+  value: number;
+  affectType: AffectType;
+  target: Target | CharacterClass;
+}
+
+// 傳功
+export interface _6 {
+  value: number;
+  affectType: AffectType.RAWATK;
+  target: Target | CharacterClass;
+}
+
+// Check skill stack and apply buff
+export interface _7 {
+  stackCondition: SkillStackCondition;
+  stack: number;
+  targetSkill: string;
+  activateBuff: Buff;
+}
+
+// apply debuff/buff
+export interface _8 {
+  value: number;
+  stackTarget?: string;
+  target: Target | CharacterClass;
+  applyBuff: Buff;
 }
