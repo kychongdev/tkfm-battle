@@ -23,14 +23,22 @@ export interface _1 {
   damageType: 0 | 1;
 }
 
-// 雙條件傳功
+//給予條件式BUFF
 export interface _2 {
+  // id: string;
+  // name: string;
+  // type: number;
+  // value: number;
+  // affectType: AffectType;
+  // condition: Condition;
+  //
+  id: string;
   name: string;
   type: number;
-  value: number;
-  affectType: AffectType;
   condition: Condition;
-  target: Target | CharacterClass;
+  conditionTurn?: number;
+  duration: number;
+  // target: Target | CharacterClass;
 }
 
 // Stack buff 層數BUFF
@@ -46,6 +54,7 @@ export interface _3 {
 export interface _4 {
   value: number;
   targetSkill: string;
+  target: Target | CharacterClass;
 }
 
 // immediately effect buff

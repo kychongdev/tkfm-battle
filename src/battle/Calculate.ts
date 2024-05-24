@@ -131,42 +131,81 @@ export function triggerPassive(
         console.log("Wrong data");
         break;
       }
-      // 傳功
+
+      break;
+    case 3:
+      if (!buff._3) {
+        console.log("Wrong data");
+        break;
+      }
+      break;
+    case 4:
+      if (!buff._4) {
+        console.log("Wrong data");
+        break;
+      }
+      if (buff._4.target === Target.SELF) {
+        gameState.characters[position].buff.forEach((buff) => {
+          if (buff.id === buff._4?.targetSkill) {
+            if (buff._3 && buff._3.stack < buff._3.maxStack) {
+              buff._3.stack += buff._4.value;
+            }
+          }
+        });
+      }
+      break;
+    case 5:
+      if (!buff._5) {
+        console.log("Wrong data 5");
+        break;
+      }
+      break;
+    case 6:
+      if (!buff._6) {
+        console.log("Wrong data 6");
+        break;
+      }
       gameState.characters.forEach((character, index) => {
         const rawAttBuff = applyRawAttBuff(gameState, position);
-        // 需要增加更多條件
-        if (character.class === buff._2?.target) {
+        if (character.class === buff._6?.target) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
-            {
-              id: "525-2",
-              name: buff._2?.name,
-              type: 0,
-              condition: Condition.ULTIMATE,
-              duration: 1,
-              _0: {
-                value: Math.ceil(rawAttBuff * buff._2?.value),
-                affectType: buff._2?.affectType,
-              },
-            },
+            // {
+            //   id: `${buff.id}-buff`,
+            //   name: buff._2?.name,
+            //   type: 0,
+            //   condition: Condition.ULTIMATE,
+            //   duration: 1,
+            //   _0: {
+            //     value: Math.ceil(rawAttBuff * buff._2?.value),
+            //     affectType: buff._2?.affectType,
+            //   },
+            // },
           ];
-        } else if (buff._2?.target === Target.ALL) {
+        } else if (buff._6?.target === Target.ALL) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
-            {
-              id: "525-2",
-              name: buff._2?.name,
-              type: 0,
-              condition: Condition.ULTIMATE,
-              duration: 1,
-              _0: {
-                value: Math.ceil(rawAttBuff * buff._2?.value),
-                affectType: buff._2?.affectType,
-              },
-            },
+            // {
+            //   id: `${buff.id}-buff`,
+            //   name: buff._2?.name,
+            //   type: 0,
+            //   condition: Condition.ULTIMATE,
+            //   duration: 1,
+            //   _0: {
+            //     value: Math.ceil(rawAttBuff * buff._2?.value),
+            //     affectType: buff._2?.affectType,
+            //   },
+            // },
           ];
         }
       });
+      break;
+    case 7:
+      if (!buff._7) {
+        console.log("Wrong data 7");
+        break;
+      }
+      break;
   }
 }
 
