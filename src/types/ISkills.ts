@@ -24,21 +24,8 @@ export interface _1 {
 }
 
 //給予條件式BUFF
-export interface _2 {
-  // id: string;
-  // name: string;
-  // type: number;
-  // value: number;
-  // affectType: AffectType;
-  // condition: Condition;
-  //
-  id: string;
-  name: string;
-  type: number;
-  condition: Condition;
-  conditionTurn?: number;
-  duration: number;
-  // target: Target | CharacterClass;
+export interface _2 extends Buff {
+  target: Target | CharacterClass;
 }
 
 // Stack buff 層數BUFF
@@ -48,6 +35,7 @@ export interface _3 {
   stack: number;
   maxStack: number;
   affectType: AffectType;
+  value?: number;
 }
 
 // increase _3 stack buff

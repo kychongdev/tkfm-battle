@@ -131,6 +131,14 @@ export function triggerPassive(
         console.log("Wrong data");
         break;
       }
+      switch (buff._2.target) {
+        case Target.SELF:
+          gameState.characters[position].buff = [
+            ...gameState.characters[position].buff,
+            buff._2,
+          ];
+          break;
+      }
 
       break;
     case 3:
@@ -170,32 +178,32 @@ export function triggerPassive(
         if (character.class === buff._6?.target) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
-            // {
-            //   id: `${buff.id}-buff`,
-            //   name: buff._2?.name,
-            //   type: 0,
-            //   condition: Condition.ULTIMATE,
-            //   duration: 1,
-            //   _0: {
-            //     value: Math.ceil(rawAttBuff * buff._2?.value),
-            //     affectType: buff._2?.affectType,
-            //   },
-            // },
+            {
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _0: {
+                value: Math.ceil(rawAttBuff * buff._6.value),
+                affectType: buff._6?.affectType,
+              },
+            },
           ];
         } else if (buff._6?.target === Target.ALL) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
-            // {
-            //   id: `${buff.id}-buff`,
-            //   name: buff._2?.name,
-            //   type: 0,
-            //   condition: Condition.ULTIMATE,
-            //   duration: 1,
-            //   _0: {
-            //     value: Math.ceil(rawAttBuff * buff._2?.value),
-            //     affectType: buff._2?.affectType,
-            //   },
-            // },
+            {
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _0: {
+                value: Math.ceil(rawAttBuff * buff._6?.value),
+                affectType: buff._6?.affectType,
+              },
+            },
           ];
         }
       });
@@ -234,6 +242,7 @@ export function onTurnStart(gameState: GameState) {
         gameState.turns > 1
       ) {
         if ((gameState.turns - 1) % buff.conditionTurn === 0) {
+          console.log("trigger");
           triggerPassive(buff, gameState, position);
         }
       }
@@ -261,20 +270,24 @@ export function checkEndTurn(state: GameState) {
   });
 
   if (isEnd) {
-    for (const buff of state.enemy.buff) {
+    state.enemy.buff.forEach((buff) => {
       if (buff.duration && buff.type === 0 && buff.duration !== 100) {
         buff.duration -= 1;
       }
-    }
+    });
 
-    for (const character of state.characters) {
-      for (const buff of character.buff) {
-        if (buff.duration && buff.type === 0 && buff.duration !== 100) {
+    state.characters.forEach((character) => {
+      character.buff.forEach((buff) => {
+        if (
+          buff.duration &&
+          (buff.type === 0 || buff.type === 6) &&
+          buff.duration !== 100
+        ) {
           buff.duration -= 1;
         }
-      }
+      });
       character.cd = character.cd > 0 ? character.cd - 1 : 0;
-    }
+    });
 
     state.enemy.buff = state.enemy.buff.filter((buff) => {
       return buff.duration !== 0 || buff.duration === undefined;
@@ -285,6 +298,7 @@ export function checkEndTurn(state: GameState) {
         return buff.duration !== 0 || buff.duration === undefined;
       });
     });
+
     for (const character of state.characters) {
       character.isMoved = false;
     }

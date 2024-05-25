@@ -12,7 +12,7 @@ interface IBuff {
 interface Buff extends IBuff {
   _0?: _0;
   _1?: _1;
-  _2?: Buff;
+  _2?: _2;
   _3?: _3;
   _4?: _4;
   _5?: _5;
