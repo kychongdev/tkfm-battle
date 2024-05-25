@@ -50,7 +50,6 @@ export default function Battle() {
             character.disclipline,
             character.hpPot,
           );
-          console.log(maxHp);
           const maxAtk = calculateStats(
             characterDetail ? characterDetail.stats.initATK : 0,
             character.level,

@@ -5,9 +5,12 @@ import type { CharacterState } from "../types/Character";
 export function BuffList(props: { character: CharacterState }) {
   return (
     <Stack gap={5}>
-      {props.character.buff.map((buff) => (
+      {props.character.buff.map((buff, index) => (
         <Group
-          key={buff.id}
+          key={`buff.id-[${
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            index
+          }]`}
           grow
           wrap="nowrap"
           gap="xs"
@@ -25,7 +28,9 @@ export function BuffList(props: { character: CharacterState }) {
               alignSelf: "stretch",
             }}
           >
-            <div style={{ alignSelf: "center" }}>{buff.duration ?? "-"}</div>
+            <div style={{ alignSelf: "center" }}>
+              {buff.duration === 100 ? "-" : buff.duration}
+            </div>
           </Card>
         </Group>
       ))}

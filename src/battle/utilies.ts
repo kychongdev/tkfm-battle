@@ -13,5 +13,8 @@ export function parseSkillName(buff: Buff) {
     }
     return buff.name;
   }
+  if (buff.type === 3 && buff._3) {
+    return `${buff.name}[${buff._3.stack}層]最多${buff._3.maxStack})`;
+  }
   return buff.name;
 }

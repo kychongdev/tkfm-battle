@@ -61,6 +61,7 @@ export const useGameState = create<GameState>()(
           triggerLeaderSkill(state.characters[0].id, state);
           applyHpBuff(state);
           initPassiveSkill(0, state);
+          initPassiveSkill(1, state);
         });
       },
       addTurn: () => {

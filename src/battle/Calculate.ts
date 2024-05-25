@@ -153,13 +153,38 @@ export function triggerPassive(
         break;
       }
       if (buff._4.target === Target.SELF) {
-        gameState.characters[position].buff.forEach((buff) => {
-          if (buff.id === buff._4?.targetSkill) {
-            if (buff._3 && buff._3.stack < buff._3.maxStack) {
-              buff._3.stack += buff._4.value;
-            }
-          }
+        // x is gameState buff
+        const isExist = gameState.characters[position].buff.some((x) => {
+          return x.id === buff._4?.targetSkill;
         });
+
+        if (isExist) {
+          gameState.characters[position].buff.map((x) => {
+            if (x.id === buff._4?.targetSkill) {
+              if (x._3 && x._3.stack < x._3.maxStack) {
+                if (x._3 && buff._4) {
+                  x._3.stack += buff._4.value;
+                  if (x._3.stack > x._3.maxStack) {
+                    x._3.stack = x._3.maxStack;
+                  }
+                } else {
+                  console.log("Wrong data buff._4");
+                }
+              }
+            }
+            return x;
+          });
+        } else {
+          // purely typescript problem
+          if (buff._4?.applyBuff) {
+            gameState.characters[position].buff = [
+              ...gameState.characters[position].buff,
+              buff._4.applyBuff,
+            ];
+          } else {
+            console.log("Wrong data buff._4.applyBuff");
+          }
+        }
       }
       break;
     case 5:
@@ -242,7 +267,6 @@ export function onTurnStart(gameState: GameState) {
         gameState.turns > 1
       ) {
         if ((gameState.turns - 1) % buff.conditionTurn === 0) {
-          console.log("trigger");
           triggerPassive(buff, gameState, position);
         }
       }
@@ -278,11 +302,7 @@ export function checkEndTurn(state: GameState) {
 
     state.characters.forEach((character) => {
       character.buff.forEach((buff) => {
-        if (
-          buff.duration &&
-          (buff.type === 0 || buff.type === 6) &&
-          buff.duration !== 100
-        ) {
+        if (buff.duration && buff.duration !== 100) {
           buff.duration -= 1;
         }
       });

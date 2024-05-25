@@ -111,28 +111,14 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             target: Target.ATTACKER,
           },
         },
-        {
-          id: "526-2",
-          name: "第一回合，觸發「給予自身『連環陷阱(0層)』」",
-          type: 2,
-          condition: Condition.ON_TURN_START,
-          duration: 100,
-          _2: {
-            id: "526-buff-1",
-            name: "『連環陷阱』",
-            type: 3,
-            condition: Condition.NONE,
-            target: Target.SELF,
-            duration: 100,
-            _3: {
-              id: "526-buff-1",
-              name: "連環陷阱",
-              stack: 0,
-              maxStack: 9,
-              affectType: AffectType.NONE,
-            },
-          },
-        },
+        // {
+        //   id: "526-2",
+        //   name: "第一回合，觸發「給予自身『連環陷阱(0層)』」",
+        //   type: 2,
+        //   condition: Condition.ON_TURN_START,
+        //   duration: 100,
+        //   _2: ,
+        // },
         {
           id: "526-3",
           name: "每經過1回合時，觸發「給予自身『連環陷阱(最多9層)』」",
@@ -142,8 +128,22 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           duration: 100,
           _4: {
             value: 1,
-            targetSkill: "526-buff-1",
+            targetSkill: "526-2-1",
             target: Target.SELF,
+            applyBuff: {
+              id: "526-2-1",
+              name: "『連環陷阱』",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "526-2-1",
+                name: "連環陷阱",
+                stack: 1,
+                maxStack: 9,
+                affectType: AffectType.NONE,
+              },
+            },
           },
         },
         {
@@ -170,7 +170,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           _7: {
             stackCondition: SkillStackCondition.HIGHER,
             stack: 3,
-            targetSkill: "526-buff-1",
+            targetSkill: "526-2-1",
             activateBuff: {
               id: "526-4-1",
               name: "受到護盾效果增加20%",
@@ -193,7 +193,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           _7: {
             stackCondition: SkillStackCondition.HIGHER,
             stack: 6,
-            targetSkill: "526-buff-1",
+            targetSkill: "526-2-1",
             activateBuff: {
               id: "526-5-1",
               name: "攻擊力增加20%",
@@ -216,7 +216,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           _7: {
             stackCondition: SkillStackCondition.EQUAL,
             stack: 9,
-            targetSkill: "526-buff-1",
+            targetSkill: "526-2-1",
             activateBuff: {
               id: "526-6-1",
               name: "攻擊力增加20%",

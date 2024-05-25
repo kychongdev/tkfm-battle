@@ -43,6 +43,7 @@ export interface _4 {
   value: number;
   targetSkill: string;
   target: Target | CharacterClass;
+  applyBuff?: Buff;
 }
 
 // immediately effect buff
