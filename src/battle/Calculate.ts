@@ -314,8 +314,6 @@ export function triggerPassive(
           ];
         } else if (buff._8?.applyTarget === Target.ENEMY) {
           const applyBuff = buff._8.applyBuff;
-          console.log(applyBuff);
-          console.log(skillStackNum);
           if (
             !applyBuff ||
             !applyBuff._0 ||
@@ -341,6 +339,19 @@ export function triggerPassive(
           ];
         }
       }
+      break;
+    case 9:
+      if (!buff._9) {
+        console.log("Wrong data 9");
+        break;
+      }
+      break;
+    case 10:
+      if (!buff._10) {
+        console.log("Wrong data 10");
+        break;
+      }
+
       break;
   }
 }

@@ -1,4 +1,4 @@
-import { GameState } from "./GameState";
+import type { GameState } from "./GameState";
 
 export function basicAttack(id: string, position: number, state: GameState) {
   // let damage = 0;
