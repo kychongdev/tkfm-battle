@@ -67,14 +67,19 @@ export interface _6 {
 export interface _7 {
   stackCondition: SkillStackCondition;
   stack: number;
+  target: Target | CharacterClass;
   targetSkill: string;
   activateBuff: Buff;
+  applyTarget: Target | CharacterClass;
+  activated: boolean;
 }
 
 // apply debuff/buff
+// 白被動3
 export interface _8 {
   value: number;
-  stackTarget?: string;
   target: Target | CharacterClass;
+  targetSkill: string;
+  applyTarget: Target | CharacterClass;
   applyBuff: Buff;
 }

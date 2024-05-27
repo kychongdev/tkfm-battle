@@ -159,24 +159,25 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         },
         {
-          // 當自身「連環陷阱」層數>3層時，開啟「受到護盾效果增加20%」
-          // 當自身「連環陷阱」層數>6層時，開啟「攻擊力增加20%」
-          // 當自身「連環陷阱」層數=9層時，開啟「攻擊力增加20%」
           id: "526-4",
           name: "當自身「連環陷阱」層數>3層時，開啟「受到護盾效果增加20%」",
           type: 7,
-          condition: Condition.NONE,
+          condition: Condition.EVERY_X_TURN,
+          conditionTurn: 1,
           duration: 100,
           _7: {
             stackCondition: SkillStackCondition.HIGHER,
             stack: 3,
             targetSkill: "526-2-1",
+            target: Target.SELF,
+            activated: false,
+            applyTarget: Target.SELF,
             activateBuff: {
               id: "526-4-1",
               name: "受到護盾效果增加20%",
               type: 0,
               condition: Condition.NONE,
-              duration: 1,
+              duration: 100,
               _0: {
                 value: 0.2,
                 affectType: AffectType.SHIELD_RATE_RECEIVED,
@@ -188,18 +189,22 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           id: "526-5",
           name: "當自身「連環陷阱」層數>6層時，開啟「攻擊力增加20%」",
           type: 7,
-          condition: Condition.NONE,
+          condition: Condition.EVERY_X_TURN,
+          conditionTurn: 1,
           duration: 100,
           _7: {
             stackCondition: SkillStackCondition.HIGHER,
             stack: 6,
             targetSkill: "526-2-1",
+            target: Target.SELF,
+            activated: false,
+            applyTarget: Target.SELF,
             activateBuff: {
               id: "526-5-1",
               name: "攻擊力增加20%",
               type: 0,
               condition: Condition.NONE,
-              duration: 1,
+              duration: 100,
               _0: {
                 value: 0.2,
                 affectType: AffectType.ATK,
@@ -211,18 +216,22 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           id: "526-6",
           name: "當自身「連環陷阱」層數=9層時，開啟「攻擊力增加20%」",
           type: 7,
-          condition: Condition.NONE,
+          condition: Condition.EVERY_X_TURN,
+          conditionTurn: 1,
           duration: 100,
           _7: {
             stackCondition: SkillStackCondition.EQUAL,
             stack: 9,
             targetSkill: "526-2-1",
+            target: Target.SELF,
+            activated: false,
+            applyTarget: Target.SELF,
             activateBuff: {
               id: "526-6-1",
               name: "攻擊力增加20%",
               type: 0,
               condition: Condition.NONE,
-              duration: 1,
+              duration: 100,
               _0: {
                 value: 0.2,
                 affectType: AffectType.ATK,
@@ -230,7 +239,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             },
           },
         },
-        // 必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火、水屬性傷害增加3%(1回合)』」
         {
           id: "526-7",
           name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火、水屬性傷害增加3%(1回合)』」",
@@ -239,11 +247,12 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           duration: 100,
           _8: {
             value: 0.03,
-            stackTarget: "526-buff-1",
-            target: Target.ENEMY,
+            target: Target.SELF,
+            targetSkill: "526-2-1",
+            applyTarget: Target.ENEMY,
             applyBuff: {
               id: "526-7-1",
-              name: "使目標受到火屬性傷害增加3%",
+              name: "受到火屬性傷害增加3%",
               type: 0,
               condition: Condition.NONE,
               duration: 1,
@@ -254,8 +263,30 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             },
           },
         },
-
-        // :detail_passive2: 減傷+ (6潛)
+        {
+          id: "526-8",
+          name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火、水屬性傷害增加3%(1回合)』」",
+          type: 8,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _8: {
+            value: 0.03,
+            target: Target.SELF,
+            targetSkill: "526-2-1",
+            applyTarget: Target.ENEMY,
+            applyBuff: {
+              id: "526-7-1",
+              name: "受到水屬性傷害增加3%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: 0.03,
+                affectType: AffectType.WATER,
+              },
+            },
+          },
+        },
         // 使自身受到傷害減少5%
       ];
       break;

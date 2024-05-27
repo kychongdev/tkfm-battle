@@ -44,6 +44,11 @@ enum AffectType {
   WIND,
   DARK,
   LIGHT,
+  DECREASE_FIRE,
+  DECREASE_WATER,
+  DECREASE_WIND,
+  DECREASE_DARK,
+  DECREASE_LIGHT,
   OTHER,
   OTHER_CHARACTER_INCREASE_DAMAGE,
   NONE,
@@ -89,6 +94,7 @@ enum SkillStackCondition {
   HIGHER = 0,
   LOWER = 1,
   EQUAL = 2,
+  EQUALORHIGHER = 2,
 }
 
 export type { Buff };

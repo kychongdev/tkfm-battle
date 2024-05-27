@@ -1,5 +1,10 @@
 import type { Buff } from "../types/Skill";
-import { AffectType, Condition, Target } from "../types/Skill";
+import {
+  AffectType,
+  Condition,
+  SkillStackCondition,
+  Target,
+} from "../types/Skill";
 // import character from "../assets/character.json";
 import type { GameState } from "./GameState";
 
@@ -237,6 +242,104 @@ export function triggerPassive(
       if (!buff._7) {
         console.log("Wrong data 7");
         break;
+      }
+      if (buff._7.activated) {
+        console.log("Already activated");
+        break;
+      }
+
+      if (buff._7?.target === Target.SELF) {
+        const skillStackNum = gameState.characters[position].buff.find((x) => {
+          return x.id === buff._7?.targetSkill;
+        });
+        if (buff._7?.stackCondition === SkillStackCondition.HIGHER) {
+          if (
+            skillStackNum?._3?.stack &&
+            skillStackNum._3.stack > buff._7?.stack
+          ) {
+            const buffIndex = gameState.characters[position].buff.findIndex(
+              (x) => x.id === buff.id,
+            );
+
+            //@ts-ignore
+            gameState.characters[position].buff[buffIndex]._7.activated = true;
+
+            if (buff._7.applyTarget === Target.SELF) {
+              gameState.characters[position].buff = [
+                ...gameState.characters[position].buff,
+                buff._7.activateBuff,
+              ];
+            }
+          }
+        }
+        if (buff._7?.stackCondition === SkillStackCondition.EQUALORHIGHER) {
+          if (
+            skillStackNum?._3?.stack &&
+            skillStackNum._3.stack >= buff._7?.stack
+          ) {
+            console.log("equal or higher activated");
+            const buffIndex = gameState.characters[position].buff.findIndex(
+              (x) => x.id === buff.id,
+            );
+
+            //@ts-ignore
+            gameState.characters[position].buff[buffIndex]._7.activated = true;
+            gameState.characters[position].buff = [
+              ...gameState.characters[position].buff,
+              buff._7.activateBuff,
+            ];
+            if (buff._7.applyTarget === Target.SELF) {
+              gameState.characters[position].buff = [
+                ...gameState.characters[position].buff,
+                buff._7.activateBuff,
+              ];
+            }
+          }
+        }
+      }
+      break;
+    case 8:
+      if (!buff._8) {
+        console.log("Wrong data 8");
+        break;
+      }
+      if (buff._8?.target === Target.SELF) {
+        const skillStackNum = gameState.characters[position].buff.find((x) => {
+          return x.id === buff._8?.targetSkill;
+        });
+        if (buff._8?.applyTarget === Target.SELF) {
+          gameState.characters[position].buff = [
+            ...gameState.characters[position].buff,
+            buff._8.applyBuff,
+          ];
+        } else if (buff._8?.applyTarget === Target.ENEMY) {
+          const applyBuff = buff._8.applyBuff;
+          console.log(applyBuff);
+          console.log(skillStackNum);
+          if (
+            !applyBuff ||
+            !applyBuff._0 ||
+            !skillStackNum ||
+            !skillStackNum._3
+          ) {
+            console.log("Wrong data 8 applyBuff");
+            break;
+          }
+          gameState.enemy.buff = [
+            ...gameState.enemy.buff,
+            {
+              id: applyBuff.id,
+              name: applyBuff.name,
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: applyBuff._0?.value * skillStackNum._3.stack,
+                affectType: applyBuff._0?.affectType,
+              },
+            },
+          ];
+        }
       }
       break;
   }
