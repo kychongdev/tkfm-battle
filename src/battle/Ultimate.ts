@@ -80,5 +80,92 @@ export function activateUltimate(position: number, gameState: GameState) {
           ];
         }
       });
+      break;
+    case "526":
+      // 使目標受到傷害增加30/30/40/40/45%(4回合)、使目標受到傷害增加0/10/10/20/20%(最多1層)、使我方全體必殺技傷害增加10/15/20/25/30%(4回合)，CD:4
+      gameState.enemy.buff = [
+        ...gameState.enemy.buff,
+        {
+          id: "526-ult-1",
+          name: "受到傷害增加30%(4回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.INCREASE_DMG_RECEIVED,
+            value:
+              bond === 1
+                ? 0.3
+                : bond === 2
+                  ? 0.3
+                  : bond === 3
+                    ? 0.4
+                    : bond === 4
+                      ? 0.4
+                      : 0.45,
+          },
+        },
+      ];
+      // export interface _3 {
+      //   id: string;
+      //   name: string;
+      //   stack: number;
+      //   maxStack: number;
+      //   affectType: AffectType;
+      //   value?: number;
+
+      if (bond > 1) {
+        const stack = gameState.enemy.buff.find(
+          (buff) => buff.id === "526-ult-2",
+        )?._3?.stack;
+        if (stack !== 1 || !stack) {
+          gameState.enemy.buff = [
+            ...gameState.enemy.buff,
+            {
+              id: "526-ult-2",
+              name: "受到傷害增加10%(最多1層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 4,
+              _3: {
+                id: "526-ult-2",
+                name: "受到傷害增加10%(最多1層)",
+                stack: 1,
+                maxStack: 1,
+                affectType: AffectType.INCREASE_DMG_RECEIVED,
+                value:
+                  bond === 2 ? 0.1 : bond === 3 ? 0.1 : bond === 4 ? 0.2 : 0.2,
+              },
+            },
+          ];
+        }
+      }
+
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "526-ult-3",
+            name: "必殺技傷害增加30%(4回合)",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 4,
+            _0: {
+              affectType: AffectType.ULTIMATE_DAMAGE,
+              value:
+                bond === 1
+                  ? 0.1
+                  : bond === 2
+                    ? 0.15
+                    : bond === 3
+                      ? 0.2
+                      : bond === 4
+                        ? 0.25
+                        : 0.3,
+            },
+          },
+        ];
+      });
+      break;
   }
 }

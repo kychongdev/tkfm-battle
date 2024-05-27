@@ -65,9 +65,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           CharacterClass.PROTECTOR,
           CharacterClass.HEALER,
         ];
-        console.log(characterClassCondition);
         gameState.characters.forEach((character) => {
-          console.log(character.class);
           if (characterClassCondition.includes(character.class)) {
             const index = characterClassCondition.indexOf(character.class);
             if (index !== -1) {
@@ -92,103 +90,6 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 value: 0.3,
               },
             },
-            {
-              id: "526-Lead-2",
-              name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到光屬性傷害增加6%(1回合)』」",
-              type: 8,
-              condition: Condition.ULTIMATE,
-              duration: 100,
-              _8: {
-                value: 0.03,
-                target: Target.SELF,
-                targetSkill: "526-2-1",
-                applyTarget: Target.ENEMY,
-                applyBuff: {
-                  id: "526-Lead-2-1",
-                  name: "受到水屬性傷害增加3%",
-                  type: 0,
-                  condition: Condition.NONE,
-                  duration: 1,
-                  _0: {
-                    value: 0.06,
-                    affectType: AffectType.LIGHT,
-                  },
-                },
-              },
-            },
-            {
-              id: "526-Lead-3",
-              name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到暗屬性傷害增加6%(1回合)』」",
-              type: 8,
-              condition: Condition.ULTIMATE,
-              duration: 100,
-              _8: {
-                value: 0.03,
-                target: Target.SELF,
-                targetSkill: "526-2-1",
-                applyTarget: Target.ENEMY,
-                applyBuff: {
-                  id: "526-Lead-3-1",
-                  name: "受到暗屬性傷害增加6%",
-                  type: 0,
-                  condition: Condition.NONE,
-                  duration: 1,
-                  _0: {
-                    value: 0.06,
-                    affectType: AffectType.DARK,
-                  },
-                },
-              },
-            },
-
-            {
-              id: "526-Lead-4",
-              name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火屬性傷害增加3%(1回合)』」",
-              type: 8,
-              condition: Condition.ULTIMATE,
-              duration: 100,
-              _8: {
-                value: 0.03,
-                target: Target.SELF,
-                targetSkill: "526-2-1",
-                applyTarget: Target.ENEMY,
-                applyBuff: {
-                  id: "526-Lead-4-1",
-                  name: "受到火屬性傷害增加3%",
-                  type: 0,
-                  condition: Condition.NONE,
-                  duration: 1,
-                  _0: {
-                    value: 0.03,
-                    affectType: AffectType.FIRE,
-                  },
-                },
-              },
-            },
-            {
-              id: "526-Lead-5",
-              name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火、水屬性傷害增加3%(1回合)』」",
-              type: 8,
-              condition: Condition.ULTIMATE,
-              duration: 100,
-              _8: {
-                value: 0.03,
-                target: Target.SELF,
-                targetSkill: "526-2-1",
-                applyTarget: Target.ENEMY,
-                applyBuff: {
-                  id: "526-Lead-5-1",
-                  name: "受到水屬性傷害增加3%",
-                  type: 0,
-                  condition: Condition.NONE,
-                  duration: 1,
-                  _0: {
-                    value: 0.03,
-                    affectType: AffectType.WATER,
-                  },
-                },
-              },
-            },
           ];
         });
 
@@ -207,9 +108,104 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
               affectType: AffectType.RAW_SHIELD,
             },
           },
-        ];
+          {
+            id: "526-Lead-2",
+            name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到光屬性傷害增加6%(1回合)』」",
+            type: 8,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _8: {
+              value: 0.03,
+              target: Target.SELF,
+              targetSkill: "526-2-1",
+              applyTarget: Target.ENEMY,
+              applyBuff: {
+                id: "526-Lead-2-1",
+                name: "受到水屬性傷害增加3%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: 0.06,
+                  affectType: AffectType.LIGHT,
+                },
+              },
+            },
+          },
+          {
+            id: "526-Lead-3",
+            name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到暗屬性傷害增加6%(1回合)』」",
+            type: 8,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _8: {
+              value: 0.03,
+              target: Target.SELF,
+              targetSkill: "526-2-1",
+              applyTarget: Target.ENEMY,
+              applyBuff: {
+                id: "526-Lead-3-1",
+                name: "受到暗屬性傷害增加6%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: 0.06,
+                  affectType: AffectType.DARK,
+                },
+              },
+            },
+          },
 
-        console.log(characterClassCondition);
+          {
+            id: "526-Lead-4",
+            name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火屬性傷害增加3%(1回合)』」",
+            type: 8,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _8: {
+              value: 0.03,
+              target: Target.SELF,
+              targetSkill: "526-2-1",
+              applyTarget: Target.ENEMY,
+              applyBuff: {
+                id: "526-Lead-4-1",
+                name: "受到火屬性傷害增加3%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: 0.03,
+                  affectType: AffectType.FIRE,
+                },
+              },
+            },
+          },
+          {
+            id: "526-Lead-5",
+            name: "必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火、水屬性傷害增加3%(1回合)』」",
+            type: 8,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _8: {
+              value: 0.03,
+              target: Target.SELF,
+              targetSkill: "526-2-1",
+              applyTarget: Target.ENEMY,
+              applyBuff: {
+                id: "526-Lead-5-1",
+                name: "受到水屬性傷害增加3%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: 0.03,
+                  affectType: AffectType.WATER,
+                },
+              },
+            },
+          },
+        ];
         if (characterClassCondition.length <= 1) {
           gameState.characters.forEach((_, index) => {
             gameState.characters[index].buff = [
