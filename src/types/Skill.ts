@@ -1,4 +1,4 @@
-import type { _0, _1, _2, _3, _4, _5, _6, _7, _8 } from "./ISkills";
+import type { _0, _1, _10, _2, _3, _4, _5, _6, _7, _8, _9 } from "./ISkills";
 
 interface IBuff {
   id: string;
@@ -19,6 +19,8 @@ interface Buff extends IBuff {
   _6?: _6;
   _7?: _7;
   _8?: _8;
+  _9?: _9;
+  _10?: _10;
 }
 
 // biome-ignore lint/style/useEnumInitializers: <explanation>
@@ -35,6 +37,7 @@ enum AffectType {
   ATK,
   MAXHP,
   SHIELD_RATE_RECEIVED,
+  RAW_SHIELD,
   INCREASE_DMG,
   INCREASE_DMG_RECEIVED,
   DECREASE_DMG_RECEIVED,

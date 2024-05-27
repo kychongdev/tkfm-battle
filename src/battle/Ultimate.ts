@@ -4,7 +4,7 @@
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition } from "../types/Skill";
 import { applyRawAttBuff } from "./calculate";
-import { GameState } from "./GameState";
+import type { GameState } from "./GameState";
 
 export function activateUltimate(position: number, gameState: GameState) {
   const bond = gameState.characters[position].bond;

@@ -69,6 +69,17 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             },
           },
         },
+        {
+          id: "525-4",
+          name: "使自身攻擊力增加10%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.1,
+            affectType: AffectType.ATK,
+          },
+        },
       ];
       gameState.characters.forEach((character, index) => {
         if (
@@ -288,6 +299,17 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         },
         // 使自身受到傷害減少5%
+        {
+          id: "526-9",
+          name: "使自身受到傷害減少5%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.05,
+            affectType: AffectType.DECREASE_DMG_RECEIVED,
+          },
+        },
       ];
       break;
 

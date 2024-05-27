@@ -39,6 +39,7 @@ export interface _3 {
 }
 
 // increase _3 stack buff
+// 增加層次的BUFF
 export interface _4 {
   value: number;
   targetSkill: string;
@@ -48,6 +49,7 @@ export interface _4 {
 
 // immediately effect buff
 // 立即生效的BUFF
+// 未寫
 export interface _5 {
   condition: SpecialCondition;
   conditionValue: number;
@@ -82,4 +84,18 @@ export interface _8 {
   targetSkill: string;
   applyTarget: Target | CharacterClass;
   applyBuff: Buff;
+}
+
+// 潛6的被動
+export interface _9 {
+  applyBuff: Buff;
+}
+
+// Apply HP based shield
+// 必殺時，觸發「以自身最大HP10%給予我方全體護盾(1回合)」
+export interface _10 {
+  value: number;
+  hpBased: string;
+  target: Target | CharacterClass;
+  affectType: AffectType;
 }

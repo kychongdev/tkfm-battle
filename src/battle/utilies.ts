@@ -9,15 +9,23 @@ export function parseSkillName(buff: Buff) {
   if (buff.type === 0) {
     switch (buff._0?.affectType) {
       case AffectType.RAWATK:
-        return `攻擊增加${buff._0.value} (${buff.duration}回合)`;
+        return `攻擊增加${buff._0.value}`;
       case AffectType.FIRE:
-        return `受到火屬性攻擊增加${buff._0.value * 100}% (${
-          buff.duration
-        }回合)`;
+        return `受到火屬性攻擊增加${buff._0.value * 100}%`;
       case AffectType.WATER:
-        return `受到水屬性攻擊增加${buff._0.value * 100}% (${
-          buff.duration
-        }回合)`;
+        return `受到水屬性攻擊增加${buff._0.value * 100}%`;
+      case AffectType.WIND:
+        return `受到風屬性攻擊增加${buff._0.value * 100}%`;
+      case AffectType.LIGHT:
+        return `受到光屬性攻擊增加${buff._0.value * 100}%`;
+      case AffectType.DARK:
+        return `受到暗屬性攻擊增加${buff._0.value * 100}%`;
+      case AffectType.ATK:
+        return `攻擊增加${buff._0.value * 100}%`;
+      case AffectType.MAXHP:
+        return `最大HP增加${buff._0.value * 100}%`;
+      case AffectType.INCREASE_DMG:
+        return `造成傷害增加${buff._0.value * 100}%`;
     }
 
     return buff.name;
