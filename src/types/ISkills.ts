@@ -78,6 +78,7 @@ export interface _7 {
 
 // apply debuff/buff
 // 白被動3
+// 必殺時，觸發「依據自身『連環陷阱』的層數觸發『使目標受到火、水屬性傷害增加3%(1回合)』」
 export interface _8 {
   value: number;
   target: Target | CharacterClass;

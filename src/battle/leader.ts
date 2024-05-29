@@ -1,9 +1,146 @@
 import type { GameState } from "./GameState";
-import { AffectType, Condition, Target } from "../types/Skill";
+import {
+  AffectType,
+  CharacterAttribute,
+  Condition,
+  Target,
+} from "../types/Skill";
 import { CharacterClass } from "../types/Character";
 
 export function triggerLeaderSkill(leader: string, gameState: GameState) {
   switch (leader) {
+    case "514":
+      // 我方全體獲得「隊伍中至少有3名暗屬性角色時，發動《源初魔法少女》」
+      // 我方全體獲得「隊伍中至少有2名光屬性角色時，發動《星月的祝福》」
+      // 我方站位1的角色獲得「《力量增幅》」
+      //
+      //
+      // 《星月的祝福》
+      // 造成傷害增加20%
+      // 必殺時，觸發「使目標受到暗屬性傷害增加17.5%(最多2層)」
+      // 必殺時，觸發「使目標受到光屬性傷害增加17.5%(最多2層)」
+      //
+      // 《力量增幅》
+
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "514-Lead-1",
+            name: "最大HP增加30%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              affectType: AffectType.MAXHP,
+              value: 0.3,
+            },
+          },
+        ];
+      });
+
+      // 《源初魔法少女》
+      // 攻擊力增加40%
+      // 行動時，觸發「使目標受到傷害增加2.5%(最多12層)」
+      // 行動時，觸發「使目標受到觸發技傷害增加5%(最多12層)」
+      {
+        const threeDarkCondition = [
+          CharacterAttribute.DARK,
+          CharacterAttribute.DARK,
+          CharacterAttribute.DARK,
+        ];
+        if (threeDarkCondition.length === 0) {
+          gameState.characters.forEach((_, index) => {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "514-Lead-2",
+                name: "攻擊力增加40%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.ATK,
+                  value: 0.4,
+                },
+              },
+              {
+                id: "514-Lead-3",
+                name: "行動時，觸發「使目標受到傷害增加2.5%(最多12層)」",
+                type: 4,
+                condition: Condition.MOVE,
+                duration: 100,
+                _4: {
+                  increaseStack: 1,
+                  targetSkill: "514-Lead-3-1",
+                  target: Target.ENEMY,
+                  applyBuff: {
+                    id: "514-Lead-3-1",
+                    name: "受到傷害增加2.5%",
+                    type: 3,
+                    condition: Condition.NONE,
+                    duration: 100,
+                    _3: {
+                      id: "514-Lead-3-1",
+                      name: "受到傷害增加2.5%",
+                      stack: 1,
+                      maxStack: 12,
+                      affectType: AffectType.INCREASE_DMG_RECEIVED,
+                      value: 0.025,
+                    },
+                  },
+                },
+              },
+            ];
+          });
+        }
+
+        const twoLightCondition = [
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+        ];
+        if (twoLightCondition.length === 0) {
+          gameState.characters.forEach((_, index) => {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "514-Lead-4",
+                name: "行動時，觸發「使目標受到觸發技傷害增加5%(最多12層)」",
+                type: 4,
+                condition: Condition.MOVE,
+                duration: 100,
+                _4: {
+                  increaseStack: 1,
+                  targetSkill: "514-Lead-4-1",
+                  target: Target.ENEMY,
+                  applyBuff: {
+                    id: "514-Lead-4-1",
+                    name: "受到觸發技傷害增加5%",
+                    type: 3,
+                    condition: Condition.NONE,
+                    duration: 100,
+                    _3: {
+                      id: "514-Lead-4-1",
+                      name: "受到觸發技傷害增加5%",
+                      stack: 1,
+                      maxStack: 12,
+                      affectType: AffectType.INCREASE_TRIGGER_DAMAGE_RECEIVED,
+                      value: 0.05,
+                    },
+                  },
+                },
+              },
+            ];
+          });
+        }
+      }
+
+      // 攻擊力增加80%
+      // 普攻傷害增加60%
+      // 必殺技傷害增加40%
+      // 必殺時，觸發「以自身攻擊力150%對目標造成傷害」
+      gameState.characters[0].buff = [...gameState.characters[0].buff];
+      break;
     case "523":
       gameState.characters.forEach((_, index) => {
         gameState.characters[index].buff = [

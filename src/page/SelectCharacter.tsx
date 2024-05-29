@@ -18,7 +18,7 @@ import character from "../assets/character.json";
 import { produce } from "immer";
 import { useLocalStorage } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
-import { CharacterSelect } from "../types/Character";
+import type { CharacterSelect } from "../types/Character";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -28,7 +28,7 @@ import { CharacterSelect } from "../types/Character";
 // );
 
 export default function SelectCharacterPage() {
-  let characterOption = [];
+  const characterOption = [];
   for (const [key, value] of Object.entries(character.name)) {
     characterOption.push({ value: key, label: value });
   }

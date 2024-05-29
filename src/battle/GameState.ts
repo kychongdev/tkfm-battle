@@ -78,7 +78,11 @@ export const useGameState = create<GameState>()(
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
           basicAttack(state.characters[position].id, position, state);
-          parseCondition(position, Condition.BASIC_ATTACK, state);
+          parseCondition(
+            position,
+            [Condition.BASIC_ATTACK, Condition.MOVE, Condition.ATTACK],
+            state,
+          );
           checkEndTurn(state);
         });
       },
@@ -87,7 +91,11 @@ export const useGameState = create<GameState>()(
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
           activateUltimate(position, state);
-          parseCondition(position, Condition.ULTIMATE, state);
+          parseCondition(
+            position,
+            [Condition.ULTIMATE, Condition.MOVE, Condition.ATTACK],
+            state,
+          );
           checkEndTurn(state);
           state.characters[position].cd = state.characters[position].maxCd;
         });

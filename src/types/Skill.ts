@@ -81,6 +81,7 @@ enum AffectType {
   OTHER,
   OTHER_CHARACTER_INCREASE_DAMAGE,
   INCREASE_TRIGGER_DAMAGE,
+  INCREASE_TRIGGER_DAMAGE_RECEIVED,
   DEAL_TRIGGER_DAMAGE,
   NONE,
 }
@@ -128,6 +129,14 @@ enum SkillStackCondition {
   EQUAL = 2,
   EQUALORHIGHER = 2,
 }
+enum CharacterAttribute {
+  FIRE = 0,
+  WATER = 1,
+  WIND = 2,
+  LIGHT = 3,
+  DARK = 4,
+  NONE = 5,
+}
 
 export type { Buff };
 export {
@@ -138,4 +147,5 @@ export {
   ValueType,
   SpecialCondition,
   SkillStackCondition,
+  CharacterAttribute,
 };

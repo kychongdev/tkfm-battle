@@ -41,11 +41,11 @@ export function applyHpBuff(gameState: GameState) {
 // When activate condition
 export function parseCondition(
   position: number,
-  condition: Condition,
+  condition: Condition[],
   state: GameState,
 ) {
   for (const char of state.characters[position].buff) {
-    if (char.condition === condition) {
+    if (condition.includes(char.condition)) {
       triggerPassive(char, state, position);
     }
   }
@@ -375,6 +375,7 @@ export function triggerPassive(
 
       break;
     case 12:
+      //TODO Check bug
       {
         const positionList = [0, 1, 2, 3, 4];
         function recursiveRandomPosition(applyBuff: Buff) {
