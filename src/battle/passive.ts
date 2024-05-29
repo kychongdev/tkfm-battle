@@ -156,7 +156,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           name: "必殺時 ，觸發「使目標受到必殺技傷害增加20%(4回合)」",
           type: 11,
           condition: Condition.ULTIMATE,
-          duration: 4,
+          duration: 100,
           _11: {
             target: Target.ENEMY,
             applyBuff: [
@@ -179,7 +179,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           name: "必殺時 ，觸發「使目標受到傷害增加20%(4回合)」",
           type: 11,
           condition: Condition.ULTIMATE,
-          duration: 4,
+          duration: 100,
           _11: {
             target: Target.ENEMY,
             applyBuff: [

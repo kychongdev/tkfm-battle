@@ -2,7 +2,6 @@ import type { CharacterClass } from "./Character";
 import type {
   AffectType,
   Buff,
-  Condition,
   SkillStackCondition,
   SpecialCondition,
   Target,

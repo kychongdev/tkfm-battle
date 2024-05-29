@@ -1,6 +1,6 @@
 import type { Buff } from "./Skill";
 
-enum Attribute {
+export enum CharacterAttribute {
   FIRE = 0,
   WATER = 1,
   WIND = 2,
@@ -27,7 +27,7 @@ interface CharacterState {
   hp: number;
   bond: number;
   class: CharacterClass;
-  attribute: Attribute;
+  attribute: CharacterAttribute;
   position: number;
   shield: number;
   isMoved: boolean;
@@ -56,4 +56,4 @@ interface CharacterSelect {
 }
 
 export type { CharacterState, CharacterSelect };
-export { Attribute };
+export { CharacterAttribute as Attribute };

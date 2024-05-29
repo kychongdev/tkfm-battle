@@ -57,6 +57,7 @@ enum AffectType {
   INCREASE_DMG,
   INCREASE_DMG_RECEIVED,
   DECREASE_DMG_RECEIVED,
+  INCREASE_BASIC_DMG,
   ULTIMATE_DAMAGE,
   INCREASE_FIRE_DMG_RECEIVED,
   INCREASE_WATER_DMG_RECEIVED,
@@ -129,14 +130,6 @@ enum SkillStackCondition {
   EQUAL = 2,
   EQUALORHIGHER = 2,
 }
-enum CharacterAttribute {
-  FIRE = 0,
-  WATER = 1,
-  WIND = 2,
-  LIGHT = 3,
-  DARK = 4,
-  NONE = 5,
-}
 
 export type { Buff };
 export {
@@ -147,5 +140,4 @@ export {
   ValueType,
   SpecialCondition,
   SkillStackCondition,
-  CharacterAttribute,
 };
