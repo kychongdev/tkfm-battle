@@ -37,7 +37,8 @@ export function initPassiveSkill(position: number, gameState: GameState) {
               duration: 100,
               _3: {
                 id: "523-1",
-                name: "攻擊力增加",
+                name: "攻擊力增加40%",
+                value: 0.4,
                 stack: 1,
                 maxStack: 2,
                 affectType: AffectType.ATK,

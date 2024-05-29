@@ -31,7 +31,7 @@ export function parseSkillName(buff: Buff) {
     return buff.name;
   }
   if (buff.type === 3 && buff._3) {
-    return `${buff.name}[${buff._3.stack}層]最多${buff._3.maxStack}層)`;
+    return `${buff.name}${buff._3.stack}層最多${buff._3.maxStack}層)`;
   }
   if (buff.type === 7) {
     return `${buff.name}[${buff._7?.activated ? "已觸發" : "未觸發"}])`;
