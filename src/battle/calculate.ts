@@ -374,6 +374,48 @@ export function triggerPassive(
       }
 
       break;
+    case 12:
+      {
+        const positionList = [0, 1, 2, 3, 4];
+        function recursiveRandomPosition(applyBuff: Buff) {
+          if (positionList.length === 0) {
+            return;
+          }
+          const randomPosition = Math.floor(
+            Math.random() * positionList.length,
+          );
+          if (
+            gameState.characters[randomPosition].isExist &&
+            !gameState.characters[randomPosition].isDead
+          ) {
+            gameState.characters[randomPosition].buff = [
+              ...gameState.characters[randomPosition].buff,
+              applyBuff,
+            ];
+          } else {
+            positionList.splice(randomPosition, 1);
+            recursiveRandomPosition(applyBuff);
+          }
+        }
+        if (buff._12?.position) {
+          if (!buff._12.applyBuff) {
+            console.log("Wrong data 12 applyBuff");
+            break;
+          }
+          if (
+            gameState.characters[buff._12.position].isExist &&
+            !gameState.characters[buff._12.position].isDead
+          ) {
+            gameState.characters[buff._12.position].buff = [
+              ...gameState.characters[buff._12.position].buff,
+              buff._12.applyBuff,
+            ];
+          } else {
+            recursiveRandomPosition(buff._12.applyBuff);
+          }
+        }
+      }
+      break;
   }
 }
 

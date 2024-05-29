@@ -1,8 +1,6 @@
 import type {
   _0,
   _1,
-  _10,
-  _11,
   _2,
   _3,
   _4,
@@ -11,6 +9,9 @@ import type {
   _7,
   _8,
   _9,
+  _10,
+  _11,
+  _12,
 } from "./ISkills";
 
 interface IBuff {
@@ -35,6 +36,7 @@ interface Buff extends IBuff {
   _9?: _9;
   _10?: _10;
   _11?: _11;
+  _12?: _12;
 }
 
 // biome-ignore lint/style/useEnumInitializers: <explanation>
@@ -92,7 +94,8 @@ enum Condition {
   EVERY_X_TURN = 5,
   MOVE = 6,
   ON_TURN_START = 7,
-  NONE = 8,
+  APPLY_BUFF = 8,
+  NONE = 9,
 }
 
 enum SpecialCondition {

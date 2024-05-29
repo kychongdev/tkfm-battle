@@ -1,16 +1,125 @@
 import { CharacterClass } from "../types/Character";
+import type { Buff } from "../types/Skill";
 import {
-  AffectType,
   Condition,
+  AffectType,
+  Target,
   SkillStackCondition,
   SpecialCondition,
-  Target,
 } from "../types/Skill";
 import type { GameState } from "./GameState";
+import { triggerPassive } from "./calculate";
 
 export function initPassiveSkill(position: number, gameState: GameState) {
   const id = gameState.characters[position].id;
   switch (id) {
+    // 魔法少女 朱諾安
+    case "514":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "514-passive-1",
+          name: "攻擊力增加40%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.4,
+            affectType: AffectType.ATK,
+          },
+        },
+        {
+          id: "514-passive-2",
+          name: "必殺技傷害增加20%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.2,
+            affectType: AffectType.ULTIMATE_DAMAGE,
+          },
+        },
+      ];
+      {
+        // 必殺技傷害增加40%
+        // 造成傷害增加40%
+        const buff: Buff = {
+          id: "514-passive-3",
+          name: "我方站位5的角色獲得《重見光明》",
+          type: 12,
+          condition: Condition.NONE,
+          duration: 100,
+          _12: {
+            position: 4,
+            applyBuff: {
+              id: "514-passive-3-1",
+              name: "必殺技傷害增加40%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value: 0.4,
+                affectType: AffectType.ULTIMATE_DAMAGE,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+      {
+        const buff: Buff = {
+          id: "514-passive-4",
+          name: "我方站位5的角色獲得《重見光明》",
+          type: 12,
+          condition: Condition.NONE,
+          duration: 100,
+          _12: {
+            position: 4,
+            applyBuff: {
+              id: "514-passive-3-1",
+              name: "造成傷害增加40%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value: 0.4,
+                affectType: AffectType.INCREASE_DMG,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "514-passive-5",
+          name: "觸發技傷害增加100%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 1,
+            affectType: AffectType.INCREASE_TRIGGER_DAMAGE,
+          },
+        },
+        {
+          id: "514-passive-6",
+          name: "必殺時，觸發「以自身攻擊力180%對目標造成傷害」",
+          type: 1,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _1: {
+            value: 1.8,
+            isTrigger: true,
+            target: Target.ENEMY,
+            damageType: 1,
+          },
+        },
+      ];
+
+      break;
     // 杏仁咪嚕
     case "523":
       gameState.characters[position].buff = [

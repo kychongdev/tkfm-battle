@@ -105,3 +105,9 @@ export interface _11 {
   target: Target | CharacterClass;
   applyBuff: Buff[];
 }
+
+// Apply buff based on position, random it if position does not exist
+export interface _12 {
+  position: 0 | 1 | 2 | 3 | 4;
+  applyBuff: Buff;
+}
