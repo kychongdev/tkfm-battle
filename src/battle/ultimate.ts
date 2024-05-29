@@ -1,8 +1,5 @@
-// // import { AffectType, BuffType, Condition, Target } from "../types/Skill";
-// import { AffectType, BuffType, Condition, Target } from "../types/Skill";
-// import { calculateUltimateDamage, parseCondition } from "./Calculate";
 import { CharacterClass } from "../types/Character";
-import { AffectType, Condition } from "../types/Skill";
+import { AffectType, Condition, Target } from "../types/Skill";
 import { applyRawAttBuff, calcUltDamage } from "./calculate";
 import type { GameState } from "./GameState";
 
@@ -64,11 +61,10 @@ export function activateUltimate(position: number, gameState: GameState) {
             {
               id: "523-ult-2",
               name: "攻擊時，觸發『以自身攻擊力59%對目標造成傷害』(3回合)",
-              type: 0,
+              type: 1,
               condition: Condition.ATTACK,
               duration: 3,
-              _0: {
-                affectType: AffectType.DEAL_TRIGGER_DAMAGE,
+              _1: {
                 value:
                   bond === 1
                     ? 0.33
@@ -79,6 +75,9 @@ export function activateUltimate(position: number, gameState: GameState) {
                         : bond === 4
                           ? 0.52
                           : 0.59,
+                isTrigger: true,
+                target: Target.ENEMY,
+                damageType: 1,
               },
             },
           ];

@@ -12,7 +12,7 @@ import {
 } from "./calculate";
 import { AffectType, Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
-import { initPassiveSkill } from "./Passive";
+import { initPassiveSkill } from "./passive";
 import { activateUltimate } from "./ultimate";
 
 export interface GameState {
