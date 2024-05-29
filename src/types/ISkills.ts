@@ -99,3 +99,9 @@ export interface _10 {
   target: Target | CharacterClass;
   affectType: AffectType;
 }
+
+// Apply Simple buff
+export interface _11 {
+  target: Target | CharacterClass;
+  applyBuff: Buff[];
+}

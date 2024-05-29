@@ -11,6 +11,10 @@ import type { GameState } from "./GameState";
 export function initPassiveSkill(position: number, gameState: GameState) {
   const id = gameState.characters[position].id;
   switch (id) {
+    // 杏仁咪嚕
+    case "523":
+      break;
+
     case "525":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,

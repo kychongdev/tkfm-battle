@@ -351,6 +351,25 @@ export function triggerPassive(
         console.log("Wrong data 10");
         break;
       }
+      break;
+    case 11:
+      if (!buff._11) {
+        console.log("Wrong data 11");
+        break;
+      }
+      if (buff._11?.target === Target.SELF) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          ...buff._11.applyBuff,
+        ];
+      } else if (buff._11?.target === Target.ENEMY) {
+        gameState.enemy.buff = [...gameState.enemy.buff, ...buff._11.applyBuff];
+      } else if (buff._11?.target === Target.ALL) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          ...buff._11.applyBuff,
+        ];
+      }
 
       break;
   }

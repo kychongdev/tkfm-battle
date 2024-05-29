@@ -4,6 +4,262 @@ import { CharacterClass } from "../types/Character";
 
 export function triggerLeaderSkill(leader: string, gameState: GameState) {
   switch (leader) {
+    case "523":
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "523-Lead-1",
+            name: "最大HP增加20%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              affectType: AffectType.MAXHP,
+              value: 0.2,
+            },
+          },
+          {
+            id: "523-Lead-2",
+            name: "攻擊力增加70%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              affectType: AffectType.ATK,
+              value: 0.7,
+            },
+          },
+        ];
+      });
+      {
+        const characterThreeAttackerCondition = [
+          CharacterClass.ATTACKER,
+          CharacterClass.ATTACKER,
+          CharacterClass.ATTACKER,
+        ];
+        const characterTwoObstructerCondition = [
+          CharacterClass.OBSTRUCTER,
+          CharacterClass.OBSTRUCTER,
+        ];
+        gameState.characters.forEach((character) => {
+          if (characterThreeAttackerCondition.includes(character.class)) {
+            const index = characterThreeAttackerCondition.indexOf(
+              character.class,
+            );
+            if (index !== -1) {
+              characterThreeAttackerCondition.splice(
+                characterThreeAttackerCondition.indexOf(character.class),
+                1,
+              );
+            }
+          }
+          if (characterTwoObstructerCondition.includes(character.class)) {
+            const index = characterTwoObstructerCondition.indexOf(
+              character.class,
+            );
+            if (index !== -1) {
+              characterTwoObstructerCondition.splice(
+                characterTwoObstructerCondition.indexOf(character.class),
+                1,
+              );
+            }
+          }
+        });
+        if (characterThreeAttackerCondition.length === 0) {
+          gameState.characters.forEach((_, index) => {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "523-Lead-3",
+                name: "造成觸發技效果增加150%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.INCREASE_TRIGGER_DAMAGE,
+                  value: 1.5,
+                },
+              },
+              {
+                id: "523-Lead-4",
+                name: "造成傷害增加30%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.INCREASE_DMG,
+                  value: 0.3,
+                },
+              },
+              {
+                id: "523-Lead-5",
+                name: "必殺時，觸發「使目標受到火、水、風、光、闇屬性傷害增加5%(2回合)」",
+                type: 11,
+                condition: Condition.ULTIMATE,
+                duration: 100,
+                _11: {
+                  target: Target.ENEMY,
+                  applyBuff: [
+                    {
+                      id: "523-Lead-5-1",
+                      name: "受到火屬性傷害增加5%",
+                      type: 0,
+                      condition: Condition.NONE,
+                      duration: 2,
+                      _0: {
+                        value: 0.05,
+                        affectType: AffectType.INCREASE_FIRE_DMG_RECEIVED,
+                      },
+                    },
+                    {
+                      id: "523-Lead-5-2",
+                      name: "受到水屬性傷害增加5%",
+                      type: 0,
+                      condition: Condition.NONE,
+                      duration: 2,
+                      _0: {
+                        value: 0.05,
+                        affectType: AffectType.INCREASE_WATER_DMG_RECEIVED,
+                      },
+                    },
+                    {
+                      id: "523-Lead-5-3",
+                      name: "受到風屬性傷害增加5%",
+                      type: 0,
+                      condition: Condition.NONE,
+                      duration: 2,
+                      _0: {
+                        value: 0.05,
+                        affectType: AffectType.INCREASE_WIND_DMG_RECEIVED,
+                      },
+                    },
+                    {
+                      id: "523-Lead-5-4",
+                      name: "受到光屬性傷害增加5%",
+                      type: 0,
+                      condition: Condition.NONE,
+                      duration: 2,
+                      _0: {
+                        value: 0.05,
+                        affectType: AffectType.INCREASE_LIGHT_DMG_RECEIVED,
+                      },
+                    },
+                    {
+                      id: "523-Lead-5-5",
+                      name: "受到暗屬性傷害增加5%",
+                      type: 0,
+                      condition: Condition.NONE,
+                      duration: 2,
+                      _0: {
+                        value: 0.05,
+                        affectType: AffectType.INCREASE_DARK_DMG_RECEIVED,
+                      },
+                    },
+                  ],
+                },
+              },
+            ];
+          });
+          if (characterTwoObstructerCondition.length === 0) {
+            gameState.characters.forEach((_, index) => {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                {
+                  id: "523-Lead-3",
+                  name: "造成觸發技效果增加150%",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 100,
+                  _0: {
+                    affectType: AffectType.INCREASE_TRIGGER_DAMAGE,
+                    value: 1.5,
+                  },
+                },
+                {
+                  id: "523-Lead-4",
+                  name: "造成傷害增加30%",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 100,
+                  _0: {
+                    affectType: AffectType.INCREASE_DMG,
+                    value: 0.3,
+                  },
+                },
+                {
+                  id: "523-Lead-5",
+                  name: "必殺時，觸發「使目標受到火、水、風、光、闇屬性傷害增加5%(2回合)」",
+                  type: 11,
+                  condition: Condition.ULTIMATE,
+                  duration: 100,
+                  _11: {
+                    target: Target.ENEMY,
+                    applyBuff: [
+                      {
+                        id: "523-Lead-5-1",
+                        name: "受到火屬性傷害增加5%",
+                        type: 0,
+                        condition: Condition.NONE,
+                        duration: 2,
+                        _0: {
+                          value: 0.05,
+                          affectType: AffectType.INCREASE_FIRE_DMG_RECEIVED,
+                        },
+                      },
+                      {
+                        id: "523-Lead-5-2",
+                        name: "受到水屬性傷害增加5%",
+                        type: 0,
+                        condition: Condition.NONE,
+                        duration: 2,
+                        _0: {
+                          value: 0.05,
+                          affectType: AffectType.INCREASE_WATER_DMG_RECEIVED,
+                        },
+                      },
+                      {
+                        id: "523-Lead-5-3",
+                        name: "受到風屬性傷害增加5%",
+                        type: 0,
+                        condition: Condition.NONE,
+                        duration: 2,
+                        _0: {
+                          value: 0.05,
+                          affectType: AffectType.INCREASE_WIND_DMG_RECEIVED,
+                        },
+                      },
+                      {
+                        id: "523-Lead-5-4",
+                        name: "受到光屬性傷害增加5%",
+                        type: 0,
+                        condition: Condition.NONE,
+                        duration: 2,
+                        _0: {
+                          value: 0.05,
+                          affectType: AffectType.INCREASE_LIGHT_DMG_RECEIVED,
+                        },
+                      },
+                      {
+                        id: "523-Lead-5-5",
+                        name: "受到暗屬性傷害增加5%",
+                        type: 0,
+                        condition: Condition.NONE,
+                        duration: 2,
+                        _0: {
+                          value: 0.05,
+                          affectType: AffectType.INCREASE_DARK_DMG_RECEIVED,
+                        },
+                      },
+                    ],
+                  },
+                },
+              ];
+            });
+          }
+        }
+      }
+      break;
     case "525":
       gameState.characters.forEach((_, index) => {
         gameState.characters[index].buff = [
@@ -127,7 +383,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 duration: 1,
                 _0: {
                   value: 0.06,
-                  affectType: AffectType.LIGHT,
+                  affectType: AffectType.INCREASE_LIGHT_DMG_RECEIVED,
                 },
               },
             },
@@ -151,7 +407,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 duration: 1,
                 _0: {
                   value: 0.06,
-                  affectType: AffectType.DARK,
+                  affectType: AffectType.INCREASE_DARK_DMG_RECEIVED,
                 },
               },
             },
@@ -176,7 +432,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 duration: 1,
                 _0: {
                   value: 0.03,
-                  affectType: AffectType.FIRE,
+                  affectType: AffectType.INCREASE_FIRE_DMG_RECEIVED,
                 },
               },
             },
@@ -200,7 +456,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 duration: 1,
                 _0: {
                   value: 0.03,
-                  affectType: AffectType.WATER,
+                  affectType: AffectType.INCREASE_WATER_DMG_RECEIVED,
                 },
               },
             },
