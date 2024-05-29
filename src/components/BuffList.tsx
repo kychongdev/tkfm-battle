@@ -1,21 +1,23 @@
 import { Card, Group, Stack } from "@mantine/core";
-import { CharacterState } from "../types/Character";
+import { parseSkillName } from "../battle/utilities";
+import type { CharacterState } from "../types/Character";
 
 export function BuffList(props: { character: CharacterState }) {
   return (
     <Stack gap={5}>
       {props.character.buff.map((buff, index) => (
         <Group
-          key={index}
+          key={`buff.id-[${
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            index
+          }]`}
           grow
           wrap="nowrap"
           gap="xs"
           preventGrowOverflow={false}
         >
           <Card py={5} px={10}>
-            {buff.name}
-            {buff.stack ? `${buff.stack}層` : ""}
-            {buff.maxStack ? `【最多${buff.maxStack}層】` : ""}
+            {parseSkillName(buff)}
           </Card>
           <Card
             py={5}
@@ -26,7 +28,9 @@ export function BuffList(props: { character: CharacterState }) {
               alignSelf: "stretch",
             }}
           >
-            <div style={{ alignSelf: "center" }}>{buff.duration ?? "-"}</div>
+            <div style={{ alignSelf: "center" }}>
+              {buff.duration === 100 ? "-" : buff.duration}
+            </div>
           </Card>
         </Group>
       ))}

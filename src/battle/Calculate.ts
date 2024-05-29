@@ -1,14 +1,12 @@
+import type { Buff } from "../types/Skill";
 import {
   AffectType,
-  Buff,
-  BuffType,
   Condition,
-  DurationType,
+  SkillStackCondition,
   Target,
-  ValueType,
 } from "../types/Skill";
-import character from "../assets/character.json";
-import { GameState } from "./GameState";
+// import character from "../assets/character.json";
+import type { GameState } from "./GameState";
 
 export function calculateStats(
   initStats: number,
@@ -26,101 +24,17 @@ export function calculateStats(
   );
 }
 
-export function calculateBasicDamage(
-  position: number,
-  attackPercentage: number,
-  gameState: GameState,
-) {
-  let characterAtk = gameState.characters[position].maxAtk;
-  //攻擊力
-  let atkBuff = 1;
-  //傷害增加
-  let increaseDmgBuff = 1;
-  gameState.characters[position].buff.forEach((buff) => {
-    if (buff.type === BuffType.BUFF && buff.affect === AffectType.ATK) {
-      // characterAtk += characterAtk * (1 + buff.value);
-      atkBuff += buff.value;
-    }
-    if (
-      buff.type === BuffType.BUFF &&
-      buff.affect === AffectType.INCREASE_DMG
-    ) {
-      increaseDmgBuff += buff.value;
-    }
-  });
-
-  gameState.enemy.buff.forEach((buff) => {
-    if (
-      buff.type === BuffType.DEBUFF &&
-      buff.affect === AffectType.INCREASE_DMG_RECEIVED
-    ) {
-      increaseDmgBuff += buff.value;
-    }
-  });
-  return Math.ceil(characterAtk * atkBuff * attackPercentage);
-}
-
-export function calculateUltimateDamage(
-  position: number,
-  attackPercentage: number,
-  gameState: GameState,
-) {
-  let characterAtk = gameState.characters[position].maxAtk;
-  //攻擊力
-  let atkBuff = 1;
-  //傷害增加
-  let increaseDmgBuff = 1;
-  gameState.characters[position].buff.forEach((buff) => {
-    if (buff.type === BuffType.BUFF && buff.affect === AffectType.ATK) {
-      // characterAtk += characterAtk * (1 + buff.value);
-      atkBuff += buff.value;
-    }
-    if (
-      buff.type === BuffType.BUFF &&
-      buff.affect === AffectType.INCREASE_DMG
-    ) {
-      increaseDmgBuff += buff.value;
-    }
-  });
-
-  gameState.enemy.buff.forEach((buff) => {
-    if (
-      buff.type === BuffType.DEBUFF &&
-      buff.affect === AffectType.INCREASE_DMG_RECEIVED
-    ) {
-      increaseDmgBuff += buff.value;
-    }
-  });
-  return Math.ceil(characterAtk * atkBuff * attackPercentage);
-}
-
-// export function BasicAttack(
-//   position: number,
-//   gameState: GameState,
-//   target: number,
-// ) {
-//   calculateBasicDamage(position, 1, gameState);
-//   if (target == 5) {
-//     gameState.enemy.hp -= calculateBasicDamage(position, 1, gameState);
-//   } else {
-//     gameState.characters[target].hp -= calculateBasicDamage(
-//       position,
-//       1,
-//       gameState,
-//     );
-//   }
-// }
-
 // Only initiate once
-export function checkHpBuff(gameState: GameState) {
-  gameState.characters.forEach((character) => {
+export function applyHpBuff(gameState: GameState) {
+  gameState.characters.forEach((character, index) => {
     let hpBuff = 1;
-    character.buff.forEach((buff) => {
-      if (buff.affect === AffectType.HP) {
-        hpBuff += buff.value;
+    for (const buff of character.buff) {
+      if (buff.type === 0 && buff._0?.affectType === AffectType.MAXHP) {
+        hpBuff += buff._0?.value;
       }
-    });
-    character.hp = Math.ceil(character.hp * hpBuff);
+    }
+    gameState.characters[index].hp = Math.ceil(character.hp * hpBuff);
+    gameState.characters[index].maxHp = Math.ceil(character.maxHp * hpBuff);
   });
 }
 
@@ -130,63 +44,54 @@ export function parseCondition(
   condition: Condition,
   state: GameState,
 ) {
-  state.characters[position].buff.forEach((buff) => {
-    if (buff.condition === condition) {
-      triggerPassive(buff, state, position);
+  for (const char of state.characters[position].buff) {
+    if (char.condition === condition) {
+      triggerPassive(char, state, position);
     }
-  });
+  }
 }
 
-function parseAffectName(
-  buffValue: number,
-  buffAffect: AffectType | undefined,
-  affectTarget: string | undefined,
-  buffStack?: number,
+export function calcBasicDamage(
+  position: number,
+  value: number,
+  gameState: GameState,
 ) {
-  const stack = buffStack ?? 1;
-  switch (buffAffect) {
-    case AffectType.INCREASE_DMG:
-      return "造成傷害增加" + buffValue * 100 * stack + "% ";
-    case AffectType.INCREASE_DMG_RECEIVED:
-      return "受到傷害增加" + buffValue * 100 * stack + "% ";
-    case AffectType.ULTIMATE_DAMAGE:
-      return "受到必殺技傷害增加" + buffValue * 100 * stack + "% ";
-    case AffectType.DARK:
-      return "受到暗屬性傷害增加" + buffValue * 100 * stack + "% ";
-    case AffectType.WATER:
-      return "受到水屬性傷害增加" + buffValue * 100 * stack + "% ";
-    case AffectType.SHIELD:
-      return buffValue + "護盾";
-    case AffectType.OTHER_CHARACTER_INCREASE_DAMAGE:
-      //@ts-ignore
-      const name = character.name[affectTarget];
-      return (
-        "受到" +
-        (name ?? "無法讀取") +
-        "傷害增加" +
-        buffValue * 100 * stack +
-        "% "
-      );
-    default:
-      return "";
+  let tempAtk = gameState.characters[position].atk;
+  let atkPercentage = 0;
+
+  for (const buff of gameState.characters[position].buff) {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._0?.value;
+    }
   }
+  return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
 }
 
-function parseBuffValue(buff: Buff, gameState: GameState, position: number) {
-  switch (buff.valueType) {
-    case ValueType.MAXHP:
-      return Math.ceil(gameState.characters[position].maxHp * buff.value);
-    case ValueType.SKILL:
-      const valueMultiply = gameState.characters[position].buff.filter(
-        (othersBuff) => {
-          return othersBuff.unique_id === buff.valueTarget + "_ACTIVATE";
-        },
-      );
-      const skillStack = valueMultiply[0].stack ?? 1;
-      return +(buff.value * skillStack).toFixed(2);
-    default:
-      return buff.value;
+export function calcUltDamage(
+  position: number,
+  value: number,
+  gameState: GameState,
+  isTrigger: boolean,
+) {
+  let tempAtk = gameState.characters[position].atk;
+  let atkPercentage = 0;
+
+  for (const buff of gameState.characters[position].buff) {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._0?.value;
+    }
   }
+
+  if (isTrigger) {
+    return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
+  }
+  return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
 }
 
 export function triggerPassive(
@@ -194,203 +99,303 @@ export function triggerPassive(
   gameState: GameState,
   position: number,
 ) {
-  const buffValue = parseBuffValue(buff, gameState, position);
+  // const buffValue = parseBuffValue(buff, gameState, position);
   switch (buff.type) {
-    case BuffType.APPLYBUFF:
-      if (buff.target === Target.ALL) {
-        gameState.characters.forEach((_, index) => {
+    case 0:
+      //TODO trigger deal damage
+      break;
+    case 1:
+      // 攻擊
+      if (!buff._1) {
+        console.log("Wrong data");
+        break;
+      }
+      if (buff._1.damageType === 0) {
+        const damage = calcBasicDamage(position, buff._1.value, gameState);
+        switch (buff._1.target) {
+          case Target.ENEMY:
+            gameState.enemy.hp -= damage;
+            break;
+        }
+      }
+      if (buff._1.damageType === 1) {
+        const damage = calcUltDamage(
+          position,
+          buff._1.value,
+          gameState,
+          buff._1.isTrigger,
+        );
+        switch (buff._1.target) {
+          case Target.ENEMY:
+            gameState.enemy.hp -= damage;
+            break;
+        }
+      }
+      break;
+    case 2:
+      if (!buff._2) {
+        console.log("Wrong data");
+        break;
+      }
+      switch (buff._2.target) {
+        case Target.SELF:
+          gameState.characters[position].buff = [
+            ...gameState.characters[position].buff,
+            buff._2,
+          ];
+          break;
+      }
+
+      break;
+    case 3:
+      if (!buff._3) {
+        console.log("Wrong data");
+        break;
+      }
+      break;
+    case 4:
+      if (!buff._4) {
+        console.log("Wrong data");
+        break;
+      }
+      if (buff._4.target === Target.SELF) {
+        // x is gameState buff
+        const isExist = gameState.characters[position].buff.some((x) => {
+          return x.id === buff._4?.targetSkill;
+        });
+
+        if (isExist) {
+          gameState.characters[position].buff.map((x) => {
+            if (x.id === buff._4?.targetSkill) {
+              if (x._3 && x._3.stack < x._3.maxStack) {
+                if (x._3 && buff._4) {
+                  console.log(buff._4.increaseStack);
+                  x._3.stack += buff._4.increaseStack;
+                  if (x._3.stack > x._3.maxStack) {
+                    x._3.stack = x._3.maxStack;
+                  }
+                } else {
+                  console.log("Wrong data buff._4");
+                }
+              }
+            }
+            return x;
+          });
+        } else {
+          // purely typescript problem
+          if (buff._4?.applyBuff) {
+            gameState.characters[position].buff = [
+              ...gameState.characters[position].buff,
+              buff._4.applyBuff,
+            ];
+          } else {
+            console.log("Wrong data buff._4.applyBuff");
+          }
+        }
+      }
+      break;
+    case 5:
+      if (!buff._5) {
+        console.log("Wrong data 5");
+        break;
+      }
+      break;
+    case 6:
+      if (!buff._6) {
+        console.log("Wrong data 6");
+        break;
+      }
+      gameState.characters.forEach((character, index) => {
+        const rawAttBuff = applyRawAttBuff(gameState, position);
+        if (character.class === buff._6?.target) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
             {
-              name: parseAffectName(buffValue, buff.affect, buff.affectTarget),
-              type: BuffType.BUFF,
-              value: buffValue,
-              affect: buff.affect,
-              target: Target.SELF,
-              valueTarget: buff.valueTarget,
-              duration: buff.applyBuffDuration,
-              durationType: buff.durationType,
-              condition: Condition.NONE,
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _0: {
+                value: Math.ceil(rawAttBuff * buff._6.value),
+                affectType: buff._6?.affectType,
+              },
             },
           ];
-        });
-      }
-      if (buff.target === Target.SELF) {
-        if (buff.durationType === DurationType.STACK) {
-          const isExist = gameState.characters[position].buff.some(
-            (othersBuff) => {
-              return buff.unique_id + "_ACTIVATE" == othersBuff.unique_id;
-            },
-          );
-          if (!isExist) {
-            gameState.characters[position].buff = [
-              ...gameState.characters[position].buff,
-              {
-                name: parseAffectName(
-                  buffValue,
-                  buff.affect,
-                  buff.affectTarget,
-                  buff.increaseStack,
-                ),
-                type: BuffType.BUFF,
-                value: buffValue,
-                affect: buff.affect,
-                target: Target.SELF,
-                stack: buff.increaseStack,
-                maxStack: buff.maxStack,
-                valueTarget: buff.valueTarget,
-                condition: Condition.NONE,
-                unique_id: buff.unique_id + "_ACTIVATE",
-              },
-            ];
-          } else if (isExist) {
-            //Check existing buff and increase stack
-            gameState.characters[position].buff = gameState.characters[
-              position
-            ].buff.map((othersBuff) => {
-              // IF this is not working then might be data errors
-              if (
-                othersBuff.unique_id === buff.unique_id + "_ACTIVATE" &&
-                othersBuff.stack &&
-                buff.maxStack
-              ) {
-                const increaseStack = buff.increaseStack ?? 1;
-                let stack = othersBuff.stack + increaseStack;
-                if (buff.maxStack) {
-                  stack =
-                    othersBuff.stack + increaseStack > buff.maxStack
-                      ? buff.maxStack
-                      : stack;
-                }
-                return {
-                  ...othersBuff,
-                  stack,
-                  name: parseAffectName(
-                    buffValue,
-                    buff.affect,
-                    buff.affectTarget,
-                    stack,
-                  ),
-                };
-              }
-              return othersBuff;
-            });
-          }
-        } else {
-          // Simple Apply Buff to Self
-          gameState.characters[position].buff = [
-            ...gameState.characters[position].buff,
+        } else if (buff._6?.target === Target.ALL) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
             {
-              name: parseAffectName(buffValue, buff.affect, buff.affectTarget),
-
-              type: BuffType.BUFF,
-              value: buffValue,
-              affect: buff.affect,
-              target: Target.SELF,
-              valueTarget: buff.valueTarget,
-              duration: buff.applyBuffDuration,
-              durationType: DurationType.TEMPORARY,
-              condition: Condition.NONE,
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _0: {
+                value: Math.ceil(rawAttBuff * buff._6?.value),
+                affectType: buff._6?.affectType,
+              },
             },
           ];
         }
+      });
+      break;
+    case 7:
+      if (!buff._7) {
+        console.log("Wrong data 7");
+        break;
+      }
+      if (buff._7.activated) {
+        console.log("Already activated");
+        break;
+      }
+
+      if (buff._7?.target === Target.SELF) {
+        const skillStackNum = gameState.characters[position].buff.find((x) => {
+          return x.id === buff._7?.targetSkill;
+        });
+        if (buff._7?.stackCondition === SkillStackCondition.HIGHER) {
+          if (
+            skillStackNum?._3?.stack &&
+            skillStackNum._3.stack > buff._7?.stack
+          ) {
+            const buffIndex = gameState.characters[position].buff.findIndex(
+              (x) => x.id === buff.id,
+            );
+
+            //@ts-ignore
+            gameState.characters[position].buff[buffIndex]._7.activated = true;
+
+            if (buff._7.applyTarget === Target.SELF) {
+              gameState.characters[position].buff = [
+                ...gameState.characters[position].buff,
+                buff._7.activateBuff,
+              ];
+            }
+          }
+        }
+        if (buff._7?.stackCondition === SkillStackCondition.EQUALORHIGHER) {
+          if (
+            skillStackNum?._3?.stack &&
+            skillStackNum._3.stack >= buff._7?.stack
+          ) {
+            console.log("equal or higher activated");
+            const buffIndex = gameState.characters[position].buff.findIndex(
+              (x) => x.id === buff.id,
+            );
+
+            //@ts-ignore
+            gameState.characters[position].buff[buffIndex]._7.activated = true;
+            gameState.characters[position].buff = [
+              ...gameState.characters[position].buff,
+              buff._7.activateBuff,
+            ];
+            if (buff._7.applyTarget === Target.SELF) {
+              gameState.characters[position].buff = [
+                ...gameState.characters[position].buff,
+                buff._7.activateBuff,
+              ];
+            }
+          }
+        }
       }
       break;
-    case BuffType.APPLYDEBUFF:
-      if (buff.target === Target.ENEMY) {
-        if (buff.durationType === DurationType.STACK) {
-          const isExist = gameState.enemy.buff.some((othersBuff) => {
-            return buff.unique_id + "_ACTIVATE" == othersBuff.unique_id;
-          });
-          if (!isExist) {
-            gameState.enemy.buff = [
-              ...gameState.enemy.buff,
-              {
-                name: parseAffectName(
-                  buffValue,
-                  buff.affect,
-                  buff.affectTarget,
-                  buff.stack,
-                ),
-                type: BuffType.DEBUFF,
-                value: buffValue,
-                affect: buff.affect,
-                target: Target.SELF,
-                stack: buff.increaseStack ?? 1,
-                maxStack: buff.maxStack,
-                duration: buff.applyBuffDuration,
-                condition: Condition.NONE,
-                valueTarget: buff.valueTarget,
-                unique_id: buff.unique_id + "_ACTIVATE",
-              },
-            ];
-          } else if (isExist) {
-            //Check existing buff and increase stack
-            gameState.enemy.buff = gameState.enemy.buff.map((othersBuff) => {
-              if (
-                othersBuff.unique_id === buff.unique_id + "_ACTIVATE" &&
-                othersBuff.stack
-              ) {
-                const increaseStack = buff.increaseStack ?? 1;
-                let stack = othersBuff.stack + increaseStack;
-                if (buff.maxStack) {
-                  stack =
-                    othersBuff.stack + increaseStack > buff.maxStack
-                      ? buff.maxStack
-                      : stack;
-                }
-                return {
-                  ...othersBuff,
-                  stack,
-                  name: parseAffectName(
-                    buffValue,
-                    buff.affect,
-                    buff.affectTarget,
-                    stack,
-                  ),
-                };
-              }
-              return othersBuff;
-            });
+    case 8:
+      if (!buff._8) {
+        console.log("Wrong data 8");
+        break;
+      }
+      if (buff._8?.target === Target.SELF) {
+        const skillStackNum = gameState.characters[position].buff.find((x) => {
+          return x.id === buff._8?.targetSkill;
+        });
+        if (buff._8?.applyTarget === Target.SELF) {
+          gameState.characters[position].buff = [
+            ...gameState.characters[position].buff,
+            buff._8.applyBuff,
+          ];
+        } else if (buff._8?.applyTarget === Target.ENEMY) {
+          const applyBuff = buff._8.applyBuff;
+          if (
+            !applyBuff ||
+            !applyBuff._0 ||
+            !skillStackNum ||
+            !skillStackNum._3
+          ) {
+            console.log("Wrong data 8 applyBuff");
+            break;
           }
-        } else {
           gameState.enemy.buff = [
             ...gameState.enemy.buff,
             {
-              name: parseAffectName(buffValue, buff.affect, buff.affectTarget),
-              type: BuffType.DEBUFF,
-              value: buffValue,
-              affect: buff.affect,
-              target: Target.SELF,
-              valueTarget: buff.valueTarget,
-              duration: buff.applyBuffDuration,
+              id: applyBuff.id,
+              name: applyBuff.name,
+              type: 0,
               condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: applyBuff._0?.value * skillStackNum._3.stack,
+                affectType: applyBuff._0?.affectType,
+              },
             },
           ];
         }
       }
+      break;
+    case 9:
+      if (!buff._9) {
+        console.log("Wrong data 9");
+        break;
+      }
+      break;
+    case 10:
+      if (!buff._10) {
+        console.log("Wrong data 10");
+        break;
+      }
+      break;
+    case 11:
+      if (!buff._11) {
+        console.log("Wrong data 11");
+        break;
+      }
+      if (buff._11?.target === Target.SELF) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          ...buff._11.applyBuff,
+        ];
+      } else if (buff._11?.target === Target.ENEMY) {
+        gameState.enemy.buff = [...gameState.enemy.buff, ...buff._11.applyBuff];
+      } else if (buff._11?.target === Target.ALL) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          ...buff._11.applyBuff,
+        ];
+      }
 
-      break;
-    case BuffType.BASICATTACK:
-      const damage = calculateBasicDamage(position, buff.value, gameState);
-      gameState.enemy.hp -= damage;
-      break;
-    case BuffType.ULTIMATEATTACK:
-      const ultimateDamage = calculateUltimateDamage(
-        position,
-        buff.value,
-        gameState,
-      );
-      gameState.enemy.hp -= ultimateDamage;
-      break;
-    default:
       break;
   }
 }
 
+//傳功
+export function applyRawAttBuff(gameState: GameState, position: number) {
+  let tempAtk = gameState.characters[position].atk;
+  let atkPercentage = 0;
+
+  for (const buff of gameState.characters[position].buff) {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._0?.value;
+    }
+  }
+  return gameState.characters[position].atk * atkPercentage + tempAtk;
+}
+
 export function onTurnStart(gameState: GameState) {
   gameState.characters.forEach((character, position) => {
-    character.buff.forEach((buff) => {
+    for (const buff of character.buff) {
       if (
         buff.condition === Condition.EVERY_X_TURN &&
         buff.conditionTurn &&
@@ -407,7 +412,7 @@ export function onTurnStart(gameState: GameState) {
           }
         }
       }
-    });
+    }
   });
 }
 
@@ -425,20 +430,14 @@ export function checkEndTurn(state: GameState) {
 
   if (isEnd) {
     state.enemy.buff.forEach((buff) => {
-      if (
-        buff.duration &&
-        (buff.type === BuffType.BUFF || buff.type === BuffType.DEBUFF)
-      ) {
+      if (buff.duration && buff.type === 0 && buff.duration !== 100) {
         buff.duration -= 1;
       }
     });
 
     state.characters.forEach((character) => {
       character.buff.forEach((buff) => {
-        if (
-          buff.duration &&
-          (buff.type === BuffType.BUFF || buff.type === BuffType.DEBUFF)
-        ) {
+        if (buff.duration && buff.duration !== 100) {
           buff.duration -= 1;
         }
       });
@@ -454,9 +453,10 @@ export function checkEndTurn(state: GameState) {
         return buff.duration !== 0 || buff.duration === undefined;
       });
     });
-    state.characters.forEach((character) => {
+
+    for (const character of state.characters) {
       character.isMoved = false;
-    });
+    }
     state.turns += 1;
     onTurnStart(state);
   }

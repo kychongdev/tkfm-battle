@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@mantine/core";
 import { useGameState } from "../battle/GameState";
-import { formatNumber } from "../battle/utilies";
+import { formatNumber } from "../battle/utilities";
 import { useState } from "react";
 import { BuffList } from "./BuffList";
 

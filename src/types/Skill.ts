@@ -1,40 +1,43 @@
-interface Buff {
+import type {
+  _0,
+  _1,
+  _10,
+  _11,
+  _2,
+  _3,
+  _4,
+  _5,
+  _6,
+  _7,
+  _8,
+  _9,
+} from "./ISkills";
+
+interface IBuff {
+  id: string;
   name: string;
-  type: BuffType;
-  // 條件
+  type: number;
   condition: Condition;
-  // 0 表示沒在用
-  value: number;
-  // 直接添加BUFF
-  // For recursive use
-  applyBuff?: Buff;
-  // 取X屬性當成數值
-  valueType?: ValueType;
-  cdValue?: number;
-  // if valueType is skill, then value target must be defined
-  // 取X角色的技能當成數值
-  valueTarget?: string;
-  // 目標
-  target: Target;
-  // 影響的屬性
-  affect?: AffectType;
-  // Only exist for reading character
-  affectTarget?: string;
-  // 如果條件是回合
   conditionTurn?: number;
-  stack?: number;
-  increaseStack?: number;
-  maxStack?: number;
-  stackTarget?: string;
-  //if undefined means infinite
-  duration?: number;
-  applyBuffDuration?: number;
-  //if durationType is stack, then stack, increaseStack and maxstack must be defined
-  durationType?: DurationType;
-  unique_id?: string;
-  trigger?: boolean;
+  duration: number;
 }
 
+interface Buff extends IBuff {
+  _0?: _0;
+  _1?: _1;
+  _2?: _2;
+  _3?: _3;
+  _4?: _4;
+  _5?: _5;
+  _6?: _6;
+  _7?: _7;
+  _8?: _8;
+  _9?: _9;
+  _10?: _10;
+  _11?: _11;
+}
+
+// biome-ignore lint/style/useEnumInitializers: <explanation>
 enum ValueType {
   // Just take original value
   NONE,
@@ -42,71 +45,94 @@ enum ValueType {
   SKILL,
 }
 
+// biome-ignore lint/style/useEnumInitializers: <explanation>
 enum AffectType {
   RAWATK,
   ATK,
-  HP,
-  SHIELD,
+  MAXHP,
+  SHIELD_RATE_RECEIVED,
+  RAW_SHIELD,
   INCREASE_DMG,
   INCREASE_DMG_RECEIVED,
+  DECREASE_DMG_RECEIVED,
   ULTIMATE_DAMAGE,
-  FIRE,
-  WATER,
-  WIND,
-  DARK,
-  LIGHT,
+  INCREASE_FIRE_DMG_RECEIVED,
+  INCREASE_WATER_DMG_RECEIVED,
+  INCREASE_WIND_DMG_RECEIVED,
+  INCREASE_DARK_DMG_RECEIVED,
+  INCREASE_LIGHT_DMG_RECEIVED,
+  INCREASE_FIRE_DMG,
+  INCREASE_WATER_DMG,
+  INCREASE_WIND_DMG,
+  INCREASE_DARK_DMG,
+  INCREASE_LIGHT_DMG,
+  DECREASE_FIRE_DMG,
+  DECREASE_WATER_DMG,
+  DECREASE_WIND_DMG,
+  DECREASE_DARK_DMG,
+  DECREASE_LIGHT_DMG,
+  DECREASE_FIRE_DMG_RECEIVED,
+  DECREASE_WATER_DMG_RECEIVED,
+  DECREASE_WIND_DMG_RECEIVED,
+  DECREASE_DARK_DMG_RECEIVED,
+  DECREASE_LIGHT_DMG_RECEIVED,
   OTHER,
   OTHER_CHARACTER_INCREASE_DAMAGE,
-  NONE,
-}
-
-enum BuffType {
-  BUFF,
-  DEBUFF,
-  APPLYBUFF,
-  APPLYDEBUFF,
-  BASICATTACK,
-  ULTIMATEATTACK,
-  TRIGGERAPPLYBUFF,
-  TRIGGERATTACK,
-  HEAL,
-  ATKBUFF,
-  ATTRIBUTE,
-  DECREASECD,
-  APPLYRAWBUFF,
+  INCREASE_TRIGGER_DAMAGE,
+  DEAL_TRIGGER_DAMAGE,
   NONE,
 }
 
 enum Condition {
-  ATTACK,
-  ATTACKED,
-  BASIC_ATTACK,
-  ULTIMATE,
-  TURN,
-  EVERY_X_TURN,
-  MOVE,
-  NONE,
+  ATTACK = 0,
+  ATTACKED = 1,
+  BASIC_ATTACK = 2,
+  ULTIMATE = 3,
+  TURN = 4,
+  EVERY_X_TURN = 5,
+  MOVE = 6,
+  ON_TURN_START = 7,
+  NONE = 8,
+}
+
+enum SpecialCondition {
+  HP_LOWER_THAN = 0,
+  SKILL_STACK = 1,
 }
 
 enum Target {
-  SELF,
-  ENEMY,
-  ALL,
-  ALLEXCEPTSELF,
-  ATTACKER,
-  PROTECTOR,
-  HEALER,
-  OBSTRUCTER,
-  SUPPORT,
-  CHARACTER,
-  NONE,
+  ATTACKER = 5,
+  PROTECTOR = 6,
+  HEALER = 7,
+  OBSTRUCTER = 8,
+  SUPPORT = 9,
+  SELF = 10,
+  ENEMY = 11,
+  ALL = 12,
+  CHARACTER = 13,
+  NONE = 14,
 }
 
 enum DurationType {
-  PERMANENT,
-  TEMPORARY,
-  STACK,
+  PERMANENT = 0,
+  TEMPORARY = 1,
+  STACK = 2,
+}
+
+enum SkillStackCondition {
+  HIGHER = 0,
+  LOWER = 1,
+  EQUAL = 2,
+  EQUALORHIGHER = 2,
 }
 
 export type { Buff };
-export { BuffType, Condition, Target, AffectType, DurationType, ValueType };
+export {
+  Condition,
+  Target,
+  AffectType,
+  DurationType,
+  ValueType,
+  SpecialCondition,
+  SkillStackCondition,
+};

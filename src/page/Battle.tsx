@@ -10,18 +10,17 @@ import {
   Button,
   Modal,
   Text,
-  Stack,
-  Card,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
-import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
+import type { CharacterSelect, CharacterState } from "../types/Character";
+import { Attribute } from "../types/Character";
 import favicon from "../assets/character/favicon.png";
 import { useGameState } from "../battle/GameState";
 import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
-import { calculateStats } from "../battle/Calculate";
-import { formatNumber } from "../battle/utilies";
+import { calculateStats } from "../battle/calculate";
+import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
 
 export default function Battle() {
@@ -68,43 +67,15 @@ export default function Battle() {
             atk: maxAtk,
             hp: maxHp,
             bond: character.bond,
-            class: characterDetail ? characterDetail.tags.position : 0,
+            class: characterDetail ? characterDetail.tags.position : 5,
             attribute: characterDetail
               ? characterDetail.tags.attribute
               : Attribute.NONE,
             position: character.position,
             shield: 0,
-            cd: 0,
-            maxCd: 0,
+            cd: characterDetail?.stats.cd ?? 0,
+            maxCd: characterDetail?.stats.cd ?? 0,
             ultimateName: "",
-            isMoved: false,
-            isGuard: false,
-            isBroken: false,
-            isTaunt: false,
-            isParalysis: false,
-            isSleep: false,
-            isSilence: false,
-            isDead: false,
-            buff: [],
-          };
-        } else {
-          return {
-            id: character.id,
-            isExist: false,
-            baseAtk: 0,
-            baseHp: 0,
-            maxHp: 0,
-            maxAtk: 0,
-            atk: 0,
-            hp: 0,
-            bond: 1,
-            attribute: Attribute.NONE,
-            position: character.position,
-            class: 0,
-            cd: 0,
-            maxCd: 0,
-            ultimateName: "",
-            shield: 0,
             isMoved: false,
             isGuard: false,
             isBroken: false,
@@ -116,6 +87,33 @@ export default function Battle() {
             buff: [],
           };
         }
+        return {
+          id: character.id,
+          isExist: false,
+          baseAtk: 0,
+          baseHp: 0,
+          maxHp: 0,
+          maxAtk: 0,
+          atk: 0,
+          hp: 0,
+          bond: 1,
+          attribute: Attribute.NONE,
+          position: character.position,
+          class: 5,
+          cd: 0,
+          maxCd: 0,
+          ultimateName: "",
+          shield: 0,
+          isMoved: false,
+          isGuard: false,
+          isBroken: false,
+          isTaunt: false,
+          isParalysis: false,
+          isSleep: false,
+          isSilence: false,
+          isDead: false,
+          buff: [],
+        };
       });
       initCharacters(battleCharacters);
     }
