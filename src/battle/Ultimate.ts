@@ -3,12 +3,89 @@
 // import { calculateUltimateDamage, parseCondition } from "./Calculate";
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition } from "../types/Skill";
-import { applyRawAttBuff } from "./calculate";
+import { applyRawAttBuff, calcUltDamage } from "./calculate";
 import type { GameState } from "./GameState";
 
 export function activateUltimate(position: number, gameState: GameState) {
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
+    // 杏仁咪嚕
+    case "523":
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "523-ult-1",
+            name: "造成觸發技效果增加100%(4回合)",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 4,
+            _0: {
+              affectType: AffectType.INCREASE_TRIGGER_DAMAGE,
+              value:
+                bond === 1
+                  ? 1
+                  : bond === 2
+                    ? 1
+                    : bond === 3
+                      ? 1
+                      : bond === 4
+                        ? 1
+                        : 1,
+            },
+          },
+        ];
+      });
+      {
+        const ultPercentage =
+          bond === 1
+            ? 2.65
+            : bond === 2
+              ? 2.98
+              : bond === 3
+                ? 3.31
+                : bond === 4
+                  ? 3.64
+                  : 3.97;
+        gameState.enemy.hp -= calcUltDamage(
+          position,
+          ultPercentage,
+          gameState,
+          false,
+        );
+      }
+      gameState.characters.forEach((character, index) => {
+        if (
+          character.class === CharacterClass.ATTACKER ||
+          character.class === CharacterClass.OBSTRUCTER
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "523-ult-2",
+              name: "攻擊時，觸發『以自身攻擊力59%對目標造成傷害』(3回合)",
+              type: 0,
+              condition: Condition.ATTACK,
+              duration: 3,
+              _0: {
+                affectType: AffectType.DEAL_TRIGGER_DAMAGE,
+                value:
+                  bond === 1
+                    ? 0.33
+                    : bond === 2
+                      ? 0.39
+                      : bond === 3
+                        ? 0.46
+                        : bond === 4
+                          ? 0.52
+                          : 0.59,
+              },
+            },
+          ];
+        }
+      });
+
+      break;
     case "525":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,

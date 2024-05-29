@@ -67,7 +67,7 @@ export function calcBasicDamage(
       tempAtk += buff._0?.value;
     }
   }
-  return (tempAtk * atkPercentage + tempAtk) * value;
+  return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
 }
 
 export function calcUltDamage(
@@ -89,9 +89,9 @@ export function calcUltDamage(
   }
 
   if (isTrigger) {
-    return (tempAtk * atkPercentage + tempAtk) * value;
+    return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
   }
-  return (tempAtk * atkPercentage + tempAtk) * value;
+  return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
 }
 
 export function triggerPassive(
@@ -102,6 +102,7 @@ export function triggerPassive(
   // const buffValue = parseBuffValue(buff, gameState, position);
   switch (buff.type) {
     case 0:
+      //TODO trigger deal damage
       break;
     case 1:
       // 攻擊
