@@ -168,7 +168,8 @@ export function triggerPassive(
             if (x.id === buff._4?.targetSkill) {
               if (x._3 && x._3.stack < x._3.maxStack) {
                 if (x._3 && buff._4) {
-                  x._3.stack += buff._4.value;
+                  console.log(buff._4.increaseStack);
+                  x._3.stack += buff._4.increaseStack;
                   if (x._3.stack > x._3.maxStack) {
                     x._3.stack = x._3.maxStack;
                   }

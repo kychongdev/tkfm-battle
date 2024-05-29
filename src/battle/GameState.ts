@@ -62,6 +62,9 @@ export const useGameState = create<GameState>()(
           applyHpBuff(state);
           initPassiveSkill(0, state);
           initPassiveSkill(1, state);
+          initPassiveSkill(2, state);
+          initPassiveSkill(3, state);
+          initPassiveSkill(4, state);
         });
       },
       addTurn: () => {

@@ -41,7 +41,7 @@ export interface _3 {
 // increase _3 stack buff
 // 增加層次的BUFF
 export interface _4 {
-  value: number;
+  increaseStack: number;
   targetSkill: string;
   target: Target | CharacterClass;
   applyBuff?: Buff;

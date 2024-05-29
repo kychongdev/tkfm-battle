@@ -13,6 +13,86 @@ export function initPassiveSkill(position: number, gameState: GameState) {
   switch (id) {
     // 杏仁咪嚕
     case "523":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        // value: number;
+        // targetSkill: string;
+        // target: Target | CharacterClass;
+        // applyBuff?: Buff;
+        {
+          id: "523-passive-1",
+          name: "必殺時，觸發「使自身攻擊力增加40%(最多2層)」",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "523-1",
+            target: Target.SELF,
+            applyBuff: {
+              id: "523-1",
+              name: "攻擊力增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "523-1",
+                name: "攻擊力增加",
+                stack: 1,
+                maxStack: 2,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        },
+        {
+          id: "523-passive-2",
+          name: "必殺時 ，觸發「使目標受到必殺技傷害增加20%(4回合)」",
+          type: 11,
+          condition: Condition.ULTIMATE,
+          duration: 4,
+          _11: {
+            target: Target.ENEMY,
+            applyBuff: [
+              {
+                id: "523-passive-2-1",
+                name: "受到必殺技傷害增加",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 4,
+                _0: {
+                  value: 0.2,
+                  affectType: AffectType.INCREASE_DMG_RECEIVED,
+                },
+              },
+            ],
+          },
+        },
+        {
+          id: "523-passive-3",
+          name: "必殺時 ，觸發「使目標受到傷害增加20%(4回合)」",
+          type: 11,
+          condition: Condition.ULTIMATE,
+          duration: 4,
+          _11: {
+            target: Target.ENEMY,
+            applyBuff: [
+              {
+                id: "523-passive-3-1",
+                name: "受到傷害增加",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 4,
+                _0: {
+                  value: 0.2,
+                  affectType: AffectType.INCREASE_DMG_RECEIVED,
+                },
+              },
+            ],
+          },
+        },
+      ];
+
       break;
 
     case "525":
@@ -142,7 +222,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           conditionTurn: 1,
           duration: 100,
           _4: {
-            value: 1,
+            increaseStack: 1,
             targetSkill: "526-2-1",
             target: Target.SELF,
             applyBuff: {
@@ -273,7 +353,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
               duration: 1,
               _0: {
                 value: 0.03,
-                affectType: AffectType.FIRE,
+                affectType: AffectType.INCREASE_FIRE_DMG_RECEIVED,
               },
             },
           },
@@ -297,7 +377,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
               duration: 1,
               _0: {
                 value: 0.03,
-                affectType: AffectType.WATER,
+                affectType: AffectType.INCREASE_WATER_DMG_RECEIVED,
               },
             },
           },

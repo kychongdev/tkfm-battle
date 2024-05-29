@@ -20,7 +20,7 @@ import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
 import char from "../assets/character/char_small_101.png";
 import { calculateStats } from "../battle/calculate";
-import { formatNumber } from "../battle/utilies";
+import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
 
 export default function Battle() {

@@ -1,5 +1,5 @@
 import { Card, Group, Stack } from "@mantine/core";
-import { parseSkillName } from "../battle/utilies";
+import { parseSkillName } from "../battle/utilities";
 import type { CharacterState } from "../types/Character";
 
 export function BuffList(props: { character: CharacterState }) {
