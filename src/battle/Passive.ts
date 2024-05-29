@@ -15,10 +15,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
     case "523":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
-        // value: number;
-        // targetSkill: string;
-        // target: Target | CharacterClass;
-        // applyBuff?: Buff;
         {
           id: "523-passive-1",
           name: "必殺時，觸發「使自身攻擊力增加40%(最多2層)」",
@@ -90,6 +86,18 @@ export function initPassiveSkill(position: number, gameState: GameState) {
                 },
               },
             ],
+          },
+        },
+        // 使自身必殺技傷害增加10%
+        {
+          id: "523-passive-4",
+          name: "使自身必殺技傷害增加10%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.1,
+            affectType: AffectType.ULTIMATE_DAMAGE,
           },
         },
       ];
@@ -207,14 +215,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             target: Target.ATTACKER,
           },
         },
-        // {
-        //   id: "526-2",
-        //   name: "第一回合，觸發「給予自身『連環陷阱(0層)』」",
-        //   type: 2,
-        //   condition: Condition.ON_TURN_START,
-        //   duration: 100,
-        //   _2: ,
-        // },
         {
           id: "526-3",
           name: "每經過1回合時，觸發「給予自身『連環陷阱(最多9層)』」",
