@@ -1,11 +1,49 @@
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition, Target } from "../types/Skill";
-import { applyRawAttBuff, calcUltDamage } from "./calculate";
+import type { Buff } from "../types/Skill";
+import { applyRawAttBuff, calcUltDamage, triggerPassive } from "./calculate";
 import type { GameState } from "./GameState";
 
 export function activateUltimate(position: number, gameState: GameState) {
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
+    case "514":
+      // 我方站位5的角色必殺技傷害增加30/40/50/60/70%(2回合)，再以自身攻擊388/445/503/560/618%對目標造成傷害，CD:4
+      {
+        const buff: Buff = {
+          id: "514-ultimate-1",
+          name: "必殺技傷害增加70%(2回合)",
+          type: 12,
+          condition: Condition.NONE,
+          duration: 100,
+          _12: {
+            position: 4,
+            applyBuff: {
+              id: "514-ultimate-1",
+              name: "必殺技傷害增加70%(2回合)",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value:
+                  bond === 1
+                    ? 0.3
+                    : bond === 2
+                      ? 0.4
+                      : bond === 3
+                        ? 0.5
+                        : bond === 4
+                          ? 0.6
+                          : 0.7,
+                affectType: AffectType.ULTIMATE_DAMAGE,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+
+      break;
     // 杏仁咪嚕
     case "523":
       gameState.characters.forEach((_, index) => {

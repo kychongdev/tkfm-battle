@@ -5,15 +5,6 @@ import { CharacterAttribute, CharacterClass } from "../types/Character";
 export function triggerLeaderSkill(leader: string, gameState: GameState) {
   switch (leader) {
     case "514":
-      // 我方全體獲得「隊伍中至少有3名暗屬性角色時，發動《源初魔法少女》」
-      // 我方全體獲得「隊伍中至少有2名光屬性角色時，發動《星月的祝福》」
-      // 我方站位1的角色獲得「《力量增幅》」
-      //
-      //
-      // 《星月的祝福》
-      //
-      // 《力量增幅》
-
       gameState.characters.forEach((_, index) => {
         gameState.characters[index].buff = [
           ...gameState.characters[index].buff,
@@ -30,11 +21,6 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           },
         ];
       });
-
-      // 《源初魔法少女》
-      // 攻擊力增加40%
-      // 行動時，觸發「使目標受到傷害增加2.5%(最多12層)」
-      // 行動時，觸發「使目標受到觸發技傷害增加5%(最多12層)」
       {
         const threeDarkCondition = [
           CharacterAttribute.DARK,
@@ -140,9 +126,6 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
             }
           }
         });
-        // 造成傷害增加20%
-        // 必殺時，觸發「使目標受到暗屬性傷害增加17.5%(最多2層)」
-        // 必殺時，觸發「使目標受到光屬性傷害增加17.5%(最多2層)」
         if (twoLightCondition.length === 0) {
           gameState.characters.forEach((_, index) => {
             gameState.characters[index].buff = [
@@ -217,10 +200,6 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
         }
       }
 
-      // 攻擊力增加80%
-      // 普攻傷害增加60%
-      // 必殺技傷害增加40%
-      // 必殺時，觸發「以自身攻擊力150%對目標造成傷害」
       gameState.characters[0].buff = [
         ...gameState.characters[0].buff,
         {
@@ -252,7 +231,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           condition: Condition.NONE,
           duration: 100,
           _0: {
-            affectType: AffectType.ULTIMATE_DAMAGE,
+            affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
             value: 0.4,
           },
         },
@@ -571,7 +550,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
             condition: Condition.NONE,
             duration: 100,
             _0: {
-              affectType: AffectType.ULTIMATE_DAMAGE,
+              affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
               value: 0.7,
             },
           },

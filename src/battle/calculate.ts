@@ -376,8 +376,13 @@ export function triggerPassive(
       break;
     case 12:
       //TODO Check bug
+      if (!buff._12) {
+        console.log("Wrong data 12");
+        break;
+      }
       {
         const positionList = [0, 1, 2, 3, 4];
+        positionList.splice(buff._12?.position, 1);
         function recursiveRandomPosition(applyBuff: Buff) {
           if (positionList.length === 0) {
             return;

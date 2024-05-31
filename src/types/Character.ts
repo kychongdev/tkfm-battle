@@ -25,7 +25,9 @@ interface CharacterState {
   maxHp: number;
   atk: number;
   hp: number;
+  stars: number;
   bond: number;
+  passive4: boolean;
   class: CharacterClass;
   attribute: CharacterAttribute;
   position: number;
