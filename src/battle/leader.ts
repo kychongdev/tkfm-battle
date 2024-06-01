@@ -110,7 +110,6 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
             ];
           });
         }
-
         const twoLightCondition = [
           CharacterAttribute.LIGHT,
           CharacterAttribute.LIGHT,
@@ -250,7 +249,130 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
         },
       ];
       break;
+    // 夏日 菲歐菈
     case "518":
+      {
+        gameState.characters.forEach((_, index) => {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "518-Lead-1",
+              name: "最大HP增加20%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.MAXHP,
+                value: 0.2,
+              },
+            },
+          ];
+        });
+        const fourLightCondition = [
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+        ];
+        gameState.characters.forEach((character) => {
+          if (fourLightCondition.includes(character.attribute)) {
+            const index = fourLightCondition.indexOf(character.attribute);
+            if (index !== -1) {
+              fourLightCondition.splice(
+                fourLightCondition.indexOf(character.attribute),
+                1,
+              );
+            }
+          }
+        });
+        if (fourLightCondition.length === 0) {
+          gameState.characters.forEach((_, index) => {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "518-Lead-2",
+                name: "攻擊力增加100%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.ATK,
+                  value: 1,
+                },
+              },
+            ];
+          });
+          gameState.characters.forEach((character, index) => {
+            if (character.attribute === CharacterAttribute.LIGHT) {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                {
+                  id: "518-Lead-3",
+                  name: "必殺技傷害增加50%",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 100,
+                  _0: {
+                    affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
+                    value: 0.5,
+                  },
+                },
+              ];
+            }
+          });
+          gameState.characters[0].buff = [
+            ...gameState.characters[0].buff,
+            {
+              id: "518-Lead-4",
+              name: "每經過4回合，觸發「使目標受到傷害增加50%(1回合)」",
+              type: 11,
+              condition: Condition.EVERY_X_TURN,
+              conditionTurn: 4,
+              duration: 100,
+              _11: {
+                target: Target.ENEMY,
+                applyBuff: [
+                  {
+                    id: "518-Lead-4-1",
+                    name: "受到傷害增加50%",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 1,
+                    _0: {
+                      value: 0.5,
+                      affectType: AffectType.INCREASE_DMG_RECEIVED,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              id: "518-Lead-5",
+              name: "被治療時，觸發「使我方全體造成傷害增加15%(1回合)」",
+              type: 11,
+              condition: Condition.GET_HEAL,
+              duration: 100,
+              _11: {
+                target: Target.ALL,
+                applyBuff: [
+                  {
+                    id: "518-Lead-5-1",
+                    name: "造成傷害增加15%",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 1,
+                    _0: {
+                      value: 0.15,
+                      affectType: AffectType.INCREASE_DMG,
+                    },
+                  },
+                ],
+              },
+            },
+          ];
+        }
+      }
+
       break;
     case "523":
       gameState.characters.forEach((_, index) => {

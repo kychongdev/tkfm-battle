@@ -59,6 +59,58 @@ export function activateUltimate(position: number, gameState: GameState) {
         );
       }
       break;
+    case "518":
+      // 使自身造成治療增加30/35/40/45/50%(4回合)、以自身攻擊力165/188/211/234/257%對我方全體進行治療，並使目標受到光屬性傷害增加10/10/15/20/25%(1回合)，CD: 4
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "518-ult-1",
+          name: "治療增加50%(4回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.INCREASE_HEAL_RATE,
+            value:
+              bond === 1
+                ? 0.3
+                : bond === 2
+                  ? 0.35
+                  : bond === 3
+                    ? 0.4
+                    : bond === 4
+                      ? 0.45
+                      : 0.5,
+          },
+        },
+      ];
+      // HEAL function
+      //
+
+      gameState.enemy.buff = [
+        ...gameState.enemy.buff,
+        {
+          id: "518-ult-2",
+          name: "受到光屬性傷害增加25%(1回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 1,
+          _0: {
+            affectType: AffectType.INCREASE_LIGHT_DMG_RECEIVED,
+            value:
+              bond === 1
+                ? 0.1
+                : bond === 2
+                  ? 0.1
+                  : bond === 3
+                    ? 0.15
+                    : bond === 4
+                      ? 0.2
+                      : 0.25,
+          },
+        },
+      ];
+      break;
     // 杏仁咪嚕
     case "523":
       gameState.characters.forEach((_, index) => {
