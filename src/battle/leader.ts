@@ -250,6 +250,8 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
         },
       ];
       break;
+    case "518":
+      break;
     case "523":
       gameState.characters.forEach((_, index) => {
         gameState.characters[index].buff = [

@@ -35,14 +35,29 @@ export function activateUltimate(position: number, gameState: GameState) {
                         : bond === 4
                           ? 0.6
                           : 0.7,
-                affectType: AffectType.ULTIMATE_DAMAGE,
+                affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
               },
             },
           },
         };
         triggerPassive(buff, gameState, position);
+        const ultPercentage =
+          bond === 1
+            ? 3.88
+            : bond === 2
+              ? 4.45
+              : bond === 3
+                ? 5.03
+                : bond === 4
+                  ? 5.6
+                  : 6.18;
+        gameState.enemy.hp -= calcUltDamage(
+          position,
+          ultPercentage,
+          gameState,
+          false,
+        );
       }
-
       break;
     // 杏仁咪嚕
     case "523":
@@ -265,7 +280,7 @@ export function activateUltimate(position: number, gameState: GameState) {
             condition: Condition.NONE,
             duration: 4,
             _0: {
-              affectType: AffectType.ULTIMATE_DAMAGE,
+              affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
               value:
                 bond === 1
                   ? 0.1
