@@ -219,7 +219,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           condition: Condition.NONE,
           duration: 100,
           _0: {
-            affectType: AffectType.INCREASE_BASIC_DMG,
+            affectType: AffectType.INCREASE_BASIC_DAMAGE,
             value: 0.6,
           },
         },

@@ -26,6 +26,8 @@ export function parseSkillName(buff: Buff) {
         return `最大HP增加${buff._0.value * 100}%`;
       case AffectType.INCREASE_DMG:
         return `造成傷害增加${buff._0.value * 100}%`;
+      case AffectType.INCREASE_BASIC_DAMAGE:
+        return `普攻傷害增加${buff._0.value * 100}%`;
     }
 
     return buff.name;

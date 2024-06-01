@@ -367,10 +367,16 @@ export function triggerPassive(
       } else if (buff._11?.target === Target.ENEMY) {
         gameState.enemy.buff = [...gameState.enemy.buff, ...buff._11.applyBuff];
       } else if (buff._11?.target === Target.ALL) {
-        gameState.characters[position].buff = [
-          ...gameState.characters[position].buff,
-          ...buff._11.applyBuff,
-        ];
+        gameState.characters.forEach((_, index) => {
+          if (!buff._11) {
+            console.log("_11 Apply buff don't exist");
+            return;
+          }
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            ...buff._11.applyBuff,
+          ];
+        });
       }
 
       break;

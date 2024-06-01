@@ -13,6 +13,124 @@ import { triggerPassive } from "./calculate";
 export function initPassiveSkill(position: number, gameState: GameState) {
   const id = gameState.characters[position].id;
   switch (id) {
+    case "196":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "196-passive-1",
+          name: "普攻時，觸發「使我方全體普攻傷害增加30%(1回合)」",
+          type: 11,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _11: {
+            target: Target.ALL,
+            applyBuff: [
+              {
+                id: "196-passive-1-1",
+                name: "普攻傷害增加",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: 0.3,
+                  affectType: AffectType.INCREASE_BASIC_DAMAGE,
+                },
+              },
+            ],
+          },
+        },
+        {
+          id: "196-passive-2",
+          name: "必殺時，觸發「使我方全體必殺技傷害增加10%(2回合)」",
+          type: 11,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _11: {
+            target: Target.ALL,
+            applyBuff: [
+              {
+                id: "196-passive-2-1",
+                name: "必殺技傷害增加",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 2,
+                _0: {
+                  value: 0.1,
+                  affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
+                },
+              },
+            ],
+          },
+        },
+        // 每經過4回合，觸發「使敵方全體受到傷害增加30%(1回合)」
+        {
+          id: "196-passive-3",
+          name: "每經過4回合，觸發「使敵方全體受到傷害增加30%(1回合)」",
+          type: 2,
+          condition: Condition.EVERY_X_TURN,
+          conditionTurn: 4,
+          duration: 100,
+          _11: {
+            target: Target.ENEMY,
+            applyBuff: [
+              {
+                id: "196-passive-3-1",
+                name: "受到傷害增加",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: 0.3,
+                  affectType: AffectType.INCREASE_DMG_RECEIVED,
+                },
+              },
+            ],
+          },
+        },
+      ];
+
+      gameState.characters.forEach((character, index) => {
+        if (
+          character.class === CharacterClass.ATTACKER ||
+          character.class === CharacterClass.OBSTRUCTER ||
+          character.class === CharacterClass.PROTECTOR
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "196-passive-4",
+              // 行動時，觸發「使我方全體攻擊力增加15%(50回合)」
+              name: "行動時，觸發「使我方全體攻擊力增加15%(50回合)」",
+              type: 11,
+              condition: Condition.MOVE,
+              duration: 1,
+              _11: {
+                target: Target.ALL,
+                applyBuff: [
+                  {
+                    id: "196-passive-4-1",
+                    name: "攻擊力增加",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 50,
+                    _0: {
+                      value: 0.15,
+                      affectType: AffectType.ATK,
+                    },
+                  },
+                ],
+              },
+            },
+          ];
+        }
+      });
+      // 第一回合時，觸發「使我方全體攻擊者、妨礙者、守護者獲得《奏嗚曲》(1回合)」
+      //
+      // 《奏嗚曲》
+      // 行動時，觸發「使我方全體攻擊力增加15%(50回合)」
+      // :detail_passive2: 攻擊+ (6潛)
+      // 使自身攻擊力增加10%
+      break;
     // 魔法少女 朱諾安
     case "514":
       gameState.characters[position].buff = [
@@ -299,7 +417,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           duration: 100,
           _0: {
             value: 0.1,
-            affectType: AffectType.INCREASE_BASIC_DMG,
+            affectType: AffectType.INCREASE_BASIC_DAMAGE,
           },
         },
       ];
@@ -570,7 +688,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
               duration: 100,
               _0: {
                 value: 0.2,
-                affectType: AffectType.SHIELD_RATE_RECEIVED,
+                affectType: AffectType.INCREASE_SHIELD_RATE_RECEIVED,
               },
             },
           },
