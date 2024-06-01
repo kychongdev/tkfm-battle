@@ -42,8 +42,8 @@ export const useGameState = create<GameState>()(
       turnsState: "before",
       enemy: {
         ...initCharacterState,
-        maxHp: 10000000000,
-        hp: 10000000000,
+        maxHp: 10854389981,
+        hp: 10854389981,
       },
       characters: initTeamState,
       init: (characters: CharacterState[]) => {

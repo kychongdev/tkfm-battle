@@ -359,68 +359,80 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             ],
           },
         },
-        {
-          id: "518-passive-5",
-          name: "必殺時，觸發「使我方增造成傷害加20%(最多1層)」",
-          type: 4,
-          condition: Condition.ULTIMATE,
-          duration: 100,
-          _4: {
-            increaseStack: 1,
-            targetSkill: "518-passive-3-1",
-            target: Target.ALL,
-            applyBuff: {
-              id: "518-passive-3-1",
-              name: "造成傷害增加",
-              type: 3,
-              condition: Condition.NONE,
-              duration: 100,
-              _3: {
+      ];
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "518-passive-5",
+            name: "必殺時，觸發「使我方增造成傷害加20%(最多1層)」",
+            type: 4,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _4: {
+              increaseStack: 1,
+              targetSkill: "518-passive-3-1",
+              target: Target.ALL,
+              applyBuff: {
                 id: "518-passive-3-1",
-                name: "造成傷害增加20%",
-                value: 0.2,
-                stack: 1,
-                maxStack: 1,
-                affectType: AffectType.INCREASE_DMG,
-              },
-            },
-          },
-        },
-        {
-          id: "518-passive-6",
-          name: "被治療時，觸發「使我方全體造成傷害增加5%(1回合)」",
-          type: 11,
-          condition: Condition.GET_HEAL,
-          duration: 100,
-          _11: {
-            target: Target.ALL,
-            applyBuff: [
-              {
-                id: "518-passive-6-1",
                 name: "造成傷害增加",
-                type: 0,
+                type: 3,
                 condition: Condition.NONE,
-                duration: 1,
-                _0: {
-                  value: 0.05,
+                duration: 100,
+                _3: {
+                  id: "518-passive-3-1",
+                  name: "造成傷害增加20%",
+                  value: 0.2,
+                  stack: 1,
+                  maxStack: 1,
                   affectType: AffectType.INCREASE_DMG,
                 },
               },
-            ],
+            },
           },
-        },
-        {
-          id: "518-passive4-1",
-          name: "使自身普攻傷害增加10%",
-          type: 0,
-          condition: Condition.NONE,
-          duration: 100,
-          _0: {
-            value: 0.1,
-            affectType: AffectType.INCREASE_BASIC_DAMAGE,
+          {
+            id: "518-passive-6",
+            name: "被治療時，觸發「使我方全體造成傷害增加5%(1回合)」",
+            type: 11,
+            condition: Condition.GET_HEAL,
+            duration: 100,
+            _11: {
+              target: Target.ALL,
+              applyBuff: [
+                {
+                  id: "518-passive-6-1",
+                  name: "造成傷害增加",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 1,
+                  _0: {
+                    value: 0.05,
+                    affectType: AffectType.INCREASE_DMG,
+                  },
+                },
+              ],
+            },
           },
-        },
-      ];
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "518-passive4-1",
+            name: "使自身普攻傷害增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.INCREASE_BASIC_DAMAGE,
+            },
+          },
+        ];
+      }
+
       break;
     // 杏仁咪嚕
     case "523":
@@ -812,6 +824,94 @@ export function initPassiveSkill(position: number, gameState: GameState) {
 
     // 使自身攻擊力增加10%
     case "527":
+      break;
+    case "528":
+      gameState.characters.forEach((character, index) => {
+        if (character.class === CharacterClass.ATTACKER) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "528-passive-1",
+              name: "使我方全體攻擊者普攻增加30%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value: 0.3,
+                affectType: AffectType.INCREASE_BASIC_DAMAGE,
+              },
+            },
+          ];
+        }
+      });
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "528-passive-2",
+          name: "自身普攻傷害增加60%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.6,
+            affectType: AffectType.INCREASE_BASIC_DAMAGE,
+          },
+        },
+      ];
+
+      gameState.characters.forEach((character, index) => {
+        if (character.class === CharacterClass.ATTACKER) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "528-passive-3",
+              name: "使我方全體攻擊者攻擊力增加30%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value: 0.3,
+                affectType: AffectType.ATK,
+              },
+            },
+          ];
+        }
+      });
+
+      gameState.characters.forEach((character, index) => {
+        if (character.class === CharacterClass.ATTACKER) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "528-passive-4",
+              name: "使我方全體攻擊者造成傷害增加15%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value: 0.15,
+                affectType: AffectType.INCREASE_DMG,
+              },
+            },
+          ];
+        }
+      });
+
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "528-passive-4",
+          name: "造成傷害增加20%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.2,
+            affectType: AffectType.INCREASE_DMG,
+          },
+        },
+      ];
+
       break;
     case "531":
       break;

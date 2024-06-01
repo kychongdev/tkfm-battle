@@ -30,7 +30,10 @@ import type { CharacterSelect } from "../types/Character";
 export default function SelectCharacterPage() {
   const characterOption = [];
   for (const [key, value] of Object.entries(character.name)) {
-    characterOption.push({ value: key, label: value });
+    const available = ["196", "514", "518", "523", "525", "526", "528"];
+    if (available.includes(key)) {
+      characterOption.push({ value: key, label: value });
+    }
   }
 
   const [value, setValue, remove] = useLocalStorage("last-session");

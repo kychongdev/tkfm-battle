@@ -58,6 +58,9 @@ export function calcBasicDamage(
 ) {
   let tempAtk = gameState.characters[position].atk;
   let atkPercentage = 0;
+  let basicBuff = 1;
+  let basicIncreaseDamage = 1;
+  const attribute = gameState.characters[position].attribute;
 
   for (const buff of gameState.characters[position].buff) {
     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
@@ -66,8 +69,24 @@ export function calcBasicDamage(
     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
       tempAtk += buff._0?.value;
     }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.INCREASE_BASIC_DAMAGE
+    ) {
+      basicBuff += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.INCREASE_DMG) {
+      console.log(buff._0?.value);
+      basicIncreaseDamage += buff._0?.value;
+    }
   }
-  return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
+
+  return Math.ceil(
+    (tempAtk * atkPercentage + tempAtk) *
+      basicBuff *
+      basicIncreaseDamage *
+      value,
+  );
 }
 
 export function calcUltDamage(

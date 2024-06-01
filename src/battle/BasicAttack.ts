@@ -1,17 +1,16 @@
 import type { GameState } from "./GameState";
+import { calcBasicDamage } from "./calculate";
 
-export function basicAttack(id: string, position: number, state: GameState) {
-  // let damage = 0;
-  // switch (id) {
-  //   case "531":
-  //     damage = calcBasicDamage(position, 1, state);
-  //     state.enemy.hp -= damage;
-  //     break;
-  //   case "532":
-  //     // 532 : 幽夜女爵 卡蒂雅
-  //     // 以自身攻擊力265/298/331/364/397%對目標造成傷害
-  //     damage = calcBasicDamage(position, 1, state);
-  //     state.enemy.hp -= damage;
-  //     break;
-  // }
+export function basicAttack(
+  id: string,
+  position: number,
+  gameState: GameState,
+) {
+  switch (id) {
+    case "514":
+      gameState.enemy.hp -= calcBasicDamage(position, 1, gameState);
+      break;
+    case "532":
+      break;
+  }
 }

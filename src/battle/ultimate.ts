@@ -8,7 +8,6 @@ export function activateUltimate(position: number, gameState: GameState) {
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
     case "514":
-      // 我方站位5的角色必殺技傷害增加30/40/50/60/70%(2回合)，再以自身攻擊388/445/503/560/618%對目標造成傷害，CD:4
       {
         const buff: Buff = {
           id: "514-ultimate-1",
@@ -60,7 +59,6 @@ export function activateUltimate(position: number, gameState: GameState) {
       }
       break;
     case "518":
-      // 使自身造成治療增加30/35/40/45/50%(4回合)、以自身攻擊力165/188/211/234/257%對我方全體進行治療，並使目標受到光屬性傷害增加10/10/15/20/25%(1回合)，CD: 4
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
@@ -85,7 +83,6 @@ export function activateUltimate(position: number, gameState: GameState) {
         },
       ];
       // HEAL function
-      //
 
       gameState.enemy.buff = [
         ...gameState.enemy.buff,
@@ -194,7 +191,6 @@ export function activateUltimate(position: number, gameState: GameState) {
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
-          // 使自身攻擊力增加200/200/250/250/300%(1回合)，以自身攻擊力25/30/35/40/45%使自身攻擊力增加(1回合)，再以自身攻擊力25%使我方攻擊者、妨礙者攻擊力增加(1回合)，CD:3
           id: "525-ult-1",
           name: "攻擊力增加200%(1回合)",
           type: 0,
@@ -263,7 +259,6 @@ export function activateUltimate(position: number, gameState: GameState) {
       });
       break;
     case "526":
-      // 使目標受到傷害增加30/30/40/40/45%(4回合)、使目標受到傷害增加0/10/10/20/20%(最多1層)、使我方全體必殺技傷害增加10/15/20/25/30%(4回合)，CD:4
       gameState.enemy.buff = [
         ...gameState.enemy.buff,
         {
@@ -287,14 +282,6 @@ export function activateUltimate(position: number, gameState: GameState) {
           },
         },
       ];
-      // export interface _3 {
-      //   id: string;
-      //   name: string;
-      //   stack: number;
-      //   maxStack: number;
-      //   affectType: AffectType;
-      //   value?: number;
-
       if (bond > 1) {
         const stack = gameState.enemy.buff.find(
           (buff) => buff.id === "526-ult-2",
@@ -347,6 +334,10 @@ export function activateUltimate(position: number, gameState: GameState) {
           },
         ];
       });
+      break;
+    case "528":
+      // 使目標受到攻擊者傷害增加30/36.5/40/46.5/50%(最多2層)，使自身獲得「普攻時，追加『以攻擊力50/56.5/70/76.5/90%對目標造成傷害』(4回合)」，並以自身攻擊力330/376/422/468/514%對目標造成傷害，CD:4
+
       break;
   }
 }
