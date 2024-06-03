@@ -37,28 +37,50 @@ export function parseSkillName(buff: Buff) {
   }
   if (buff.type === 3 && buff._3) {
     switch (buff._3.affectType) {
-      case AffectType.RAWATK:
-        return `攻擊增加${formatNumber(buff._3.stack)}`;
       case AffectType.INCREASE_FIRE_DMG_RECEIVED:
-        return `受到火屬性攻擊增加${buff._0.value * 100}%`;
+        return `受到火屬性攻擊增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_WATER_DMG_RECEIVED:
-        return `受到水屬性攻擊增加${buff._0.value * 100}%`;
+        return `受到水屬性攻擊增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_WIND_DMG_RECEIVED:
-        return `受到風屬性攻擊增加${buff._0.value * 100}%`;
+        return `受到風屬性攻擊增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_LIGHT_DMG_RECEIVED:
-        return `受到光屬性攻擊增加${buff._0.value * 100}%`;
+        return `受到光屬性攻擊增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_DARK_DMG_RECEIVED:
-        return `受到暗屬性攻擊增加${buff._0.value * 100}%`;
+        return `受到暗屬性攻擊增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.ATK:
-        return `攻擊增加${buff._0.value * 100}%`;
+        return `攻擊增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.MAXHP:
-        return `最大HP增加${buff._0.value * 100}%`;
+        return `最大HP增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_DMG:
-        return `造成傷害增加${buff._0.value * 100}%`;
+        return `造成傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_BASIC_DAMAGE:
-        return `普攻傷害增加${buff._0.value * 100}%`;
+        return `普攻傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_ULTIMATE_DAMAGE:
-        return `必殺技傷害增加${buff._0.value * 100}%`;
+        return `必殺技傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.INCREASE_DMG_RECEIVED:
+        return `受到傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
     }
   }
   if (buff.type === 7) {
@@ -96,4 +118,8 @@ export function parseAttribute(
       return 1;
   }
   return 1;
+}
+
+export function formatToTwoDecimal(num: number) {
+  return Math.round(num * 100) / 100;
 }
