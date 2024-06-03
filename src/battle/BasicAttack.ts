@@ -1,6 +1,11 @@
-import { Target } from "../types/Skill";
+import { AffectType, Condition, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
-import { calcBasicDamage, heal } from "./calculate";
+import {
+  applyRawAttBuff,
+  calcBasicDamage,
+  heal,
+  parseRawAttackBuff,
+} from "./calculate";
 
 export function basicAttack(
   id: string,
@@ -8,6 +13,25 @@ export function basicAttack(
   gameState: GameState,
 ) {
   switch (id) {
+    case "196":
+      gameState.characters.forEach((character) => {
+        const attack = Math.ceil(applyRawAttBuff(gameState, position) * 0.3);
+        character.buff = [
+          ...character.buff,
+          {
+            id: "RAWATTACK",
+            name: "攻擊力",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 1,
+            _0: {
+              value: attack,
+              affectType: AffectType.RAWATK,
+            },
+          },
+        ];
+      });
+      break;
     case "514":
       gameState.enemies[gameState.targeting].hp -= calcBasicDamage(
         position,

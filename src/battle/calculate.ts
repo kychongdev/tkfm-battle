@@ -120,9 +120,6 @@ export function calcUltDamage(
   return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
 }
 
-// 治癒公式 = 攻擊力 x 招式倍率 x (1+進行治療時回復量±%) x (1+被治療時獲得回復量±%+受到持續型治療±%) x (1+造成持續型治療±%) x (1+其他±%)
-//
-// 攻擊回血 = 傷害公式 x (1+進行治療時回復量±%) x (1+被治療時獲得回復量±%)
 export function heal(
   position: number,
   value: number,
@@ -165,7 +162,6 @@ export function heal(
     );
     return;
   }
-
   parseHealTarget(
     gameState,
     position,
@@ -194,14 +190,73 @@ function parseHealTarget(
       });
       break;
   }
+  parseCondition(position, [Condition.GET_HEAL], gameState);
 }
+
+// export function parseRawAttackBuff(
+//   gameState: GameState,
+//   position: number,
+//   duration: number,
+//   target: Target,
+//   value: number,
+// ) {
+//   const atk = gameState.characters[position].atk;
+//   let rawAtk = 0;
+//   let atkPercentage = 1;
+//
+//   for (const buff of gameState.characters[position].buff) {
+//     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+//       atkPercentage += buff._0?.value;
+//     }
+//     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+//       rawAtk += buff._0?.value;
+//     }
+//   }
+//   const rawAttBuff = Math.ceil(atk * atkPercentage + rawAtk) * value;
+//
+//   switch (target) {
+//     case Target.SELF:
+//       gameState.characters[position].buff = [
+//         ...gameState.characters[position].buff,
+//         {
+//           id: "RAWATTACK",
+//           name: "攻擊力",
+//           type: 0,
+//           condition: Condition.NONE,
+//           duration: duration,
+//           _0: {
+//             value: rawAttBuff,
+//             affectType: AffectType.RAWATK,
+//           },
+//         },
+//       ];
+//       break;
+//     case Target.ALL:
+//       gameState.characters.forEach((character) => {
+//         character.buff = [
+//           ...character.buff,
+//           {
+//             id: "RAWATTACK",
+//             name: "攻擊力",
+//             type: 0,
+//             condition: Condition.NONE,
+//             duration: duration,
+//             _0: {
+//               value: rawAttBuff,
+//               affectType: AffectType.RAWATK,
+//             },
+//           },
+//         ];
+//       });
+//       break;
+//   }
+// }
 
 export function triggerPassive(
   buff: Buff,
   gameState: GameState,
   position: number,
 ) {
-  // const buffValue = parseBuffValue(buff, gameState, position);
   switch (buff.type) {
     case 0:
       //TODO trigger deal damage

@@ -10,7 +10,7 @@ export function parseSkillName(buff: Buff) {
   if (buff.type === 0) {
     switch (buff._0?.affectType) {
       case AffectType.RAWATK:
-        return `攻擊增加${buff._0.value}`;
+        return `攻擊增加${formatNumber(buff._0.value)}`;
       case AffectType.INCREASE_FIRE_DMG_RECEIVED:
         return `受到火屬性攻擊增加${buff._0.value * 100}%`;
       case AffectType.INCREASE_WATER_DMG_RECEIVED:

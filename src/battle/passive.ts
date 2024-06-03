@@ -89,47 +89,59 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         },
       ];
 
-      gameState.characters.forEach((character, index) => {
-        if (
-          character.class === CharacterClass.ATTACKER ||
-          character.class === CharacterClass.OBSTRUCTER ||
-          character.class === CharacterClass.PROTECTOR
-        ) {
-          gameState.characters[index].buff = [
-            ...gameState.characters[index].buff,
-            {
-              id: "196-passive-4",
-              // 行動時，觸發「使我方全體攻擊力增加15%(50回合)」
-              name: "行動時，觸發「使我方全體攻擊力增加15%(50回合)」",
-              type: 11,
-              condition: Condition.MOVE,
-              duration: 1,
-              _11: {
-                target: Target.ALL,
-                applyBuff: [
-                  {
-                    id: "196-passive-4-1",
-                    name: "攻擊力增加",
-                    type: 0,
-                    condition: Condition.NONE,
-                    duration: 50,
-                    _0: {
-                      value: 0.15,
-                      affectType: AffectType.ATK,
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters.forEach((character, index) => {
+          if (
+            character.class === CharacterClass.ATTACKER ||
+            character.class === CharacterClass.OBSTRUCTER ||
+            character.class === CharacterClass.PROTECTOR
+          ) {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "196-passive-4",
+                // 行動時，觸發「使我方全體攻擊力增加15%(50回合)」
+                name: "行動時，觸發「使我方全體攻擊力增加15%(50回合)」",
+                type: 11,
+                condition: Condition.MOVE,
+                duration: 1,
+                _11: {
+                  target: Target.ALL,
+                  applyBuff: [
+                    {
+                      id: "196-passive-4-1",
+                      name: "攻擊力增加",
+                      type: 0,
+                      condition: Condition.NONE,
+                      duration: 50,
+                      _0: {
+                        value: 0.15,
+                        affectType: AffectType.ATK,
+                      },
                     },
-                  },
-                ],
+                  ],
+                },
               },
+            ];
+          }
+        });
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "196-passive-5",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
             },
-          ];
-        }
-      });
-      // 第一回合時，觸發「使我方全體攻擊者、妨礙者、守護者獲得《奏嗚曲》(1回合)」
-      //
-      // 《奏嗚曲》
-      // 行動時，觸發「使我方全體攻擊力增加15%(50回合)」
-      // :detail_passive2: 攻擊+ (6潛)
-      // 使自身攻擊力增加10%
+          },
+        ];
+      }
       break;
     // 魔法少女 朱諾安
     case "514":
