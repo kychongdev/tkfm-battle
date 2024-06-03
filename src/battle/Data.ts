@@ -9,6 +9,7 @@ const initCharacterState: CharacterState = {
   hp: 0,
   bond: 1,
   cd: 0,
+  passive4: false,
   maxCd: 0,
   ultimateName: "",
   attribute: Attribute.NONE,

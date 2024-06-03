@@ -62,6 +62,7 @@ export function calcBasicDamage(
   let atkPercentage = 1;
   let basicBuff = 1;
   let basicIncreaseDamage = 1;
+  let enemyDamageReceivedIncrease = 1;
   const attribute = gameState.characters[position].attribute;
   const attributeNum = parseAttribute(
     attribute,
@@ -82,8 +83,23 @@ export function calcBasicDamage(
       basicBuff += buff._0?.value;
     }
     if (buff.type === 0 && buff._0?.affectType === AffectType.INCREASE_DMG) {
-      console.log(buff._0?.value);
       basicIncreaseDamage += buff._0?.value;
+    }
+  }
+
+  for (const buff of gameState.enemies[gameState.targeting].buff) {
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.INCREASE_DMG_RECEIVED
+    ) {
+      enemyDamageReceivedIncrease += buff._0?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.value &&
+      buff._3?.affectType === AffectType.INCREASE_DMG_RECEIVED
+    ) {
+      enemyDamageReceivedIncrease += buff._3?.value;
     }
   }
 
@@ -91,6 +107,7 @@ export function calcBasicDamage(
     (atk * atkPercentage + rawAtk) *
       basicBuff *
       basicIncreaseDamage *
+      enemyDamageReceivedIncrease *
       attributeNum *
       value,
   );
@@ -343,6 +360,39 @@ export function triggerPassive(
           if (buff._4?.applyBuff) {
             gameState.characters[position].buff = [
               ...gameState.characters[position].buff,
+              buff._4.applyBuff,
+            ];
+          } else {
+            console.log("Wrong data buff._4.applyBuff");
+          }
+        }
+      }
+      if (buff._4.target === Target.ENEMY) {
+        const isExist = gameState.enemies[gameState.targeting].buff.some(
+          (x) => {
+            return x.id === buff._4?.targetSkill;
+          },
+        );
+        if (isExist) {
+          gameState.enemies[gameState.targeting].buff.map((x) => {
+            if (x.id === buff._4?.targetSkill) {
+              if (x._3 && x._3.stack < x._3.maxStack) {
+                if (x._3 && buff._4) {
+                  x._3.stack += buff._4.increaseStack;
+                  if (x._3.stack > x._3.maxStack) {
+                    x._3.stack = x._3.maxStack;
+                  }
+                } else {
+                  console.log("Wrong data buff._4");
+                }
+              }
+            }
+            return x;
+          });
+        } else {
+          if (buff._4?.applyBuff) {
+            gameState.enemies[gameState.targeting].buff = [
+              ...gameState.enemies[gameState.targeting].buff,
               buff._4.applyBuff,
             ];
           } else {
