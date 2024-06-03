@@ -1,11 +1,7 @@
 import { AffectType, Condition, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
-import {
-  applyRawAttBuff,
-  calcBasicDamage,
-  heal,
-  parseRawAttackBuff,
-} from "./calculate";
+import { applyRawAttBuff, heal, parseRawAttackBuff } from "./calculate";
+import { calcBasicDamage } from "./calcBasicDamage";
 
 export function basicAttack(
   id: string,
@@ -42,7 +38,19 @@ export function basicAttack(
     case "518":
       heal(position, 0.75, gameState, true, Target.ALL);
       break;
-    case "532":
+    case "523":
+      gameState.enemies[gameState.targeting].hp -= calcBasicDamage(
+        position,
+        1,
+        gameState,
+      );
+      break;
+    case "528":
+      gameState.enemies[gameState.targeting].hp -= calcBasicDamage(
+        position,
+        1,
+        gameState,
+      );
       break;
   }
 }

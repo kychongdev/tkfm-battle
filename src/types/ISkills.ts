@@ -34,7 +34,7 @@ export interface _3 {
   stack: number;
   maxStack: number;
   affectType: AffectType;
-  value?: number;
+  value: number;
 }
 
 // increase _3 stack buff

@@ -349,7 +349,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         },
         {
           id: "518-passive-4",
-          name: "被治療時，觸發「使我方全體必殺技傷害增加5%(1回合)」",
+          name: "被治療時，觸發「使我方全體必殺技傷害增加10%(1回合)」",
           type: 11,
           condition: Condition.GET_HEAL,
           duration: 100,
@@ -363,7 +363,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
                 condition: Condition.NONE,
                 duration: 1,
                 _0: {
-                  value: 0.05,
+                  value: 0.1,
                   affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
                 },
               },
@@ -672,6 +672,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
                 name: "連環陷阱",
                 stack: 1,
                 maxStack: 9,
+                value: 0,
                 affectType: AffectType.NONE,
               },
             },
@@ -922,6 +923,22 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         },
       ];
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "528-passive-5",
+            name: "使自身造成傷害加7.5%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.075,
+              affectType: AffectType.INCREASE_DMG,
+            },
+          },
+        ];
+      }
 
       break;
     case "531":

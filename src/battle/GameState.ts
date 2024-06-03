@@ -59,6 +59,7 @@ export const useGameState = create<GameState>()(
         set((state) => {
           state.turns = 0;
           state.enemies[0].hp = state.enemies[0].maxHp;
+          state.enemies[0].buff = [];
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });
