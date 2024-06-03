@@ -890,39 +890,56 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         }
       });
 
-      gameState.characters.forEach((character, index) => {
-        if (character.class === CharacterClass.ATTACKER) {
-          gameState.characters[index].buff = [
-            ...gameState.characters[index].buff,
-            {
-              id: "528-passive-4",
-              name: "使我方全體攻擊者造成傷害增加15%",
-              type: 0,
-              condition: Condition.NONE,
-              duration: 100,
-              _0: {
-                value: 0.15,
-                affectType: AffectType.INCREASE_DMG,
-              },
-            },
-          ];
-        }
-      });
-
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
           id: "528-passive-4",
-          name: "造成傷害增加20%",
+          name: "使自身攻擊力增加50%",
           type: 0,
           condition: Condition.NONE,
           duration: 100,
           _0: {
-            value: 0.2,
-            affectType: AffectType.INCREASE_DMG,
+            value: 0.5,
+            affectType: AffectType.ATK,
           },
         },
       ];
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters.forEach((character, index) => {
+          if (character.class === CharacterClass.ATTACKER) {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "528-passive-5",
+                name: "使我方全體攻擊者造成傷害增加15%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  value: 0.15,
+                  affectType: AffectType.INCREASE_DMG,
+                },
+              },
+            ];
+          }
+        });
+
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "528-passive-6",
+            name: "造成傷害增加20%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.2,
+              affectType: AffectType.INCREASE_DMG,
+            },
+          },
+        ];
+      }
       if (gameState.characters[position].passive4) {
         gameState.characters[position].buff = [
           ...gameState.characters[position].buff,

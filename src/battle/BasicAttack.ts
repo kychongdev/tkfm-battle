@@ -1,6 +1,6 @@
 import { AffectType, Condition, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
-import { applyRawAttBuff, heal, parseRawAttackBuff } from "./calculate";
+import { applyRawAttBuff, heal } from "./calculate";
 import { calcBasicDamage } from "./calcBasicDamage";
 
 export function basicAttack(
