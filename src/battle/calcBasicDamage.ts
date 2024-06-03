@@ -1,4 +1,4 @@
-import { CharacterAttribute } from "../types/Character";
+import { CharacterAttribute, CharacterClass } from "../types/Character";
 import { AffectType } from "../types/Skill";
 import type { GameState } from "./GameState";
 import { parseAttribute } from "./utilities";
@@ -15,6 +15,7 @@ export function calcBasicDamage(
   let basicIncreaseDamage = 1;
   let enemyDamageReceivedIncrease = 1;
   let attributeDamage = 1;
+  const charClass = gameState.characters[position].class;
   const attribute = gameState.characters[position].attribute;
   const attributeNum = parseAttribute(
     attribute,
@@ -112,6 +113,13 @@ export function calcBasicDamage(
       buff._3?.affectType === AffectType.DECREASE_DMG_RECEIVED
     ) {
       enemyDamageReceivedIncrease += buff._3?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&
+      charClass === CharacterClass.ATTACKER
+    ) {
+      basicBuff += buff._3?.value;
     }
   }
   if (basicBuff < 0) {

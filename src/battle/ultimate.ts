@@ -6,9 +6,74 @@ import { calcUltDamage } from "./calcUltDamage";
 import type { GameState } from "./GameState";
 
 export function activateUltimate(gameState: GameState, position: number) {
-  console.log(gameState.characters[position]);
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
+    case "196":
+      {
+        //         :detail_skill: 血夜狂歡
+        // 以自身攻擊力30/35/35/40/40%使我方全體攻擊力增加(1回合)、並使我方全體攻擊者、妨礙者、守護者獲得「攻擊時，觸發『 以自身攻擊力10/10/12.5/12.5/15%使自身以外我方全體攻擊力增加(1回合)』(1回合)」，CD: 4
+        gameState.characters.forEach((character) => {
+          const attack = Math.floor(
+            applyRawAttBuff(gameState, position) *
+              (bond === 1
+                ? 0.3
+                : bond === 2
+                  ? 0.35
+                  : bond === 3
+                    ? 0.4
+                    : bond === 4
+                      ? 0.4
+                      : 0.4),
+          );
+          character.buff = [
+            ...character.buff,
+            {
+              id: "RAWATTACK",
+              name: "攻擊力",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: attack,
+                affectType: AffectType.RAWATK,
+              },
+            },
+          ];
+        });
+        gameState.characters.forEach((character, index) => {
+          if (
+            character.class === CharacterClass.ATTACKER ||
+            character.class === CharacterClass.OBSTRUCTER ||
+            character.class === CharacterClass.PROTECTOR
+          ) {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "196-ult-1",
+                name: "攻擊時，觸發『以自身攻擊力15%使自身以外我方全體攻擊力增加(1回合)』(1回合)",
+                type: 6,
+                condition: Condition.ATTACK,
+                duration: 1,
+                _6: {
+                  value:
+                    bond === 1
+                      ? 0.1
+                      : bond === 2
+                        ? 0.1
+                        : bond === 3
+                          ? 0.125
+                          : bond === 4
+                            ? 0.125
+                            : 0.15,
+                  affectType: AffectType.RAWATK,
+                  target: Target.ALL_EXCEPT_SELF,
+                },
+              },
+            ];
+          }
+        });
+      }
+      break;
     case "514":
       {
         const buff: Buff = {
@@ -307,6 +372,85 @@ export function activateUltimate(gameState: GameState, position: number) {
     case "528":
       // 使目標受到攻擊者傷害增加30/36.5/40/46.5/50%(最多2層)，使自身獲得「普攻時，追加『以攻擊力50/56.5/70/76.5/90%對目標造成傷害』(4回合)」，並以自身攻擊力330/376/422/468/514%對目標造成傷害，CD:4
 
+      {
+        const buff: Buff = {
+          id: "528-ult-1",
+          name: "受到攻擊者傷害增加30%(2回合)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            target: Target.ENEMY,
+            targetSkill: "528-ult-1",
+            applyBuff: {
+              id: "528-ult-1",
+              name: "受到攻擊者傷害增加30%(2回合)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "528-ult-1",
+                name: "受到攻擊者傷害增加(最多2層)",
+                affectType: AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED,
+                value:
+                  bond === 1
+                    ? 0.3
+                    : bond === 2
+                      ? 0.365
+                      : bond === 3
+                        ? 0.4
+                        : bond === 4
+                          ? 0.465
+                          : 0.5,
+                stack: 1,
+                maxStack: 2,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+      // 「普攻時，追加『以攻擊力50/56.5/70/76.5/90%對目標造成傷害』(4回合)」
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "528-ult-2",
+          name: "普攻時，追加『以攻擊力50/56.5/70/76.5/90%對目標造成傷害』(4回合)",
+          type: 1,
+          condition: Condition.BASIC_ATTACK,
+          duration: 4,
+          _1: {
+            value:
+              bond === 1
+                ? 0.5
+                : bond === 2
+                  ? 0.565
+                  : bond === 3
+                    ? 0.7
+                    : bond === 4
+                      ? 0.765
+                      : 0.9,
+            isTrigger: false,
+            target: Target.ENEMY,
+            damageType: 0,
+          },
+        },
+      ];
+      gameState.enemies[gameState.targeting].hp -= calcUltDamage(
+        position,
+        bond === 1
+          ? 3.3
+          : bond === 2
+            ? 3.76
+            : bond === 3
+              ? 4.22
+              : bond === 4
+                ? 4.68
+                : 5.14,
+        gameState,
+        false,
+      );
       break;
   }
 }

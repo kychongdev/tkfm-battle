@@ -81,6 +81,10 @@ export function parseSkillName(buff: Buff) {
         return `受到傷害增加${formatToTwoDecimal(
           buff._3.value * buff._3.stack * 100,
         )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED:
+        return `受到攻擊者傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
     }
   }
   if (buff.type === 7) {

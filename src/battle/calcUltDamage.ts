@@ -1,4 +1,4 @@
-import { CharacterAttribute } from "../types/Character";
+import { CharacterAttribute, CharacterClass } from "../types/Character";
 import { AffectType } from "../types/Skill";
 import type { GameState } from "./GameState";
 import { parseAttribute } from "./utilities";
@@ -15,6 +15,7 @@ export function calcUltDamage(
   let ultBuff = 1;
   let increaseDamage = 1;
   let enemyDamageReceivedIncrease = 1;
+  const charClass = gameState.characters[position].class;
   let attributeDamage = 1;
   const attribute = gameState.characters[position].attribute;
   const attributeNum = parseAttribute(
@@ -157,6 +158,13 @@ export function calcUltDamage(
       ) {
         ultBuff -= buff._3?.value;
       }
+      if (
+        buff.type === 3 &&
+        buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&
+        charClass === CharacterClass.ATTACKER
+      ) {
+        ultBuff += buff._3?.value;
+      }
     }
 
     return Math.floor(
@@ -169,15 +177,6 @@ export function calcUltDamage(
         value,
     );
   }
-  console.log(
-    atk,
-    ultBuff,
-    increaseDamage,
-    enemyDamageReceivedIncrease,
-    attributeDamage,
-    attributeNum,
-    value,
-  );
 
   const res = Math.floor(
     (Math.floor(atk * atkPercentage) + rawAtk) *

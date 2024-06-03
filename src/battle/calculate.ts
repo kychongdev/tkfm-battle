@@ -1,4 +1,4 @@
-import { CharacterAttribute } from "../types/Character";
+import { CharacterAttribute, CharacterClass } from "../types/Character";
 import type { Buff } from "../types/Skill";
 import {
   AffectType,
@@ -67,7 +67,9 @@ export function calcBasicDamage(
   let basicIncreaseDamage = 1;
   let enemyDamageReceivedIncrease = 1;
   let attributeDamage = 1;
+  let otherDamage = 1;
   const attribute = gameState.characters[position].attribute;
+  const charClass = gameState.characters[position].class;
   const attributeNum = parseAttribute(
     attribute,
     gameState.enemies[gameState.targeting].attribute,
@@ -165,6 +167,14 @@ export function calcBasicDamage(
     ) {
       enemyDamageReceivedIncrease += buff._3?.value;
     }
+
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&
+      charClass === CharacterClass.ATTACKER
+    ) {
+      otherDamage += buff._3?.value;
+    }
   }
   if (basicBuff < 0) {
     basicBuff = 0;
@@ -179,15 +189,18 @@ export function calcBasicDamage(
     attributeDamage = 0;
   }
 
-  return Math.floor(
+  const res = Math.floor(
     (Math.floor(atk * atkPercentage) + rawAtk) *
       basicBuff *
+      otherDamage *
       basicIncreaseDamage *
       enemyDamageReceivedIncrease *
       attributeDamage *
       attributeNum *
       value,
   );
+  console.log(res);
+  return res;
 }
 
 export function heal(
@@ -355,6 +368,7 @@ export function triggerPassive(
         );
         switch (buff._1.target) {
           case Target.ENEMY:
+            console.log(damage);
             gameState.enemies[gameState.targeting].hp -= damage;
             break;
         }
@@ -475,7 +489,7 @@ export function triggerPassive(
               id: `${buff.id}-buff`,
               name: buff.name,
               type: 0,
-              condition: Condition.ULTIMATE,
+              condition: Condition.NONE,
               duration: 1,
               _0: {
                 value: Math.floor(rawAttBuff * buff._6.value),
@@ -490,7 +504,7 @@ export function triggerPassive(
               id: `${buff.id}-buff`,
               name: buff.name,
               type: 0,
-              condition: Condition.ULTIMATE,
+              condition: Condition.NONE,
               duration: 1,
               _0: {
                 value: Math.floor(rawAttBuff * buff._6?.value),
@@ -498,6 +512,23 @@ export function triggerPassive(
               },
             },
           ];
+        } else if (buff._6?.target === Target.ALL_EXCEPT_SELF) {
+          if (index !== position) {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: `${buff.id}-buff`,
+                name: buff.name,
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: Math.floor(rawAttBuff * buff._6?.value),
+                  affectType: buff._6?.affectType,
+                },
+              },
+            ];
+          }
         }
       });
       break;
