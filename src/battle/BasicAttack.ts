@@ -11,7 +11,7 @@ export function basicAttack(
   switch (id) {
     case "196":
       gameState.characters.forEach((character) => {
-        const attack = Math.ceil(applyRawAttBuff(gameState, position) * 0.3);
+        const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.3);
         character.buff = [
           ...character.buff,
           {

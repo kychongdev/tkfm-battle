@@ -523,7 +523,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             ],
           },
         },
-        // 使自身必殺技傷害增加10%
         {
           id: "523-passive-4",
           name: "使自身必殺技傷害增加10%",

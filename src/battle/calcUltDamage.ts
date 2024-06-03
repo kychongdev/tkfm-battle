@@ -3,16 +3,17 @@ import { AffectType } from "../types/Skill";
 import type { GameState } from "./GameState";
 import { parseAttribute } from "./utilities";
 
-export function calcBasicDamage(
+export function calcUltDamage(
   position: number,
   value: number,
   gameState: GameState,
+  isTrigger: boolean,
 ) {
   const atk = gameState.characters[position].atk;
   let rawAtk = 0;
   let atkPercentage = 1;
-  let basicBuff = 1;
-  let basicIncreaseDamage = 1;
+  let ultBuff = 1;
+  let increaseDamage = 1;
   let enemyDamageReceivedIncrease = 1;
   let attributeDamage = 1;
   const attribute = gameState.characters[position].attribute;
@@ -33,21 +34,21 @@ export function calcBasicDamage(
     }
     if (
       buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_BASIC_DAMAGE
+      buff._0?.affectType === AffectType.INCREASE_ULTIMATE_DAMAGE
     ) {
-      basicBuff += buff._0?.value;
+      ultBuff += buff._0?.value;
     }
     if (
       buff.type === 0 &&
-      buff._0?.affectType === AffectType.DECREASE_BASIC_DAMAGE
+      buff._0?.affectType === AffectType.DECREASE_ULTIMATE_DAMAGE
     ) {
-      basicBuff -= buff._0?.value;
+      ultBuff -= buff._0?.value;
     }
     if (buff.type === 0 && buff._0?.affectType === AffectType.INCREASE_DMG) {
-      basicIncreaseDamage += buff._0?.value;
+      increaseDamage += buff._0?.value;
     }
     if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_DMG) {
-      basicIncreaseDamage -= buff._0?.value;
+      increaseDamage -= buff._0?.value;
     }
     if (
       buff.type === 0 &&
@@ -114,11 +115,11 @@ export function calcBasicDamage(
       enemyDamageReceivedIncrease += buff._3?.value;
     }
   }
-  if (basicBuff < 0) {
-    basicBuff = 0;
+  if (ultBuff < 0) {
+    ultBuff = 0;
   }
-  if (basicIncreaseDamage < 0) {
-    basicIncreaseDamage = 0;
+  if (increaseDamage < 0) {
+    increaseDamage = 0;
   }
   if (enemyDamageReceivedIncrease < 0) {
     enemyDamageReceivedIncrease = 0;
@@ -127,13 +128,65 @@ export function calcBasicDamage(
     attributeDamage = 0;
   }
 
-  return Math.floor(
-    (atk * atkPercentage + rawAtk) *
-      basicBuff *
-      basicIncreaseDamage *
+  if (isTrigger) {
+    for (const buff of gameState.characters[position].buff) {
+      if (
+        buff.type === 0 &&
+        buff._0?.affectType === AffectType.INCREASE_TRIGGER_DAMAGE
+      ) {
+        ultBuff += buff._0?.value;
+      }
+      if (
+        buff.type === 0 &&
+        buff._0?.affectType === AffectType.DECREASE_TRIGGER_DAMAGE
+      ) {
+        ultBuff -= buff._0?.value;
+      }
+    }
+    for (const buff of gameState.enemies[gameState.targeting].buff) {
+      if (
+        buff.type === 0 &&
+        buff._0?.affectType === AffectType.INCREASE_TRIGGER_DAMAGE_RECEIVED
+      ) {
+        ultBuff += buff._0?.value;
+      }
+      if (
+        buff.type === 3 &&
+        buff._3?.value &&
+        buff._3?.affectType === AffectType.DECREASE_TRIGGER_DAMAGE_RECEIVED
+      ) {
+        ultBuff -= buff._3?.value;
+      }
+    }
+
+    return Math.floor(
+      (Math.floor(atk * atkPercentage) + rawAtk) *
+        ultBuff *
+        increaseDamage *
+        enemyDamageReceivedIncrease *
+        attributeDamage *
+        attributeNum *
+        value,
+    );
+  }
+  console.log(
+    atk,
+    ultBuff,
+    increaseDamage,
+    enemyDamageReceivedIncrease,
+    attributeDamage,
+    attributeNum,
+    value,
+  );
+
+  const res = Math.floor(
+    (Math.floor(atk * atkPercentage) + rawAtk) *
+      ultBuff *
+      increaseDamage *
       enemyDamageReceivedIncrease *
       attributeDamage *
       attributeNum *
       value,
   );
+  return res;
 }

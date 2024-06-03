@@ -1,10 +1,12 @@
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition, Target } from "../types/Skill";
 import type { Buff } from "../types/Skill";
-import { applyRawAttBuff, calcUltDamage, triggerPassive } from "./calculate";
+import { applyRawAttBuff, triggerPassive } from "./calculate";
+import { calcUltDamage } from "./calcUltDamage";
 import type { GameState } from "./GameState";
 
-export function activateUltimate(position: number, gameState: GameState) {
+export function activateUltimate(gameState: GameState, position: number) {
+  console.log(gameState.characters[position]);
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
     case "514":
@@ -153,39 +155,6 @@ export function activateUltimate(position: number, gameState: GameState) {
           false,
         );
       }
-      gameState.characters.forEach((character, index) => {
-        if (
-          character.class === CharacterClass.ATTACKER ||
-          character.class === CharacterClass.OBSTRUCTER
-        ) {
-          gameState.characters[index].buff = [
-            ...gameState.characters[index].buff,
-            {
-              id: "523-ult-2",
-              name: "攻擊時，觸發『以自身攻擊力59%對目標造成傷害』(3回合)",
-              type: 1,
-              condition: Condition.ATTACK,
-              duration: 3,
-              _1: {
-                value:
-                  bond === 1
-                    ? 0.33
-                    : bond === 2
-                      ? 0.39
-                      : bond === 3
-                        ? 0.46
-                        : bond === 4
-                          ? 0.52
-                          : 0.59,
-                isTrigger: true,
-                target: Target.ENEMY,
-                damageType: 1,
-              },
-            },
-          ];
-        }
-      });
-
       break;
     case "525":
       gameState.characters[position].buff = [
@@ -221,7 +190,7 @@ export function activateUltimate(position: number, gameState: GameState) {
           duration: 1,
           _0: {
             affectType: AffectType.RAWATK,
-            value: Math.ceil(
+            value: Math.floor(
               applyRawAttBuff(gameState, position) *
                 (bond === 1
                   ? 0.25
@@ -251,7 +220,7 @@ export function activateUltimate(position: number, gameState: GameState) {
               duration: 1,
               _0: {
                 affectType: AffectType.RAWATK,
-                value: Math.ceil(applyRawAttBuff(gameState, position) * 0.25),
+                value: Math.floor(applyRawAttBuff(gameState, position) * 0.25),
               },
             },
           ];

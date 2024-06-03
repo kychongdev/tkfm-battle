@@ -8,6 +8,7 @@ import {
 } from "../types/Skill";
 // import character from "../assets/character.json";
 import type { GameState } from "./GameState";
+import { calcUltDamage } from "./calcUltDamage";
 import { parseAttribute } from "./utilities";
 
 export function calculateStats(
@@ -21,9 +22,10 @@ export function calculateStats(
   const roomStats =
     room === 1 ? 1.05 : room === 2 ? 1.15 : room === 3 ? 1.3 : 1;
   const levelStats = level === 1 ? 1 : level - 1;
-  return Math.ceil(
+  const res = Math.floor(
     initStats * 1.1 ** levelStats * starStats * roomStats * (1 + pot / 100),
   );
+  return res;
 }
 
 // Only initiate once
@@ -35,8 +37,8 @@ export function applyHpBuff(gameState: GameState) {
         hpBuff += buff._0?.value;
       }
     }
-    gameState.characters[index].hp = Math.ceil(character.hp * hpBuff);
-    gameState.characters[index].maxHp = Math.ceil(character.maxHp * hpBuff);
+    gameState.characters[index].hp = Math.floor(character.hp * hpBuff);
+    gameState.characters[index].maxHp = Math.floor(character.maxHp * hpBuff);
   });
 }
 
@@ -177,8 +179,8 @@ export function calcBasicDamage(
     attributeDamage = 0;
   }
 
-  return Math.ceil(
-    (atk * atkPercentage + rawAtk) *
+  return Math.floor(
+    (Math.floor(atk * atkPercentage) + rawAtk) *
       basicBuff *
       basicIncreaseDamage *
       enemyDamageReceivedIncrease *
@@ -186,30 +188,6 @@ export function calcBasicDamage(
       attributeNum *
       value,
   );
-}
-
-export function calcUltDamage(
-  position: number,
-  value: number,
-  gameState: GameState,
-  isTrigger: boolean,
-) {
-  let tempAtk = gameState.characters[position].atk;
-  let atkPercentage = 1;
-
-  for (const buff of gameState.characters[position].buff) {
-    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
-      atkPercentage += buff._0?.value;
-    }
-    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
-      tempAtk += buff._0?.value;
-    }
-  }
-
-  if (isTrigger) {
-    return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
-  }
-  return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
 }
 
 export function heal(
@@ -250,7 +228,7 @@ export function heal(
       gameState,
       position,
       target,
-      Math.ceil((atk * atkPercentage + rawAtk) * basicRate * healRate * value),
+      Math.floor((atk * atkPercentage + rawAtk) * basicRate * healRate * value),
     );
     return;
   }
@@ -258,7 +236,7 @@ export function heal(
     gameState,
     position,
     target,
-    Math.ceil((atk * atkPercentage + rawAtk) * healRate * value),
+    Math.floor((atk * atkPercentage + rawAtk) * healRate * value),
   );
 }
 
@@ -363,6 +341,7 @@ export function triggerPassive(
         const damage = calcBasicDamage(position, buff._1.value, gameState);
         switch (buff._1.target) {
           case Target.ENEMY:
+            console.log("activated");
             gameState.enemies[gameState.targeting].hp -= damage;
             break;
         }
@@ -499,7 +478,7 @@ export function triggerPassive(
               condition: Condition.ULTIMATE,
               duration: 1,
               _0: {
-                value: Math.ceil(rawAttBuff * buff._6.value),
+                value: Math.floor(rawAttBuff * buff._6.value),
                 affectType: buff._6?.affectType,
               },
             },
@@ -514,7 +493,7 @@ export function triggerPassive(
               condition: Condition.ULTIMATE,
               duration: 1,
               _0: {
-                value: Math.ceil(rawAttBuff * buff._6?.value),
+                value: Math.floor(rawAttBuff * buff._6?.value),
                 affectType: buff._6?.affectType,
               },
             },
@@ -718,8 +697,9 @@ export function triggerPassive(
 
 //傳功
 export function applyRawAttBuff(gameState: GameState, position: number) {
-  let tempAtk = gameState.characters[position].atk;
-  let atkPercentage = 0;
+  const atk = gameState.characters[position].atk;
+  let tempAtk = 0;
+  let atkPercentage = 1;
 
   for (const buff of gameState.characters[position].buff) {
     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
@@ -729,7 +709,7 @@ export function applyRawAttBuff(gameState: GameState, position: number) {
       tempAtk += buff._0?.value;
     }
   }
-  return gameState.characters[position].atk * atkPercentage + tempAtk;
+  return Math.floor(atk * atkPercentage) + tempAtk;
 }
 
 export function onTurnStart(gameState: GameState) {
