@@ -32,7 +32,8 @@ export default function Battle() {
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
   const initCharacters = useGameState((state) => state.init);
-  const enemy = useGameState((state) => state.enemy);
+  const enemies = useGameState((state) => state.enemies);
+  const targeting = useGameState((state) => state.targeting);
   // const character = useGameState((state) => state.characters);
   const activeLeader = useGameState((state) => state.initLeaderSkill);
 
@@ -137,14 +138,18 @@ export default function Battle() {
           setEnemyStatus(false);
         }}
       >
-        <BuffList character={enemy} />
+        <BuffList character={enemies[targeting]} />
       </Modal>
       <Space h="lg" />
       <Center>木樁</Center>
       <Text m="sm">第{turns}回合</Text>
-      <Progress value={(enemy.hp / enemy.maxHp) * 100} m="sm" />
+      <Progress
+        value={(enemies[targeting].hp / enemies[targeting].maxHp) * 100}
+        m="sm"
+      />
       <Text>
-        {formatNumber(enemy.hp)}/ {formatNumber(enemy.maxHp)}
+        {formatNumber(enemies[targeting].hp)}/
+        {formatNumber(enemies[targeting].maxHp)}
       </Text>
       <Center m="xl">
         <Image

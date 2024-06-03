@@ -50,7 +50,7 @@ export function activateUltimate(position: number, gameState: GameState) {
                 : bond === 4
                   ? 5.6
                   : 6.18;
-        gameState.enemy.hp -= calcUltDamage(
+        gameState.enemies.hp -= calcUltDamage(
           position,
           ultPercentage,
           gameState,
@@ -84,8 +84,8 @@ export function activateUltimate(position: number, gameState: GameState) {
       ];
       // HEAL function
 
-      gameState.enemy.buff = [
-        ...gameState.enemy.buff,
+      gameState.enemies.buff = [
+        ...gameState.enemies.buff,
         {
           id: "518-ult-2",
           name: "受到光屬性傷害增加25%(1回合)",
@@ -146,7 +146,7 @@ export function activateUltimate(position: number, gameState: GameState) {
                 : bond === 4
                   ? 3.64
                   : 3.97;
-        gameState.enemy.hp -= calcUltDamage(
+        gameState.enemies.hp -= calcUltDamage(
           position,
           ultPercentage,
           gameState,
@@ -259,8 +259,8 @@ export function activateUltimate(position: number, gameState: GameState) {
       });
       break;
     case "526":
-      gameState.enemy.buff = [
-        ...gameState.enemy.buff,
+      gameState.enemies.buff = [
+        ...gameState.enemies.buff,
         {
           id: "526-ult-1",
           name: "受到傷害增加30%(4回合)",
@@ -283,12 +283,12 @@ export function activateUltimate(position: number, gameState: GameState) {
         },
       ];
       if (bond > 1) {
-        const stack = gameState.enemy.buff.find(
+        const stack = gameState.enemies.buff.find(
           (buff) => buff.id === "526-ult-2",
         )?._3?.stack;
         if (stack !== 1 || !stack) {
-          gameState.enemy.buff = [
-            ...gameState.enemy.buff,
+          gameState.enemies.buff = [
+            ...gameState.enemies.buff,
             {
               id: "526-ult-2",
               name: "受到傷害增加10%(最多1層)",

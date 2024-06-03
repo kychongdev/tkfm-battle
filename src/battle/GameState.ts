@@ -18,7 +18,8 @@ import { activateUltimate } from "./ultimate";
 export interface GameState {
   turns: number;
   turnsState: "before" | "during" | "after";
-  enemy: CharacterState;
+  enemies: CharacterState[];
+  targeting: number;
   characters: CharacterState[];
   init: (characters: CharacterState[]) => void;
   initLeaderSkill: () => void;
@@ -40,11 +41,14 @@ export const useGameState = create<GameState>()(
     immer((set) => ({
       turns: 0,
       turnsState: "before",
-      enemy: {
-        ...initCharacterState,
-        maxHp: 10854389981,
-        hp: 10854389981,
-      },
+      enemies: [
+        {
+          ...initCharacterState,
+          maxHp: 10854389981,
+          hp: 10854389981,
+        },
+      ],
+      targeting: 0,
       characters: initTeamState,
       init: (characters: CharacterState[]) => {
         set((state) => {
@@ -54,7 +58,7 @@ export const useGameState = create<GameState>()(
       initLeaderSkill: () => {
         set((state) => {
           state.turns = 0;
-          state.enemy.hp = state.enemy.maxHp;
+          state.enemies[0].hp = state.enemies[0].maxHp;
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });

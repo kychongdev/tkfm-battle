@@ -7,6 +7,7 @@ import {
 } from "../types/Skill";
 // import character from "../assets/character.json";
 import type { GameState } from "./GameState";
+import { parseAttribute } from "./utilities";
 
 export function calculateStats(
   initStats: number,
@@ -56,18 +57,23 @@ export function calcBasicDamage(
   value: number,
   gameState: GameState,
 ) {
-  let tempAtk = gameState.characters[position].atk;
-  let atkPercentage = 0;
+  const atk = gameState.characters[position].atk;
+  let rawAtk = 0;
+  let atkPercentage = 1;
   let basicBuff = 1;
   let basicIncreaseDamage = 1;
   const attribute = gameState.characters[position].attribute;
+  const attributeNum = parseAttribute(
+    attribute,
+    gameState.enemies[gameState.targeting].attribute,
+  );
 
   for (const buff of gameState.characters[position].buff) {
     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
       atkPercentage += buff._0?.value;
     }
     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
-      tempAtk += buff._0?.value;
+      rawAtk += buff._0?.value;
     }
     if (
       buff.type === 0 &&
@@ -82,9 +88,10 @@ export function calcBasicDamage(
   }
 
   return Math.ceil(
-    (tempAtk * atkPercentage + tempAtk) *
+    (atk * atkPercentage + rawAtk) *
       basicBuff *
       basicIncreaseDamage *
+      attributeNum *
       value,
   );
 }
@@ -96,7 +103,7 @@ export function calcUltDamage(
   isTrigger: boolean,
 ) {
   let tempAtk = gameState.characters[position].atk;
-  let atkPercentage = 0;
+  let atkPercentage = 1;
 
   for (const buff of gameState.characters[position].buff) {
     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
@@ -111,6 +118,82 @@ export function calcUltDamage(
     return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
   }
   return Math.ceil((tempAtk * atkPercentage + tempAtk) * value);
+}
+
+// 治癒公式 = 攻擊力 x 招式倍率 x (1+進行治療時回復量±%) x (1+被治療時獲得回復量±%+受到持續型治療±%) x (1+造成持續型治療±%) x (1+其他±%)
+//
+// 攻擊回血 = 傷害公式 x (1+進行治療時回復量±%) x (1+被治療時獲得回復量±%)
+export function heal(
+  position: number,
+  value: number,
+  gameState: GameState,
+  isBasic: boolean,
+  target: Target,
+) {
+  const atk = gameState.characters[position].atk;
+  let rawAtk = 0;
+  let atkPercentage = 1;
+  let healRate = 1;
+  let basicRate = 1;
+
+  for (const buff of gameState.characters[position].buff) {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
+      atkPercentage += buff._0?.value;
+    }
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      rawAtk += buff._0?.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.INCREASE_HEAL_RATE
+    ) {
+      healRate += buff._0.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.INCREASE_BASIC_DAMAGE
+    ) {
+      basicRate += buff._0.value;
+    }
+  }
+  if (isBasic) {
+    parseHealTarget(
+      gameState,
+      position,
+      target,
+      Math.ceil((atk * atkPercentage + rawAtk) * basicRate * healRate * value),
+    );
+    return;
+  }
+
+  parseHealTarget(
+    gameState,
+    position,
+    target,
+    Math.ceil((atk * atkPercentage + rawAtk) * healRate * value),
+  );
+}
+
+function parseHealTarget(
+  gameState: GameState,
+  position: number,
+  target: Target,
+  heal: number,
+) {
+  switch (target) {
+    case Target.SELF:
+      gameState.characters[position].hp += heal;
+      break;
+    case Target.ALL:
+      gameState.characters.forEach((character) => {
+        character.hp += heal;
+        console.log(heal);
+        if (character.hp > character.maxHp) {
+          character.hp = character.maxHp;
+        }
+      });
+      break;
+  }
 }
 
 export function triggerPassive(
@@ -133,7 +216,7 @@ export function triggerPassive(
         const damage = calcBasicDamage(position, buff._1.value, gameState);
         switch (buff._1.target) {
           case Target.ENEMY:
-            gameState.enemy.hp -= damage;
+            gameState.enemies[gameState.targeting].hp -= damage;
             break;
         }
       }
@@ -146,7 +229,7 @@ export function triggerPassive(
         );
         switch (buff._1.target) {
           case Target.ENEMY:
-            gameState.enemy.hp -= damage;
+            gameState.enemies[gameState.targeting].hp -= damage;
             break;
         }
       }
@@ -344,8 +427,8 @@ export function triggerPassive(
             console.log("Wrong data 8 applyBuff");
             break;
           }
-          gameState.enemy.buff = [
-            ...gameState.enemy.buff,
+          gameState.enemies[gameState.targeting].buff = [
+            ...gameState.enemies[gameState.targeting].buff,
             {
               id: applyBuff.id,
               name: applyBuff.name,
@@ -384,7 +467,10 @@ export function triggerPassive(
           ...buff._11.applyBuff,
         ];
       } else if (buff._11?.target === Target.ENEMY) {
-        gameState.enemy.buff = [...gameState.enemy.buff, ...buff._11.applyBuff];
+        gameState.enemies[gameState.targeting].buff = [
+          ...gameState.enemies[gameState.targeting].buff,
+          ...buff._11.applyBuff,
+        ];
       } else if (buff._11?.target === Target.ALL) {
         gameState.characters.forEach((_, index) => {
           if (!buff._11) {
@@ -502,10 +588,12 @@ export function checkEndTurn(state: GameState) {
   });
 
   if (isEnd) {
-    state.enemy.buff.forEach((buff) => {
-      if (buff.duration && buff.type === 0 && buff.duration !== 100) {
-        buff.duration -= 1;
-      }
+    state.enemies.forEach((enemy) => {
+      enemy.buff.forEach((buff) => {
+        if (buff.duration && buff.type === 0 && buff.duration !== 100) {
+          buff.duration -= 1;
+        }
+      });
     });
 
     state.characters.forEach((character) => {
@@ -517,8 +605,10 @@ export function checkEndTurn(state: GameState) {
       character.cd = character.cd > 0 ? character.cd - 1 : 0;
     });
 
-    state.enemy.buff = state.enemy.buff.filter((buff) => {
-      return buff.duration !== 0 || buff.duration === undefined;
+    state.enemies.forEach((enemy) => {
+      enemy.buff = enemy.buff.filter((buff) => {
+        return buff.duration !== 0 || buff.duration === undefined;
+      });
     });
 
     state.characters.map((character) => {
