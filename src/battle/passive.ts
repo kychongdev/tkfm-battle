@@ -62,7 +62,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             ],
           },
         },
-        // 每經過4回合，觸發「使敵方全體受到傷害增加30%(1回合)」
         {
           id: "196-passive-3",
           name: "每經過4回合，觸發「使敵方全體受到傷害增加30%(1回合)」",
@@ -323,7 +322,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         },
         {
           id: "518-passive-3",
-          name: "必殺時，觸發「使我方全體攻擊力增加20%(最多1層)」",
+          name: "必殺時，觸發「使我方全體必殺技傷害增加30%(最多1層)」",
           type: 4,
           condition: Condition.ULTIMATE,
           duration: 100,
@@ -333,24 +332,24 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             target: Target.ALL,
             applyBuff: {
               id: "518-passive-3-1",
-              name: "攻擊力增加",
+              name: "必殺技傷害增加",
               type: 3,
               condition: Condition.NONE,
               duration: 100,
               _3: {
                 id: "518-passive-3-1",
-                name: "攻擊力增加20%",
-                value: 0.2,
+                name: "必殺技傷害增加30%",
+                value: 0.3,
                 stack: 1,
                 maxStack: 1,
-                affectType: AffectType.ATK,
+                affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
               },
             },
           },
         },
         {
           id: "518-passive-4",
-          name: "被治療時，觸發「使我方全體攻擊力增加5%(1回合)」",
+          name: "被治療時，觸發「使我方全體必殺技傷害增加5%(1回合)」",
           type: 11,
           condition: Condition.GET_HEAL,
           duration: 100,
@@ -359,13 +358,13 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             applyBuff: [
               {
                 id: "518-passive-4-1",
-                name: "攻擊力增加",
+                name: "必殺技傷害增加",
                 type: 0,
                 condition: Condition.NONE,
                 duration: 1,
                 _0: {
                   value: 0.05,
-                  affectType: AffectType.ATK,
+                  affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
                 },
               },
             ],
