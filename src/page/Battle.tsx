@@ -22,12 +22,15 @@ import char from "../assets/character/char_small_101.png";
 import { calculateStats } from "../battle/calculate";
 import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
+import characterJson from "../assets/character.json";
+import { LogList } from "../components/LogList";
 
 export default function Battle() {
   const [value] = useLocalStorage<CharacterSelect[]>("last-session");
   const [saved] = useLocalStorage<CharacterSelect[]>("saved-team");
   const [opened, setOpened] = useState(false);
   const [enemyStatus, setEnemyStatus] = useState(false);
+  const [logStatus, openLog] = useState(false);
 
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
@@ -36,6 +39,7 @@ export default function Battle() {
   const targeting = useGameState((state) => state.targeting);
   // const character = useGameState((state) => state.characters);
   const activeLeader = useGameState((state) => state.initLeaderSkill);
+  const log = useGameState((state) => state.log);
 
   function initTeam() {
     if (value) {
@@ -44,6 +48,9 @@ export default function Battle() {
           const characterDetail = characterDetails.find(
             (detail) => detail.id === character.id,
           );
+          //@ts-ignore
+          const characterInfo: string = characterJson.name[character.id];
+
           const maxHp = calculateStats(
             characterDetail ? characterDetail.stats.initHP : 0,
             character.level,
@@ -60,6 +67,7 @@ export default function Battle() {
           );
           return {
             id: character.id,
+            name: characterInfo,
             isExist: true,
             baseAtk: characterDetail ? characterDetail.stats.initATK : 0,
             baseHp: characterDetail ? characterDetail.stats.initHP : 0,
@@ -92,6 +100,7 @@ export default function Battle() {
         }
         return {
           id: character.id,
+          name: "",
           isExist: false,
           baseAtk: 0,
           baseHp: 0,
@@ -168,6 +177,7 @@ export default function Battle() {
       </Group>
       <Space h="sm" />
       <Group justify="end">
+        <Button onClick={() => openLog(true)}>Logs</Button>
         <Button onClick={() => startGame()}>開始</Button>
         <Button onClick={() => setOpened(true)}>
           <IconEdit />
@@ -188,6 +198,15 @@ export default function Battle() {
           <Image src={char} />
           <Image src={char} />
         </Group>
+      </Modal>
+      <Modal
+        padding={"xs"}
+        opened={logStatus}
+        onClose={() => {
+          openLog(false);
+        }}
+      >
+        <LogList logs={log} />
       </Modal>
     </Container>
   );

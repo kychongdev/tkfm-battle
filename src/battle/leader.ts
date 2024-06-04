@@ -747,7 +747,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
               applyTarget: Target.ENEMY,
               applyBuff: {
                 id: "526-Lead-2-1",
-                name: "受到水屬性傷害增加3%",
+                name: "受到光屬性傷害增加3%",
                 type: 0,
                 condition: Condition.NONE,
                 duration: 1,

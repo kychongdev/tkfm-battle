@@ -27,6 +27,7 @@ export interface GameState {
   addTurn: () => void;
   basicMove: (position: number) => void;
   ultimateMove: (position: number) => void;
+  log: string[];
 }
 
 const initTeamState = [
@@ -49,6 +50,7 @@ export const useGameState = create<GameState>()(
           hp: 10854389981,
         },
       ],
+      log: [],
       targeting: 0,
       characters: initTeamState,
       init: (characters: CharacterState[]) => {
@@ -61,6 +63,7 @@ export const useGameState = create<GameState>()(
           state.turns = 0;
           state.enemies[0].hp = state.enemies[0].maxHp;
           state.enemies[0].buff = [];
+          state.log = [];
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });

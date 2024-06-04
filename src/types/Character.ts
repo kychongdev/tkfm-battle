@@ -18,6 +18,7 @@ export enum CharacterClass {
 
 interface CharacterState {
   id: string;
+  name: string;
   isExist: boolean;
   baseAtk: number;
   baseHp: number;

@@ -360,23 +360,19 @@ export function triggerPassive(
         }
       }
       if (buff._1.damageType === 1) {
-        const damage = calcUltDamage(
+        calcUltDamage(
           position,
           buff._1.value,
           gameState,
           buff._1.isTrigger,
+          buff._1.target,
         );
-        switch (buff._1.target) {
-          case Target.ENEMY:
-            console.log(damage);
-            gameState.enemies[gameState.targeting].hp -= damage;
-            break;
-        }
       }
       break;
     case 2:
       if (!buff._2) {
         console.log("Wrong data");
+        console.log(buff);
         break;
       }
       switch (buff._2.target) {

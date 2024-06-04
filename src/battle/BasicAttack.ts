@@ -29,28 +29,16 @@ export function basicAttack(
       });
       break;
     case "514":
-      gameState.enemies[gameState.targeting].hp -= calcBasicDamage(
-        position,
-        1,
-        gameState,
-      );
+      calcBasicDamage(position, 1, gameState, Target.ENEMY);
       break;
     case "518":
       heal(position, 0.75, gameState, true, Target.ALL);
       break;
     case "523":
-      gameState.enemies[gameState.targeting].hp -= calcBasicDamage(
-        position,
-        1,
-        gameState,
-      );
+      calcBasicDamage(position, 1, gameState, Target.ENEMY);
       break;
     case "528":
-      gameState.enemies[gameState.targeting].hp -= calcBasicDamage(
-        position,
-        1,
-        gameState,
-      );
+      calcBasicDamage(position, 1, gameState, Target.ENEMY);
       break;
   }
 }

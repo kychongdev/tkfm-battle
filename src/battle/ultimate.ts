@@ -10,8 +10,6 @@ export function activateUltimate(gameState: GameState, position: number) {
   switch (gameState.characters[position].id) {
     case "196":
       {
-        //         :detail_skill: 血夜狂歡
-        // 以自身攻擊力30/35/35/40/40%使我方全體攻擊力增加(1回合)、並使我方全體攻擊者、妨礙者、守護者獲得「攻擊時，觸發『 以自身攻擊力10/10/12.5/12.5/15%使自身以外我方全體攻擊力增加(1回合)』(1回合)」，CD: 4
         gameState.characters.forEach((character) => {
           const attack = Math.floor(
             applyRawAttBuff(gameState, position) *
@@ -117,12 +115,7 @@ export function activateUltimate(gameState: GameState, position: number) {
                 : bond === 4
                   ? 5.6
                   : 6.18;
-        gameState.enemies[gameState.targeting].hp -= calcUltDamage(
-          position,
-          ultPercentage,
-          gameState,
-          false,
-        );
+        calcUltDamage(position, ultPercentage, gameState, false, Target.ENEMY);
       }
       break;
     case "518":
@@ -213,12 +206,7 @@ export function activateUltimate(gameState: GameState, position: number) {
                 : bond === 4
                   ? 3.64
                   : 3.97;
-        gameState.enemies[gameState.targeting].hp -= calcUltDamage(
-          position,
-          ultPercentage,
-          gameState,
-          false,
-        );
+        calcUltDamage(position, ultPercentage, gameState, false, Target.ENEMY);
       }
       break;
     case "525":
@@ -370,8 +358,6 @@ export function activateUltimate(gameState: GameState, position: number) {
       });
       break;
     case "528":
-      // 使目標受到攻擊者傷害增加30/36.5/40/46.5/50%(最多2層)，使自身獲得「普攻時，追加『以攻擊力50/56.5/70/76.5/90%對目標造成傷害』(4回合)」，並以自身攻擊力330/376/422/468/514%對目標造成傷害，CD:4
-
       {
         const buff: Buff = {
           id: "528-ult-1",
@@ -411,7 +397,6 @@ export function activateUltimate(gameState: GameState, position: number) {
         };
         triggerPassive(buff, gameState, position);
       }
-      // 「普攻時，追加『以攻擊力50/56.5/70/76.5/90%對目標造成傷害』(4回合)」
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
@@ -437,7 +422,7 @@ export function activateUltimate(gameState: GameState, position: number) {
           },
         },
       ];
-      gameState.enemies[gameState.targeting].hp -= calcUltDamage(
+      calcUltDamage(
         position,
         bond === 1
           ? 3.3
@@ -450,6 +435,7 @@ export function activateUltimate(gameState: GameState, position: number) {
                 : 5.14,
         gameState,
         false,
+        Target.ENEMY,
       );
       break;
   }

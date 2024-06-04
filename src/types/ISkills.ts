@@ -17,7 +17,7 @@ export interface _0 {
 export interface _1 {
   value: number;
   isTrigger: boolean;
-  target: Target | CharacterClass;
+  target: Target;
   // 0 is basic, 1 is ultimate
   damageType: 0 | 1;
 }

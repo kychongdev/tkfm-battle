@@ -65,7 +65,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         {
           id: "196-passive-3",
           name: "每經過4回合，觸發「使敵方全體受到傷害增加30%(1回合)」",
-          type: 2,
+          type: 11,
           condition: Condition.EVERY_X_TURN,
           conditionTurn: 4,
           duration: 100,
@@ -493,7 +493,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
                 duration: 4,
                 _0: {
                   value: 0.2,
-                  affectType: AffectType.INCREASE_DMG_RECEIVED,
+                  affectType: AffectType.INCREASE_ULTIMATE_DAMAGE_RECEIVED,
                 },
               },
             ],
