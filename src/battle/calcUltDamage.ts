@@ -1,7 +1,6 @@
 import { CharacterAttribute, CharacterClass } from "../types/Character";
 import { AffectType, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
-import { damageLog } from "./log";
 import { formatNumber, parseAttribute } from "./utilities";
 
 export function calcUltDamage(
@@ -32,9 +31,18 @@ export function calcUltDamage(
     if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_ATK) {
       atkPercentage -= buff._0?.value;
     }
+
+    if (buff.type === 3 && buff._3?.affectType === AffectType.ATK) {
+      atkPercentage += buff._3?.value * buff._3?.stack;
+    }
+    if (buff.type === 3 && buff._3?.affectType === AffectType.DECREASE_ATK) {
+      atkPercentage -= buff._3?.value * buff._3?.stack;
+    }
+
     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
       rawAtk += buff._0?.value;
     }
+
     if (
       buff.type === 0 &&
       buff._0?.affectType === AffectType.INCREASE_ULTIMATE_DAMAGE
@@ -66,6 +74,14 @@ export function calcUltDamage(
     if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_DMG) {
       increaseDamage -= buff._0?.value;
     }
+
+    if (buff.type === 3 && buff._3?.affectType === AffectType.INCREASE_DMG) {
+      increaseDamage += buff._3?.value * buff._3?.stack;
+    }
+    if (buff.type === 3 && buff._3?.affectType === AffectType.DECREASE_DMG) {
+      increaseDamage -= buff._3?.value * buff._3?.stack;
+    }
+
     if (
       buff.type === 0 &&
       buff._0?.affectType === AffectType.INCREASE_FIRE_DMG &&
@@ -233,7 +249,7 @@ export function calcUltDamage(
       buff._3?.value &&
       buff._3?.affectType === AffectType.DECREASE_DMG_RECEIVED
     ) {
-      enemyDamageReceivedIncrease += buff._3?.value;
+      enemyDamageReceivedIncrease += buff._3?.value * buff._3?.stack;
     }
     if (
       buff.type === 0 &&
@@ -400,6 +416,15 @@ export function calcUltDamage(
     ) {
       attributeDamage -= buff._0?.value;
     }
+
+    //TODO: Add more stuff on class buff
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&
+      charClass === CharacterClass.ATTACKER
+    ) {
+      ultBuff += buff._3?.value * buff._3?.stack;
+    }
   }
   if (ultBuff < 0) {
     ultBuff = 0;
@@ -468,13 +493,6 @@ export function calcUltDamage(
       ) {
         ultBuff -= buff._3?.value * buff._3?.stack;
       }
-      if (
-        buff.type === 3 &&
-        buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&
-        charClass === CharacterClass.ATTACKER
-      ) {
-        ultBuff += buff._3?.value * buff._3?.stack;
-      }
     }
 
     const res = Math.floor(
@@ -486,7 +504,8 @@ export function calcUltDamage(
         attributeNum *
         value,
     );
-    dealDamageToTarget(gameState, position, res, target);
+    dealDamageToTarget(gameState, position, res, target, isTrigger);
+    return;
   }
 
   const res = Math.floor(

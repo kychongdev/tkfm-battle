@@ -30,9 +30,18 @@ export function calcBasicDamage(
     if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_ATK) {
       atkPercentage -= buff._0?.value;
     }
+
+    if (buff.type === 3 && buff._3?.affectType === AffectType.ATK) {
+      atkPercentage += buff._3?.value * buff._3?.stack;
+    }
+    if (buff.type === 3 && buff._3?.affectType === AffectType.DECREASE_ATK) {
+      atkPercentage -= buff._3?.value * buff._3?.stack;
+    }
+
     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
       rawAtk += buff._0?.value;
     }
+
     if (
       buff.type === 0 &&
       buff._0?.affectType === AffectType.INCREASE_BASIC_DAMAGE
@@ -45,12 +54,34 @@ export function calcBasicDamage(
     ) {
       basicBuff -= buff._0?.value;
     }
+
+    if (
+      buff.type === 0 &&
+      buff._3?.affectType === AffectType.INCREASE_BASIC_DAMAGE
+    ) {
+      basicBuff += buff._3?.value * buff._3?.stack;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_BASIC_DAMAGE
+    ) {
+      basicBuff += buff._3?.value * buff._3?.stack;
+    }
+
     if (buff.type === 0 && buff._0?.affectType === AffectType.INCREASE_DMG) {
       increaseDamage += buff._0?.value;
     }
     if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_DMG) {
       increaseDamage -= buff._0?.value;
     }
+
+    if (buff.type === 3 && buff._3?.affectType === AffectType.INCREASE_DMG) {
+      increaseDamage += buff._3?.value * buff._3?.stack;
+    }
+    if (buff.type === 3 && buff._3?.affectType === AffectType.DECREASE_DMG) {
+      increaseDamage -= buff._3?.value * buff._3?.stack;
+    }
+
     if (
       buff.type === 0 &&
       buff._0?.affectType === AffectType.INCREASE_FIRE_DMG &&
@@ -86,6 +117,114 @@ export function calcBasicDamage(
     ) {
       attributeDamage += buff._0?.value;
     }
+
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_DARK_DMG &&
+      attribute === CharacterAttribute.DARK
+    ) {
+      attributeDamage += buff._3?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_FIRE_DMG &&
+      attribute === CharacterAttribute.FIRE
+    ) {
+      attributeDamage += buff._3?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_WATER_DMG &&
+      attribute === CharacterAttribute.WATER
+    ) {
+      attributeDamage += buff._3?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_WIND_DMG &&
+      attribute === CharacterAttribute.WIND
+    ) {
+      attributeDamage += buff._3?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_LIGHT_DMG &&
+      attribute === CharacterAttribute.LIGHT
+    ) {
+      attributeDamage += buff._3?.value;
+    }
+
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_DARK_DMG &&
+      attribute === CharacterAttribute.DARK
+    ) {
+      attributeDamage -= buff._3?.value * buff._3?.stack;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_FIRE_DMG &&
+      attribute === CharacterAttribute.FIRE
+    ) {
+      attributeDamage -= buff._3?.value * buff._3?.stack;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_WATER_DMG &&
+      attribute === CharacterAttribute.WATER
+    ) {
+      attributeDamage -= buff._3?.value * buff._3?.stack;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_WIND_DMG &&
+      attribute === CharacterAttribute.WIND
+    ) {
+      attributeDamage -= buff._3?.value * buff._3?.stack;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_LIGHT_DMG &&
+      attribute === CharacterAttribute.LIGHT
+    ) {
+      attributeDamage -= buff._3?.value * buff._3?.stack;
+    }
+
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_LIGHT_DMG &&
+      attribute === CharacterAttribute.LIGHT
+    ) {
+      attributeDamage -= buff._0?.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_DARK_DMG &&
+      attribute === CharacterAttribute.DARK
+    ) {
+      attributeDamage -= buff._0?.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_FIRE_DMG &&
+      attribute === CharacterAttribute.FIRE
+    ) {
+      attributeDamage -= buff._0?.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_WATER_DMG &&
+      attribute === CharacterAttribute.WATER
+    ) {
+      attributeDamage -= buff._0?.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_WIND_DMG &&
+      attribute === CharacterAttribute.WIND
+    ) {
+      attributeDamage -= buff._0?.value;
+    }
   }
 
   for (const buff of gameState.enemies[gameState.targeting].buff) {
@@ -115,6 +254,7 @@ export function calcBasicDamage(
     ) {
       enemyDamageReceivedIncrease += buff._3?.value * buff._3?.stack;
     }
+
     if (
       buff.type === 0 &&
       buff._0?.affectType === AffectType.INCREASE_LIGHT_DMG_RECEIVED &&

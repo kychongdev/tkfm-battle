@@ -1,7 +1,7 @@
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition, Target } from "../types/Skill";
 import type { Buff } from "../types/Skill";
-import { applyRawAttBuff, triggerPassive } from "./calculate";
+import { applyRawAttBuff, parseCondition, triggerPassive } from "./calculate";
 import { calcUltDamage } from "./calcUltDamage";
 import type { GameState } from "./GameState";
 
@@ -143,6 +143,7 @@ export function activateUltimate(gameState: GameState, position: number) {
         },
       ];
       // HEAL function
+      parseCondition(position, [Condition.GET_HEAL], gameState);
 
       gameState.enemies[gameState.targeting].buff = [
         ...gameState.enemies[gameState.targeting].buff,

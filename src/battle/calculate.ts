@@ -8,6 +8,7 @@ import {
 } from "../types/Skill";
 // import character from "../assets/character.json";
 import type { GameState } from "./GameState";
+import { calcBasicDamage } from "./calcBasicDamage";
 import { calcUltDamage } from "./calcUltDamage";
 import { parseAttribute } from "./utilities";
 
@@ -53,154 +54,6 @@ export function parseCondition(
       triggerPassive(char, state, position);
     }
   }
-}
-
-export function calcBasicDamage(
-  position: number,
-  value: number,
-  gameState: GameState,
-) {
-  const atk = gameState.characters[position].atk;
-  let rawAtk = 0;
-  let atkPercentage = 1;
-  let basicBuff = 1;
-  let basicIncreaseDamage = 1;
-  let enemyDamageReceivedIncrease = 1;
-  let attributeDamage = 1;
-  let otherDamage = 1;
-  const attribute = gameState.characters[position].attribute;
-  const charClass = gameState.characters[position].class;
-  const attributeNum = parseAttribute(
-    attribute,
-    gameState.enemies[gameState.targeting].attribute,
-  );
-
-  for (const buff of gameState.characters[position].buff) {
-    if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
-      atkPercentage += buff._0?.value;
-    }
-    if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_ATK) {
-      atkPercentage -= buff._0?.value;
-    }
-    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
-      rawAtk += buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_BASIC_DAMAGE
-    ) {
-      basicBuff += buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.DECREASE_BASIC_DAMAGE
-    ) {
-      basicBuff -= buff._0?.value;
-    }
-    if (buff.type === 0 && buff._0?.affectType === AffectType.INCREASE_DMG) {
-      basicIncreaseDamage += buff._0?.value;
-    }
-    if (buff.type === 0 && buff._0?.affectType === AffectType.DECREASE_DMG) {
-      basicIncreaseDamage -= buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_FIRE_DMG &&
-      attribute === CharacterAttribute.FIRE
-    ) {
-      attributeDamage += buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_WATER_DMG &&
-      attribute === CharacterAttribute.WATER
-    ) {
-      attributeDamage += buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_WIND_DMG &&
-      attribute === CharacterAttribute.WIND
-    ) {
-      attributeDamage += buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_LIGHT_DMG &&
-      attribute === CharacterAttribute.LIGHT
-    ) {
-      attributeDamage += buff._0?.value;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_DARK_DMG &&
-      attribute === CharacterAttribute.DARK
-    ) {
-      attributeDamage += buff._0?.value;
-    }
-  }
-
-  for (const buff of gameState.enemies[gameState.targeting].buff) {
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.INCREASE_DMG_RECEIVED
-    ) {
-      enemyDamageReceivedIncrease += buff._0?.value;
-    }
-    if (
-      buff.type === 3 &&
-      buff._3?.value &&
-      buff._3?.affectType === AffectType.INCREASE_DMG_RECEIVED
-    ) {
-      enemyDamageReceivedIncrease += buff._3?.value * buff._3?.stack;
-    }
-    if (
-      buff.type === 0 &&
-      buff._0?.affectType === AffectType.DECREASE_DMG_RECEIVED
-    ) {
-      enemyDamageReceivedIncrease += buff._0?.value;
-    }
-    if (
-      buff.type === 3 &&
-      buff._3?.value &&
-      buff._3?.affectType === AffectType.DECREASE_DMG_RECEIVED
-    ) {
-      enemyDamageReceivedIncrease += buff._3?.value;
-    }
-
-    if (
-      buff.type === 3 &&
-      buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&
-      charClass === CharacterClass.ATTACKER
-    ) {
-      otherDamage += buff._3?.value;
-    }
-  }
-  if (basicBuff < 0) {
-    basicBuff = 0;
-  }
-  if (basicIncreaseDamage < 0) {
-    basicIncreaseDamage = 0;
-  }
-  if (enemyDamageReceivedIncrease < 0) {
-    enemyDamageReceivedIncrease = 0;
-  }
-  if (attributeDamage < 0) {
-    attributeDamage = 0;
-  }
-
-  const res = Math.floor(
-    (Math.floor(atk * atkPercentage) + rawAtk) *
-      basicBuff *
-      otherDamage *
-      basicIncreaseDamage *
-      enemyDamageReceivedIncrease *
-      attributeDamage *
-      attributeNum *
-      value,
-  );
-  console.log(res);
-  return res;
 }
 
 export function heal(
@@ -266,7 +119,6 @@ function parseHealTarget(
     case Target.ALL:
       gameState.characters.forEach((character) => {
         character.hp += heal;
-        console.log(heal);
         if (character.hp > character.maxHp) {
           character.hp = character.maxHp;
         }
@@ -351,13 +203,7 @@ export function triggerPassive(
         break;
       }
       if (buff._1.damageType === 0) {
-        const damage = calcBasicDamage(position, buff._1.value, gameState);
-        switch (buff._1.target) {
-          case Target.ENEMY:
-            console.log("activated");
-            gameState.enemies[gameState.targeting].hp -= damage;
-            break;
-        }
+        calcBasicDamage(position, buff._1.value, gameState, buff._1.target);
       }
       if (buff._1.damageType === 1) {
         calcUltDamage(
@@ -463,6 +309,42 @@ export function triggerPassive(
             console.log("Wrong data buff._4.applyBuff");
           }
         }
+      }
+      if (buff._4.target === Target.ALL) {
+        gameState.characters.forEach((_, index) => {
+          const isExist = gameState.characters[index].buff.some((x) => {
+            return x.id === buff._4?.targetSkill;
+          });
+
+          if (isExist) {
+            gameState.characters[index].buff.map((x) => {
+              if (x.id === buff._4?.targetSkill) {
+                if (x._3 && x._3.stack < x._3.maxStack) {
+                  if (x._3 && buff._4) {
+                    console.log(buff._4.increaseStack);
+                    x._3.stack += buff._4.increaseStack;
+                    if (x._3.stack > x._3.maxStack) {
+                      x._3.stack = x._3.maxStack;
+                    }
+                  } else {
+                    console.log("Wrong data buff._4");
+                  }
+                }
+              }
+              return x;
+            });
+          } else {
+            // purely typescript problem
+            if (buff._4?.applyBuff) {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                buff._4.applyBuff,
+              ];
+            } else {
+              console.log("Wrong data buff._4.applyBuff");
+            }
+          }
+        });
       }
       break;
     case 5:
@@ -735,8 +617,16 @@ export function applyRawAttBuff(gameState: GameState, position: number) {
     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
       tempAtk += buff._0?.value;
     }
+    if (buff.type === 3 && buff._3?.affectType === AffectType.ATK) {
+      atkPercentage += buff._3?.value;
+    }
+    if (buff.type === 3 && buff._3?.affectType === AffectType.RAWATK) {
+      tempAtk += buff._3?.value;
+    }
   }
-  return Math.floor(atk * atkPercentage) + tempAtk;
+
+  const res = Math.floor(atk * atkPercentage) + tempAtk;
+  return res;
 }
 
 export function onTurnStart(gameState: GameState) {

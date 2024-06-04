@@ -383,10 +383,10 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             duration: 100,
             _4: {
               increaseStack: 1,
-              targetSkill: "518-passive-3-1",
+              targetSkill: "518-passive-5-1",
               target: Target.ALL,
               applyBuff: {
-                id: "518-passive-3-1",
+                id: "518-passive-5-1",
                 name: "造成傷害增加",
                 type: 3,
                 condition: Condition.NONE,
