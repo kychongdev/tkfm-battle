@@ -87,7 +87,7 @@ export function activateUltimate(gameState: GameState, position: number) {
               name: "必殺技傷害增加70%(2回合)",
               type: 0,
               condition: Condition.NONE,
-              duration: 100,
+              duration: 2,
               _0: {
                 value:
                   bond === 1
