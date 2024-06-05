@@ -106,8 +106,8 @@ export const useGameState = create<GameState>()(
             state,
           );
           applyExtra(state, position);
-          checkEndTurn(state);
           state.characters[position].cd = state.characters[position].maxCd;
+          checkEndTurn(state);
         });
       },
     })),
