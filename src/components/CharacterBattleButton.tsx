@@ -42,7 +42,6 @@ export function CharacterBattleButton(props: { position: number }) {
       </AspectRatio>
       <Progress value={(character.hp / character.maxHp) * 100} radius={0} />
       <div>{formatNumber(character.hp)}</div>
-
       <Space h="xs" />
       <Button
         onClick={() => ultimateMove(props.position)}
@@ -51,8 +50,12 @@ export function CharacterBattleButton(props: { position: number }) {
         必殺
       </Button>
       <Space h="xs" />
-      <Button onClick={() => console.log("guard")}>防御</Button>
-      <Space h="xs" />
+      {
+        //<Button onClick={() => console.log("guard")}>防御</Button>}
+      }
+      {
+        // <Space h="xs" />}
+      }
       <Button
         onClick={() => {
           setOpened(true);

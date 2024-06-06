@@ -1,10 +1,16 @@
-import { Attribute, CharacterSelect, CharacterState } from "../types/Character";
+import { Attribute, CharacterClass, CharacterSelect } from "../types/Character";
+import type { CharacterState } from "../types/Character";
 
 const initCharacterState: CharacterState = {
+  name: "",
   id: "",
   isExist: false,
   maxHp: 0,
   maxAtk: 0,
+  baseHp: 0,
+  baseAtk: 0,
+  class: CharacterClass.ATTACKER,
+  stars: 1,
   atk: 0,
   hp: 0,
   bond: 1,
@@ -34,7 +40,7 @@ function initCharacterSelection(position: number) {
     hpPot: 100,
     atkPot: 100,
     stars: 5,
-    bond: 1,
+    bond: 5,
     disclipline: 3,
   };
 }

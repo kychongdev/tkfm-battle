@@ -19,6 +19,15 @@ import { produce } from "immer";
 import { useLocalStorage } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
+import bond1 from "../assets/character/ui_bond_1.png";
+import bond2 from "../assets/character/ui_bond_2.png";
+import bond3 from "../assets/character/ui_bond_3.png";
+import bond4 from "../assets/character/ui_bond_4.png";
+import bond5 from "../assets/character/ui_bond_5.png";
+import star from "../assets/character/ui_star_ssr.png";
+import atk from "../assets/character/ui_small_atk.png";
+import hp from "../assets/character/ui_small_hp.png";
+import { Link } from "@tanstack/react-router";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -65,12 +74,44 @@ export default function SelectCharacterPage() {
   };
 
   const characterImage = (position: number) => {
+    const bond = characterList[position].bond;
+    const stars = characterList[position].stars;
+    const hpPot = characterList[position].hpPot;
+    const atkPot = characterList[position].atkPot;
     return (
-      <Image
-        onClick={() => openModal(position)}
-        src={`/src/assets/character/char_${characterList[position].id}.png`}
-        fallbackSrc="/src/assets/character/char_nr.png"
-      />
+      <Stack>
+        <Image
+          onClick={() => openModal(position)}
+          src={`/src/assets/character/char_${characterList[position].id}.png`}
+          fallbackSrc="/src/assets/character/char_nr.png"
+        />
+        <div>Lvl. {characterList[position].level}</div>
+        <Image
+          src={
+            bond === 1
+              ? bond1
+              : bond === 2
+                ? bond2
+                : bond === 3
+                  ? bond3
+                  : bond === 4
+                    ? bond4
+                    : bond5
+          }
+        />
+        <Group grow wrap="nowrap">
+          <Image src={star} />
+          {stars}
+        </Group>
+        <Group grow wrap="nowrap">
+          <Image src={hp} />
+          {hpPot}%
+        </Group>
+        <Group grow wrap="nowrap">
+          <Image src={atk} />
+          {atkPot}%
+        </Group>
+      </Stack>
     );
   };
 
@@ -97,7 +138,10 @@ export default function SelectCharacterPage() {
   };
 
   const validateNumber = (value: string, start: number, end: number) => {
-    return (parseInt(value) >= start && parseInt(value) <= end) || value === "";
+    return (
+      (Number.parseInt(value) >= start && Number.parseInt(value) <= end) ||
+      value === ""
+    );
   };
 
   return (
@@ -112,16 +156,6 @@ export default function SelectCharacterPage() {
         {characterImage(3)}
         {characterImage(4)}
       </Group>
-      <Space h="xs" />
-      <Stack gap="xs">{characterInfo(0)}</Stack>
-      <Space h="xs" />
-      <Stack gap="xs">{characterInfo(1)}</Stack>
-      <Space h="xs" />
-      <Stack gap="xs">{characterInfo(2)}</Stack>
-      <Space h="xs" />
-      <Stack gap="xs">{characterInfo(3)}</Stack>
-      <Space h="xs" />
-      <Stack gap="xs">{characterInfo(4)}</Stack>
       <Modal opened={opened} onClose={() => setOpened(false)} title="選擇角色">
         <Select
           data={characterOption}
@@ -143,12 +177,17 @@ export default function SelectCharacterPage() {
             value={characterList[position].level}
             onChange={(value) => {
               if (typeof value === "string") {
-                value = parseInt(value);
+                const _value = Number.parseInt(value);
+                updateCharacter(position, {
+                  ...characterList[position],
+                  level: _value,
+                });
+              } else {
+                updateCharacter(position, {
+                  ...characterList[position],
+                  level: value,
+                });
               }
-              updateCharacter(position, {
-                ...characterList[position],
-                level: value,
-              });
             }}
             isAllowed={(numberFormatValue) =>
               validateNumber(numberFormatValue.value, 1, 60)
@@ -162,12 +201,17 @@ export default function SelectCharacterPage() {
             value={characterList[position].stars}
             onChange={(value) => {
               if (typeof value === "string") {
-                value = parseInt(value);
+                const _value = Number.parseInt(value);
+                updateCharacter(position, {
+                  ...characterList[position],
+                  stars: _value,
+                });
+              } else {
+                updateCharacter(position, {
+                  ...characterList[position],
+                  stars: value,
+                });
               }
-              updateCharacter(position, {
-                ...characterList[position],
-                stars: value,
-              });
             }}
             isAllowed={(numberFormatValue) =>
               validateNumber(numberFormatValue.value, 3, 5)
@@ -181,12 +225,17 @@ export default function SelectCharacterPage() {
             value={characterList[position].bond}
             onChange={(value) => {
               if (typeof value === "string") {
-                value = parseInt(value);
+                const _value = Number.parseInt(value);
+                updateCharacter(position, {
+                  ...characterList[position],
+                  bond: _value,
+                });
+              } else {
+                updateCharacter(position, {
+                  ...characterList[position],
+                  bond: value,
+                });
               }
-              updateCharacter(position, {
-                ...characterList[position],
-                bond: value,
-              });
             }}
             isAllowed={(numberFormatValue) =>
               validateNumber(numberFormatValue.value, 1, 5)
@@ -203,12 +252,17 @@ export default function SelectCharacterPage() {
             value={characterList[position].hpPot}
             onChange={(value) => {
               if (typeof value === "string") {
-                value = parseInt(value);
+                const _value = Number.parseInt(value);
+                updateCharacter(position, {
+                  ...characterList[position],
+                  hpPot: _value,
+                });
+              } else {
+                updateCharacter(position, {
+                  ...characterList[position],
+                  hpPot: value,
+                });
               }
-              updateCharacter(position, {
-                ...characterList[position],
-                hpPot: value,
-              });
             }}
             isAllowed={(numberFormatValue) =>
               validateNumber(numberFormatValue.value, 0, 100)
@@ -222,11 +276,15 @@ export default function SelectCharacterPage() {
             value={characterList[position].atkPot}
             onChange={(value) => {
               if (typeof value === "string") {
-                value = parseInt(value);
+                const _value = Number.parseInt(value);
+                updateCharacter(position, {
+                  ...characterList[position],
+                  atkPot: _value,
+                });
               }
               updateCharacter(position, {
                 ...characterList[position],
-                atkPot: value,
+                atkPot: +value,
               });
             }}
             isAllowed={(numberFormatValue) =>
@@ -243,7 +301,7 @@ export default function SelectCharacterPage() {
           setValue(characterList)
         }
       >
-        開始戰鬥
+        <Link to="/battle/start">開始戰鬥</Link>
       </Button>
     </Container>
   );

@@ -862,14 +862,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           });
         }
       }
-
-      // 我方全體獲得「當我方隊伍恰好為4種角色定位時，開啟 《萬聖搗蛋派對！》」
-      //
-      // 《萬聖搗蛋派對！》
-      // 攻擊力增加120%
-      // 造成傷害增加50%
-
       break;
+    case "528":
+      break;
+
     default:
       break;
   }
