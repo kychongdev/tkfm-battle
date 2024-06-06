@@ -19,14 +19,14 @@ import { produce } from "immer";
 import { useLocalStorage } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
-import bond1 from "../assets/character/ui_bond_1.png";
-import bond2 from "../assets/character/ui_bond_2.png";
-import bond3 from "../assets/character/ui_bond_3.png";
-import bond4 from "../assets/character/ui_bond_4.png";
-import bond5 from "../assets/character/ui_bond_5.png";
-import star from "../assets/character/ui_star_ssr.png";
-import atk from "../assets/character/ui_small_atk.png";
-import hp from "../assets/character/ui_small_hp.png";
+import bond1 from "/character/ui_bond_1.png";
+import bond2 from "/character/ui_bond_2.png";
+import bond3 from "/character/ui_bond_3.png";
+import bond4 from "/character/ui_bond_4.png";
+import bond5 from "/character/ui_bond_5.png";
+import star from "/character/ui_star_ssr.png";
+import atk from "/character/ui_small_atk.png";
+import hp from "/character/ui_small_hp.png";
 import { Link } from "@tanstack/react-router";
 
 // const gallery = Object.values(
@@ -82,8 +82,8 @@ export default function SelectCharacterPage() {
       <Stack>
         <Image
           onClick={() => openModal(position)}
-          src={`/src/assets/character/char_${characterList[position].id}.png`}
-          fallbackSrc="/src/assets/character/char_nr.png"
+          src={`/character/char_${characterList[position].id}.png`}
+          fallbackSrc="/character/char_nr.png"
         />
         <div>Lvl. {characterList[position].level}</div>
         <Image
