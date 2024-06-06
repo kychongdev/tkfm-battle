@@ -19,14 +19,6 @@ import { produce } from "immer";
 import { useLocalStorage } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
-import bond1 from "./character/ui_bond_1.png";
-import bond2 from "./character/ui_bond_2.png";
-import bond3 from "/character/ui_bond_3.png";
-import bond4 from "/character/ui_bond_4.png";
-import bond5 from "/character/ui_bond_5.png";
-import star from "/character/ui_star_ssr.png";
-import atk from "/character/ui_small_atk.png";
-import hp from "/character/ui_small_hp.png";
 import { Link } from "@tanstack/react-router";
 
 // const gallery = Object.values(
@@ -37,6 +29,14 @@ import { Link } from "@tanstack/react-router";
 // );
 
 export default function SelectCharacterPage() {
+  const bond1 = "/tkfm-battle/character/ui_bond_1.png";
+  const bond2 = "/tkfm-battle/character/ui_bond_2.png";
+  const bond3 = "/tkfm-battle/character/ui_bond_3.png";
+  const bond4 = "/tkfm-battle/character/ui_bond_4.png";
+  const bond5 = "/tkfm-battle/character/ui_bond_5.png";
+  const star = "/tkfm-battle/character/ui_star_ssr.png";
+  const atk = "/tkfm-battle/character/ui_small_atk.png";
+  const hp = "/tkfm-battle/character/ui_small_hp.png";
   const characterOption = [];
   for (const [key, value] of Object.entries(character.name)) {
     const available = ["196", "514", "518", "523", "525", "526", "528"];
