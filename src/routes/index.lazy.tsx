@@ -10,6 +10,14 @@ export const Route = createLazyFileRoute("/")({
       <Link to="/battle/start" className="btn btn-primary">
         <Button>開始戰鬥</Button>
       </Link>
+      <Button
+        onClick={() => {
+          localStorage.removeItem("game-state");
+          localStorage.removeItem("last-session");
+        }}
+      >
+        重置（更新後需要按這個，按完後刷新網頁）
+      </Button>
     </div>
   ),
 });

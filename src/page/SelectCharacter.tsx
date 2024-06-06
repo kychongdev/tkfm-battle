@@ -318,10 +318,6 @@ export default function SelectCharacterPage() {
       >
         <Link to="/battle/start">開始戰鬥</Link>
       </Button>
-      <Space h="xs" />
-      <Button onClick={() => localStorage.removeItem("last-session")}>
-        重置隊伍
-      </Button>
     </Container>
   );
 }
