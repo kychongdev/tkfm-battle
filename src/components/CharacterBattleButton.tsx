@@ -34,7 +34,7 @@ export function CharacterBattleButton(props: { position: number }) {
         <Image
           onClick={() => basicMove(props.position)}
           src={`/tkfm-battle/character/char_${character.id}.png`}
-          fallbackSrc="tkfm-battle/character/char_nr.png"
+          fallbackSrc="/tkfm-battle/character/char_nr.png"
         />
         {character.isMoved || !character.isExist || character.isDead ? (
           <Overlay color="#000" backgroundOpacity={0.85} />
