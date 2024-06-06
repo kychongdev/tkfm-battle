@@ -18,7 +18,7 @@ import favicon from "/character/favicon.png";
 import { useGameState } from "../battle/GameState";
 import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
-import char from "/character/char_small_101.png";
+import char from "/tkfm-battle/character/char_small_101.png";
 import { calculateStats } from "../battle/calculate";
 import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";

@@ -33,8 +33,8 @@ export function CharacterBattleButton(props: { position: number }) {
       <AspectRatio ratio={167 / 512}>
         <Image
           onClick={() => basicMove(props.position)}
-          src={`/character/char_${character.id}.png`}
-          fallbackSrc="/character/char_nr.png"
+          src={`/tkfm-battle/character/char_${character.id}.png`}
+          fallbackSrc="/tkfm-battle/character/char_nr.png"
         />
         {character.isMoved || !character.isExist || character.isDead ? (
           <Overlay color="#000" backgroundOpacity={0.85} />

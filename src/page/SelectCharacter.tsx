@@ -82,8 +82,8 @@ export default function SelectCharacterPage() {
       <Stack>
         <Image
           onClick={() => openModal(position)}
-          src={`/character/char_${characterList[position].id}.png`}
-          fallbackSrc="/character/char_nr.png"
+          src={`/tkfm-battle/character/char_${characterList[position].id}.png`}
+          fallbackSrc="/tkfm-battle/character/char_nr.png"
         />
         <div>Lvl. {characterList[position].level}</div>
         <Image
