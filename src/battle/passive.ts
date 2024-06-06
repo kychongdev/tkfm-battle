@@ -499,42 +499,52 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             ],
           },
         },
-        // 5 stars
-        {
-          id: "523-passive-3",
-          name: "必殺時 ，觸發「使目標受到傷害增加20%(4回合)」",
-          type: 11,
-          condition: Condition.ULTIMATE,
-          duration: 100,
-          _11: {
-            target: Target.ENEMY,
-            applyBuff: [
-              {
-                id: "523-passive-3-1",
-                name: "受到傷害增加",
-                type: 0,
-                condition: Condition.NONE,
-                duration: 4,
-                _0: {
-                  value: 0.2,
-                  affectType: AffectType.INCREASE_DMG_RECEIVED,
-                },
-              },
-            ],
-          },
-        },
-        {
-          id: "523-passive-4",
-          name: "使自身必殺技傷害增加10%",
-          type: 0,
-          condition: Condition.NONE,
-          duration: 100,
-          _0: {
-            value: 0.1,
-            affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
-          },
-        },
       ];
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "523-passive-3",
+            name: "必殺時 ，觸發「使目標受到傷害增加20%(4回合)」",
+            type: 11,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _11: {
+              target: Target.ENEMY,
+              applyBuff: [
+                {
+                  id: "523-passive-3-1",
+                  name: "受到傷害增加",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 4,
+                  _0: {
+                    value: 0.2,
+                    affectType: AffectType.INCREASE_DMG_RECEIVED,
+                  },
+                },
+              ],
+            },
+          },
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "523-passive-4",
+            name: "使自身必殺技傷害增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
+            },
+          },
+        ];
+      }
 
       break;
 
