@@ -39,6 +39,7 @@ export default function Battle() {
   // const character = useGameState((state) => state.characters);
   const activeLeader = useGameState((state) => state.initLeaderSkill);
   const log = useGameState((state) => state.log);
+  const char = "/tkfm-battle/character/char_small_101.png";
 
   function initTeam() {
     if (value) {
@@ -191,11 +192,11 @@ export default function Battle() {
         }}
       >
         <Group grow wrap="nowrap" gap="xs">
-          <Image src="/character/char_small_101.png" />
-          <Image src="/character/char_small_101.png" />
-          <Image src="/character/char_small_101.png" />
-          <Image src="/character/char_small_101.png" />
-          <Image src="/character/char_small_101.png" />
+          <Image src={char} />
+          <Image src={char} />
+          <Image src={char} />
+          <Image src={char} />
+          <Image src={char} />
         </Group>
       </Modal>
       <Modal
