@@ -18,6 +18,7 @@ export function calcBasicDamage(
   let attributeDamage = 1;
   const charClass = gameState.characters[position].class;
   const attribute = gameState.characters[position].attribute;
+  //TODO: reduce attribute effect
   const attributeNum = parseAttribute(
     attribute,
     gameState.enemies[gameState.targeting].attribute,

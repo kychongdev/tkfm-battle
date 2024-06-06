@@ -62,6 +62,8 @@ export interface _6 {
   value: number;
   affectType: AffectType.RAWATK;
   target: Target | CharacterClass;
+  duration: number;
+  base: boolean;
 }
 
 // Check skill stack and apply buff

@@ -579,6 +579,8 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             condition: Condition.ULTIMATE,
             duration: 1,
             _6: {
+              base: false,
+              duration: 1,
               value: 0.25,
               target: Target.ATTACKER,
               affectType: AffectType.RAWATK,
@@ -600,7 +602,9 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             target: Target.SELF,
             condition: Condition.ULTIMATE,
             _6: {
+              base: false,
               value: 0.25,
+              duration: 1,
               target: Target.OBSTRUCTER,
               affectType: AffectType.RAWATK,
             },
@@ -694,6 +698,8 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           condition: Condition.ULTIMATE,
           duration: 100,
           _6: {
+            base: false,
+            duration: 1,
             value: 0.3,
             target: Target.ALL,
             affectType: AffectType.RAWATK,

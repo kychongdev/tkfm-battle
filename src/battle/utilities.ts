@@ -35,6 +35,8 @@ export function parseSkillName(buff: Buff) {
         return `受到傷害增加${buff._0.value * 100}%`;
       case AffectType.INCREASE_ULTIMATE_DAMAGE_RECEIVED:
         return `受到必殺技傷害增加${buff._0.value * 100}%`;
+      case AffectType.REDUCE_ATTRIBUTE_EFFECT:
+        return `屬性相剋傷害減少${buff._0.value * 100}%`;
     }
 
     return buff.name;

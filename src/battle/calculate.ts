@@ -360,6 +360,7 @@ export function triggerPassive(
       }
       gameState.characters.forEach((character, index) => {
         const rawAttBuff = applyRawAttBuff(gameState, position);
+        const baseAtk = gameState.characters[position].atk;
         if (character.class === buff._6?.target) {
           gameState.characters[index].buff = [
             ...gameState.characters[index].buff,
@@ -370,7 +371,10 @@ export function triggerPassive(
               condition: Condition.NONE,
               duration: 1,
               _0: {
-                value: Math.floor(rawAttBuff * buff._6.value),
+                value:
+                  buff._6?.base === true
+                    ? Math.floor(baseAtk * buff._6.value)
+                    : Math.floor(rawAttBuff * buff._6.value),
                 affectType: buff._6?.affectType,
               },
             },
@@ -385,14 +389,15 @@ export function triggerPassive(
               condition: Condition.NONE,
               duration: 1,
               _0: {
-                value: Math.floor(rawAttBuff * buff._6?.value),
+                value:
+                  buff._6?.base === true
+                    ? Math.floor(baseAtk * buff._6.value)
+                    : Math.floor(rawAttBuff * buff._6.value),
                 affectType: buff._6?.affectType,
               },
             },
           ];
         } else if (buff._6?.target === Target.ALL_EXCEPT_SELF) {
-          console.log(rawAttBuff);
-          console.log(buff._6?.value);
           if (index !== position) {
             gameState.characters[index].buff = [
               ...gameState.characters[index].buff,
@@ -403,7 +408,10 @@ export function triggerPassive(
                 condition: Condition.NONE,
                 duration: 1,
                 _0: {
-                  value: Math.floor(rawAttBuff * buff._6?.value),
+                  value:
+                    buff._6?.base === true
+                      ? Math.floor(baseAtk * buff._6.value)
+                      : Math.floor(rawAttBuff * buff._6.value),
                   affectType: buff._6?.affectType,
                 },
               },

@@ -864,6 +864,178 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
       }
       break;
     case "528":
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "528-Lead-1",
+            name: "最大HP增加20%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              affectType: AffectType.MAXHP,
+              value: 0.2,
+            },
+          },
+          {
+            id: "528-Lead-2",
+            name: "攻擊力增加40%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              affectType: AffectType.ATK,
+              value: 0.4,
+            },
+          },
+        ];
+      });
+
+      {
+        const threeLightCondition = [
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+        ];
+        const threeAttackerCondition = [
+          CharacterClass.ATTACKER,
+          CharacterClass.ATTACKER,
+          CharacterClass.ATTACKER,
+        ];
+        gameState.characters.forEach((character) => {
+          if (threeLightCondition.includes(character.attribute)) {
+            const index = threeLightCondition.indexOf(character.attribute);
+            if (index !== -1) {
+              threeLightCondition.splice(
+                threeLightCondition.indexOf(character.attribute),
+                1,
+              );
+            }
+          }
+          if (threeAttackerCondition.includes(character.class)) {
+            const index = threeAttackerCondition.indexOf(character.class);
+            if (index !== -1) {
+              threeAttackerCondition.splice(
+                threeAttackerCondition.indexOf(character.class),
+                1,
+              );
+            }
+          }
+        });
+
+        if (threeLightCondition.length <= 0) {
+          gameState.characters[0].buff = [
+            ...gameState.characters[0].buff,
+            {
+              id: "528-Lead-3",
+              name: "屬性相剋效果減少55%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.REDUCE_ATTRIBUTE_EFFECT,
+                value: 0.55,
+              },
+            },
+            {
+              id: "528-Lead-4",
+              name: "普攻時，觸發「使目標受到光屬性傷害增加7%(最多8層)」",
+              type: 4,
+              condition: Condition.BASIC_ATTACK,
+              duration: 100,
+              _4: {
+                increaseStack: 1,
+                targetSkill: "528-Lead-4-1",
+                target: Target.ENEMY,
+                applyBuff: {
+                  id: "528-Lead-4-1",
+                  name: "受到光屬性傷害增加7%",
+                  type: 3,
+                  condition: Condition.NONE,
+                  duration: 100,
+                  _3: {
+                    id: "514-Lead-6-1",
+                    name: "受到光屬性傷害增加7%",
+                    stack: 1,
+                    maxStack: 8,
+                    affectType: AffectType.INCREASE_LIGHT_DMG_RECEIVED,
+                    value: 0.07,
+                  },
+                },
+              },
+            },
+            {
+              id: "528-Lead-5",
+              name: "《催情的音樂》",
+              type: 6,
+              condition: Condition.BASIC_ATTACK,
+              duration: 100,
+              _6: {
+                affectType: AffectType.RAWATK,
+                duration: 4,
+                value: 0.3,
+                base: true,
+                target: Target.ALL,
+              },
+            },
+          ];
+        }
+        if (threeAttackerCondition.length <= 0) {
+          gameState.characters.forEach((_, index) => {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "528-Lead-6",
+                name: "《武裝的防備》",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.DECREASE_DARK_DMG_RECEIVED,
+                  value: 0.55,
+                },
+              },
+              {
+                id: "528-Lead-7",
+                name: "《武裝的防備》",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.IMMUNE_CD_CHANGE,
+                  value: 0,
+                },
+              },
+              {
+                id: "528-Lead-8",
+                name: "《武裝的防備》",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  affectType: AffectType.INCREASE_DMG,
+                  value: 0.2,
+                },
+              },
+              {
+                id: "528-Lead-9",
+                name: "《武裝的防備》",
+                type: 1,
+                condition: Condition.BASIC_ATTACK,
+                duration: 100,
+                _1: {
+                  isTrigger: false,
+                  value: 0.4,
+                  target: Target.ENEMY,
+                  damageType: 0,
+                },
+              },
+            ];
+          });
+        }
+      }
+
       break;
 
     default:
