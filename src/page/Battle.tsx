@@ -191,11 +191,11 @@ export default function Battle() {
         }}
       >
         <Group grow wrap="nowrap" gap="xs">
-          <Image src="/tkfm-battle/character/char_small_101.png" />
-          <Image src="/tkfm-battle/character/char_small_101.png" />
-          <Image src="/tkfm-battle/character/char_small_101.png" />
-          <Image src="/tkfm-battle/character/char_small_101.png" />
-          <Image src="/tkfm-battle/character/char_small_101.png" />
+          <Image src="/character/char_small_101.png" />
+          <Image src="/character/char_small_101.png" />
+          <Image src="/character/char_small_101.png" />
+          <Image src="/character/char_small_101.png" />
+          <Image src="/character/char_small_101.png" />
         </Group>
       </Modal>
       <Modal
