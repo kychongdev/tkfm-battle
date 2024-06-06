@@ -146,7 +146,10 @@ export default function SelectCharacterPage() {
 
   return (
     <Container>
-      <Space h="lg" />
+      <Link to="/">
+        <Button>回到首頁</Button>
+      </Link>
+      <Space h="xs" />
       <Title order={3}>選擇角色</Title>
       <Space h="xs" />
       <Group grow wrap="nowrap">

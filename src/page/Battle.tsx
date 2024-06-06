@@ -23,6 +23,7 @@ import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
 import characterJson from "../assets/character.json";
 import { LogList } from "../components/LogList";
+import { Link } from "@tanstack/react-router";
 
 export default function Battle() {
   const [value] = useLocalStorage<CharacterSelect[]>("last-session");
@@ -149,7 +150,10 @@ export default function Battle() {
       >
         <BuffList character={enemies[targeting]} />
       </Modal>
-      <Space h="lg" />
+      <Link to="/">
+        <Button>回到首頁</Button>
+      </Link>
+      <Space h="xs" />
       <Center>木樁</Center>
       <Text m="sm">第{turns}回合</Text>
       <Progress

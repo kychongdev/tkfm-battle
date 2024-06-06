@@ -4,16 +4,12 @@ import { Link, createLazyFileRoute } from "@tanstack/react-router";
 export const Route = createLazyFileRoute("/")({
   component: () => (
     <div className="p-2">
-      <Button>
-        <Link to="/battle/select" className="btn btn-primary">
-          隊伍設定
-        </Link>
-      </Button>
-      <Button>
-        <Link to="/battle/start" className="btn btn-primary">
-          開始戰鬥
-        </Link>
-      </Button>
+      <Link to="/battle/select" className="btn btn-primary">
+        <Button>隊伍設定</Button>
+      </Link>
+      <Link to="/battle/start" className="btn btn-primary">
+        <Button>開始戰鬥</Button>
+      </Link>
     </div>
   ),
 });
