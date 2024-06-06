@@ -42,6 +42,7 @@ function initCharacterSelection(position: number) {
     stars: 5,
     bond: 5,
     disclipline: 3,
+    pot6: true,
   };
 }
 

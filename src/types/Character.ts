@@ -56,6 +56,7 @@ interface CharacterSelect {
   disclipline: number;
   stars: number;
   bond: number;
+  pot6: boolean;
 }
 
 export type { CharacterState, CharacterSelect };

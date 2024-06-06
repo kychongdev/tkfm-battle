@@ -75,7 +75,7 @@ export default function Battle() {
             maxAtk: maxAtk,
             maxHp: maxHp,
             stars: character.stars,
-            passive4: true,
+            passive4: character.pot6,
             atk: maxAtk,
             hp: maxHp,
             bond: character.bond,
@@ -181,6 +181,9 @@ export default function Battle() {
       </Group>
       <Space h="sm" />
       <Group justify="end">
+        <Button onClick={() => localStorage.removeItem("game-state")}>
+          重置戰鬥
+        </Button>
         <Button onClick={() => openLog(true)}>Logs</Button>
         <Button onClick={() => startGame()}>開始</Button>
         <Button onClick={() => setOpened(true)}>

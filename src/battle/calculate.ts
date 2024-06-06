@@ -391,6 +391,8 @@ export function triggerPassive(
             },
           ];
         } else if (buff._6?.target === Target.ALL_EXCEPT_SELF) {
+          console.log(rawAttBuff);
+          console.log(buff._6?.value);
           if (index !== position) {
             gameState.characters[index].buff = [
               ...gameState.characters[index].buff,
@@ -618,12 +620,14 @@ export function applyRawAttBuff(gameState: GameState, position: number) {
       tempAtk += buff._0?.value;
     }
     if (buff.type === 3 && buff._3?.affectType === AffectType.ATK) {
-      atkPercentage += buff._3?.value;
+      atkPercentage += buff._3?.value * buff._3?.stack;
     }
     if (buff.type === 3 && buff._3?.affectType === AffectType.RAWATK) {
       tempAtk += buff._3?.value;
     }
   }
+  console.log(tempAtk);
+  console.log(atkPercentage);
 
   const res = Math.floor(atk * atkPercentage) + tempAtk;
   return res;

@@ -12,6 +12,7 @@ import {
   Card,
   Flex,
   Text,
+  Checkbox,
 } from "@mantine/core";
 import { useCallback, useState } from "react";
 import character from "../assets/character.json";
@@ -295,6 +296,17 @@ export default function SelectCharacterPage() {
             }
           />
         </Group>
+        <Space h="lg" />
+        <Checkbox
+          checked={characterList[position].pot6}
+          onChange={(event) =>
+            updateCharacter(position, {
+              ...characterList[position],
+              pot6: event.currentTarget.checked,
+            })
+          }
+          label="潛6被動"
+        />
       </Modal>
       <Space h="lg" />
       <Button
@@ -305,6 +317,10 @@ export default function SelectCharacterPage() {
         }
       >
         <Link to="/battle/start">開始戰鬥</Link>
+      </Button>
+      <Space h="xs" />
+      <Button onClick={() => localStorage.removeItem("last-session")}>
+        重置隊伍
       </Button>
     </Container>
   );
