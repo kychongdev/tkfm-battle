@@ -181,9 +181,6 @@ export default function Battle() {
       </Group>
       <Space h="sm" />
       <Group justify="end">
-        <Button onClick={() => localStorage.removeItem("game-state")}>
-          重置戰鬥
-        </Button>
         <Button onClick={() => openLog(true)}>Logs</Button>
         <Button onClick={() => startGame()}>開始</Button>
         <Button onClick={() => setOpened(true)}>
