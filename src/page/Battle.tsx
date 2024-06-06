@@ -36,7 +36,7 @@ export default function Battle() {
   const initCharacters = useGameState((state) => state.init);
   const enemies = useGameState((state) => state.enemies);
   const targeting = useGameState((state) => state.targeting);
-  // const character = useGameState((state) => state.characters);
+  const character = useGameState((state) => state.characters);
   const activeLeader = useGameState((state) => state.initLeaderSkill);
   const log = useGameState((state) => state.log);
   const char = "/tkfm-battle/character/char_small_101.png";
@@ -192,11 +192,26 @@ export default function Battle() {
         }}
       >
         <Group grow wrap="nowrap" gap="xs">
-          <Image src={char} />
-          <Image src={char} />
-          <Image src={char} />
-          <Image src={char} />
-          <Image src={char} />
+          <Image
+            src={`/tkfm-battle/character/char_small_${character[0].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${character[1].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${character[2].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${character[3].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${character[4].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
         </Group>
       </Modal>
       <Modal
