@@ -1,1 +1,0 @@
-import{c as s,j as t}from"./index-CgTIn1Gt.js";import{L as e}from"./link-BusXc1GV.js";const o=s("/")({component:()=>t.jsxs("div",{className:"p-2",children:[t.jsx(e,{to:"/battle/select",className:"btn btn-primary",children:"隊伍設定"}),t.jsx(e,{to:"/battle/start",className:"btn btn-primary",children:"開始戰鬥"})]})});export{o as Route};

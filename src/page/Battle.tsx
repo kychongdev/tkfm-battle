@@ -18,7 +18,6 @@ import favicon from "/character/favicon.png";
 import { useGameState } from "../battle/GameState";
 import { IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
-import char from "/tkfm-battle/character/char_small_101.png";
 import { calculateStats } from "../battle/calculate";
 import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
@@ -192,11 +191,11 @@ export default function Battle() {
         }}
       >
         <Group grow wrap="nowrap" gap="xs">
-          <Image src={char} />
-          <Image src={char} />
-          <Image src={char} />
-          <Image src={char} />
-          <Image src={char} />
+          <Image src="/tkfm-battle/character/char_small_101.png" />
+          <Image src="/tkfm-battle/character/char_small_101.png" />
+          <Image src="/tkfm-battle/character/char_small_101.png" />
+          <Image src="/tkfm-battle/character/char_small_101.png" />
+          <Image src="/tkfm-battle/character/char_small_101.png" />
         </Group>
       </Modal>
       <Modal

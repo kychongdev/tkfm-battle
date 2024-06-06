@@ -19,8 +19,8 @@ import { produce } from "immer";
 import { useLocalStorage } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
-import bond1 from "/character/ui_bond_1.png";
-import bond2 from "/character/ui_bond_2.png";
+import bond1 from "./character/ui_bond_1.png";
+import bond2 from "./character/ui_bond_2.png";
 import bond3 from "/character/ui_bond_3.png";
 import bond4 from "/character/ui_bond_4.png";
 import bond5 from "/character/ui_bond_5.png";
@@ -82,8 +82,8 @@ export default function SelectCharacterPage() {
       <Stack>
         <Image
           onClick={() => openModal(position)}
-          src={`/tkfm-battle/character/char_${characterList[position].id}.png`}
-          fallbackSrc="/tkfm-battle/character/char_nr.png"
+          src={`tkfm-battle/character/char_${characterList[position].id}.png`}
+          fallbackSrc="tkfm-battle/character/char_nr.png"
         />
         <div>Lvl. {characterList[position].level}</div>
         <Image
