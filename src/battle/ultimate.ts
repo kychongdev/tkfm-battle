@@ -143,6 +143,73 @@ export function activateUltimate(gameState: GameState, position: number) {
         });
       }
       break;
+    case "198":
+      {
+        const buff: Buff = {
+          id: "198-ult-1",
+          name: "受到必殺技傷害增加(最多1層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "198-ult-1-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "198-ult-1-1",
+              name: "受到必殺技傷害增加(最多1層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "198-ult-1-1",
+                name: "受到必殺技傷害增加(最多1層)",
+                stack: 1,
+                maxStack:
+                  bond === 1
+                    ? 3
+                    : bond === 2
+                      ? 3
+                      : bond === 3
+                        ? 3
+                        : bond === 4
+                          ? 2
+                          : 2,
+                affectType: AffectType.INCREASE_ULTIMATE_DAMAGE_RECEIVED,
+                value:
+                  bond === 1
+                    ? 0.08
+                    : bond === 2
+                      ? 0.08
+                      : bond === 3
+                        ? 0.08
+                        : bond === 4
+                          ? 0.18
+                          : 0.225,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+
+      calcUltDamage(
+        position,
+        bond === 1
+          ? 3.3
+          : bond === 2
+            ? 3.76
+            : bond === 3
+              ? 4.22
+              : bond === 4
+                ? 4.68
+                : 5.14,
+        gameState,
+        false,
+        Target.ENEMY,
+      );
+
+      break;
     case "514":
       {
         const buff: Buff = {

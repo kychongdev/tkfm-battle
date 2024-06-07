@@ -136,6 +136,138 @@ export function initPassiveSkill(position: number, gameState: GameState) {
       }
 
       break;
+    case "198":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "198-passive-1",
+          name: "每經過1回合，觸發「使敵方全體受到傷害增加5%(最多11層)」",
+          type: 4,
+          condition: Condition.EVERY_X_TURN,
+          conditionTurn: 1,
+          duration: 100,
+          _4: {
+            target: Target.ENEMY,
+            increaseStack: 1,
+            targetSkill: "198-passive-1-1",
+            applyBuff: {
+              id: "198-passive-1-1",
+              name: "受到傷害增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "198-passive-1-1",
+                name: "受到傷害增加5%",
+                stack: 1,
+                maxStack: 11,
+                value: 0.05,
+                affectType: AffectType.INCREASE_DMG_RECEIVED,
+              },
+            },
+          },
+        },
+      ];
+
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "198-passive-2",
+          name: "自身受到護盾效果增加25%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.25,
+            affectType: AffectType.INCREASE_SHIELD_RATE_RECEIVED,
+          },
+        },
+        {
+          id: "198-passive-3",
+          name: "自身被治療時回復量增加25%",
+          type: 0,
+          condition: Condition.GET_HEAL,
+          duration: 100,
+          _0: {
+            value: 0.25,
+            affectType: AffectType.INCREASE_HEAL_RATE,
+          },
+        },
+        {
+          id: "198-passive-4",
+          name: "自身受到持續型治療效果增加25%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.25,
+            affectType: AffectType.INCREASE_HEAL_RATE_OVER_TIME,
+          },
+        },
+      ];
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "198-passive-5",
+            name: "自身造成傷害增加35%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.35,
+              affectType: AffectType.INCREASE_DMG,
+            },
+          },
+          {
+            id: "198-passive-6",
+            name: "必殺時，觸發「使目標受到《鬼抓人大賽開始喏∼》 賦予的受到傷害增加狀態增加4層」",
+            type: 4,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _4: {
+              target: Target.ENEMY,
+              increaseStack: 4,
+              targetSkill: "198-passive-1-1",
+              applyBuff: {
+                id: "198-passive-1-1",
+                name: "受到傷害增加",
+                type: 3,
+                condition: Condition.NONE,
+                duration: 100,
+                _3: {
+                  id: "198-passive-1-1",
+                  name: "受到傷害增加5%",
+                  stack: 1,
+                  maxStack: 11,
+                  value: 0.05,
+                  affectType: AffectType.INCREASE_DMG_RECEIVED,
+                },
+              },
+            },
+          },
+        ];
+      }
+
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "198-passive4",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
+            },
+          },
+        ];
+      }
+
+      break;
 
     case "196":
       gameState.characters[position].buff = [

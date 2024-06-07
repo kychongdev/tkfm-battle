@@ -41,6 +41,14 @@ export function parseSkillName(buff: Buff) {
         return `受到普攻傷害增加${buff._0.value * 100}%`;
       case AffectType.DECREASE_BASIC_DAMAGE_RECEIVED:
         return `受到普攻傷害減少${buff._0.value * 100}%`;
+      case AffectType.INCREASE_HEAL_RATE_OVER_TIME:
+        return `受到持續回復增加${buff._0.value * 100}%`;
+      case AffectType.INCREASE_HEAL_RATE:
+        return `被治療時回復量增加${buff._0.value * 100}%`;
+      case AffectType.DECREASE_HEAL_RATE:
+        return `被治療時回復量減少${buff._0.value * 100}%`;
+      case AffectType.DECREASE_HEAL_RATE_OVER_TIME:
+        return `受到持續回復減少${buff._0.value * 100}%`;
     }
 
     return buff.name;
@@ -109,6 +117,22 @@ export function parseSkillName(buff: Buff) {
         )}% (最多${buff._3.maxStack}層)`;
       case AffectType.DECREASE_BASIC_DAMAGE_RECEIVED:
         return `受到普攻傷害減少${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.INCREASE_HEAL_RATE_OVER_TIME:
+        return `受到持續回復增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.INCREASE_HEAL_RATE:
+        return `被治療時回復量增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.DECREASE_HEAL_RATE:
+        return `被治療時回復量減少${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.DECREASE_HEAL_RATE_OVER_TIME:
+        return `受到持續回復減少${formatToTwoDecimal(
           buff._3.value * buff._3.stack * 100,
         )}% (最多${buff._3.maxStack}層)`;
     }
