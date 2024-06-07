@@ -40,7 +40,17 @@ export default function SelectCharacterPage() {
   const hp = "/tkfm-battle/character/ui_small_hp.png";
   const characterOption = [];
   for (const [key, value] of Object.entries(character.name)) {
-    const available = ["196", "514", "517", "518", "523", "525", "526", "528"];
+    const available = [
+      "179",
+      "196",
+      "514",
+      "517",
+      "518",
+      "523",
+      "525",
+      "526",
+      "528",
+    ];
     if (available.includes(key)) {
       characterOption.push({ value: key, label: value });
     }
