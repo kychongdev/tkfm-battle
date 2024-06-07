@@ -1079,7 +1079,8 @@
     },
     "stats": {
       "initATK": 1012.8,
-      "initHP": 3476.8
+      "initHP": 3476.8,
+      "cd": 4
     },
     "potentialType": 0
   },
@@ -2582,7 +2583,8 @@
     },
     "stats": {
       "initATK": 1068.8,
-      "initHP": 3299.2
+      "initHP": 3299.2,
+      "cd": 4
     },
     "potentialType": 0
   },
@@ -2757,7 +2759,8 @@
     },
     "stats": {
       "initATK": 1028.8,
-      "initHP": 3427.2
+      "initHP": 3427.2,
+      "cd": 4
     },
     "potentialType": 2
   },
