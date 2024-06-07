@@ -176,7 +176,7 @@ export function activateUltimate(gameState: GameState, position: number) {
           ...gameState.characters[index].buff,
           {
             id: "523-ult-1",
-            name: "造成觸發技效果增加100%(4回合)",
+            name: "造成觸發技效果增加(4回合)",
             type: 0,
             condition: Condition.NONE,
             duration: 4,
@@ -184,13 +184,13 @@ export function activateUltimate(gameState: GameState, position: number) {
               affectType: AffectType.INCREASE_TRIGGER_DAMAGE,
               value:
                 bond === 1
-                  ? 1
+                  ? 0.6
                   : bond === 2
-                    ? 1
+                    ? 0.7
                     : bond === 3
-                      ? 1
+                      ? 0.8
                       : bond === 4
-                        ? 1
+                        ? 0.9
                         : 1,
             },
           },
