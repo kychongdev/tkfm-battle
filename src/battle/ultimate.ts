@@ -10,6 +10,72 @@ export function activateUltimate(gameState: GameState, position: number) {
   switch (gameState.characters[position].id) {
     case "179":
       // 使自身攻擊力增加50/65/80/95/110%(3/3/3/4/4回合)，再以攻擊力200%對目標造成傷害，使自身造成傷害增加0/0/10/15/20%(最多1層)，CD: 4
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "179-ult-1",
+          name: "攻擊力增加(1回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration:
+            bond === 1
+              ? 3
+              : bond === 2
+                ? 3
+                : bond === 3
+                  ? 3
+                  : bond === 4
+                    ? 4
+                    : 4,
+          _0: {
+            affectType: AffectType.ATK,
+            value:
+              bond === 1
+                ? 0.5
+                : bond === 2
+                  ? 0.65
+                  : bond === 3
+                    ? 0.8
+                    : bond === 4
+                      ? 0.95
+                      : 1.1,
+          },
+        },
+      ];
+
+      calcUltDamage(position, 2, gameState, false, Target.ENEMY);
+
+      {
+        const buff: Buff = {
+          id: "179-ult-2",
+          name: "造成傷害增加(最多1層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "179-ult-2-1",
+            target: Target.SELF,
+            applyBuff: {
+              id: "179-ult-2-1",
+              name: "造成傷害增加(最多1層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "179-ult-2-1",
+                name: "造成傷害增加(最多1層)",
+                stack: 1,
+                maxStack: 1,
+                affectType: AffectType.INCREASE_DMG,
+                value: bond === 3 ? 0.1 : bond === 4 ? 0.15 : 0.2,
+              },
+            },
+          },
+        };
+
+        triggerPassive(buff, gameState, position);
+      }
       break;
     case "196":
       {
