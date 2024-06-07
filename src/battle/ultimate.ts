@@ -53,6 +53,8 @@ export function activateUltimate(gameState: GameState, position: number) {
                 condition: Condition.ATTACK,
                 duration: 1,
                 _6: {
+                  duration: 1,
+                  base: false,
                   value:
                     bond === 1
                       ? 0.1
