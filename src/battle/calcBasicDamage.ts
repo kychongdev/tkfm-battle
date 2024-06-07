@@ -396,6 +396,21 @@ export function calcBasicDamage(
     ) {
       attributeDamage -= buff._3?.value * buff._3?.stack;
     }
+
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_BASIC_DAMAGE_RECEIVED
+    ) {
+      basicBuff += buff._3?.value * buff._3?.stack;
+    }
+
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_BASIC_DAMAGE_RECEIVED
+    ) {
+      basicBuff -= buff._3?.value * buff._3?.stack;
+    }
+
     if (
       buff.type === 3 &&
       buff._3?.affectType === AffectType.INCREASE_ATTACKER_DAMAGE_RECEIVED &&

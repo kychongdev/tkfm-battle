@@ -37,6 +37,10 @@ export function parseSkillName(buff: Buff) {
         return `受到必殺技傷害增加${buff._0.value * 100}%`;
       case AffectType.REDUCE_ATTRIBUTE_EFFECT:
         return `屬性相剋傷害減少${buff._0.value * 100}%`;
+      case AffectType.INCREASE_BASIC_DAMAGE_RECEIVED:
+        return `受到普攻傷害增加${buff._0.value * 100}%`;
+      case AffectType.DECREASE_BASIC_DAMAGE_RECEIVED:
+        return `受到普攻傷害減少${buff._0.value * 100}%`;
     }
 
     return buff.name;
@@ -97,6 +101,14 @@ export function parseSkillName(buff: Buff) {
         )}% (最多${buff._3.maxStack}層)`;
       case AffectType.INCREASE_ULTIMATE_DAMAGE_RECEIVED:
         return `受到必殺技傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.INCREASE_BASIC_DAMAGE_RECEIVED:
+        return `受到普攻傷害增加${formatToTwoDecimal(
+          buff._3.value * buff._3.stack * 100,
+        )}% (最多${buff._3.maxStack}層)`;
+      case AffectType.DECREASE_BASIC_DAMAGE_RECEIVED:
+        return `受到普攻傷害減少${formatToTwoDecimal(
           buff._3.value * buff._3.stack * 100,
         )}% (最多${buff._3.maxStack}層)`;
     }

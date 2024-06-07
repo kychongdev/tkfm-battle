@@ -249,6 +249,233 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
         },
       ];
       break;
+    // 夏日 巴爾
+    case "517":
+      // 自身與我方全體火、光屬性隊員最大HP增加20%
+      // 自身與我方全體火、光屬性隊員造成傷害增加20%
+      gameState.characters.forEach((character, index) => {
+        if (
+          character.attribute === CharacterAttribute.FIRE ||
+          character.attribute === CharacterAttribute.LIGHT
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "517-Lead-1",
+              name: "最大HP增加20%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.MAXHP,
+                value: 0.2,
+              },
+            },
+            {
+              id: "517-Lead-2",
+              name: "造成傷害增加20%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.INCREASE_DMG,
+                value: 0.2,
+              },
+            },
+          ];
+        }
+      });
+
+      gameState.characters[0].buff = [
+        ...gameState.characters[0].buff,
+        {
+          id: "517-Lead-3",
+          name: "攻擊力增加50%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            affectType: AffectType.ATK,
+            value: 0.5,
+          },
+        },
+        {
+          id: "517-Lead-4",
+          name: "普攻傷害增加20%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            affectType: AffectType.INCREASE_BASIC_DAMAGE,
+            value: 0.2,
+          },
+        },
+      ];
+      gameState.characters.forEach((character, index) => {
+        if (
+          character.attribute === CharacterAttribute.FIRE ||
+          character.attribute === CharacterAttribute.LIGHT
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "517-Lead-5",
+              name: "攻擊力增加80%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.ATK,
+                value: 0.8,
+              },
+            },
+            {
+              id: "517-Lead-6",
+              name: "普攻傷害增加50%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.INCREASE_BASIC_DAMAGE,
+                value: 0.5,
+              },
+            },
+          ];
+        }
+      });
+
+      {
+        const twoFireCondition = [
+          CharacterAttribute.FIRE,
+          CharacterAttribute.FIRE,
+        ];
+        const twoLightCondition = [
+          CharacterAttribute.LIGHT,
+          CharacterAttribute.LIGHT,
+        ];
+
+        gameState.characters.forEach((character) => {
+          if (twoFireCondition.includes(character.attribute)) {
+            const index = twoFireCondition.indexOf(character.attribute);
+            if (index !== -1) {
+              twoFireCondition.splice(
+                twoFireCondition.indexOf(character.attribute),
+                1,
+              );
+            }
+          }
+          if (twoLightCondition.includes(character.attribute)) {
+            const index = twoLightCondition.indexOf(character.attribute);
+            if (index !== -1) {
+              twoLightCondition.splice(
+                twoLightCondition.indexOf(character.attribute),
+                1,
+              );
+            }
+          }
+        });
+
+        if (twoFireCondition.length === 0) {
+          gameState.characters.forEach((character, index) => {
+            if (character.attribute === CharacterAttribute.FIRE) {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                {
+                  id: "517-Lead-7",
+                  name: "普攻時，追加「以自身攻擊力40%對目標造成傷害」",
+                  type: 1,
+                  condition: Condition.BASIC_ATTACK,
+                  duration: 100,
+                  _1: {
+                    value: 0.4,
+                    target: Target.ENEMY,
+                    damageType: 0,
+                    isTrigger: false,
+                  },
+                },
+                {
+                  id: "517-Lead-8",
+                  name: "普攻傷害增加18%",
+                  type: 4,
+                  condition: Condition.BASIC_ATTACK,
+                  duration: 100,
+                  _4: {
+                    increaseStack: 1,
+                    targetSkill: "517-Lead-8-1",
+                    target: Target.ENEMY,
+                    applyBuff: {
+                      id: "517-Lead-8-1",
+                      name: "受到普攻傷害增加18%",
+                      type: 3,
+                      condition: Condition.NONE,
+                      duration: 100,
+                      _3: {
+                        id: "517-Lead-8-1",
+                        name: "普攻時，追加「使目標受到普攻傷害增加18%(最多5層)」",
+                        stack: 1,
+                        maxStack: 5,
+                        value: 0.18,
+                        affectType: AffectType.INCREASE_DMG_RECEIVED,
+                      },
+                    },
+                  },
+                },
+              ];
+            }
+          });
+        }
+
+        if (twoLightCondition.length === 0) {
+          gameState.characters.forEach((character, index) => {
+            if (character.attribute === CharacterAttribute.FIRE) {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                {
+                  id: "517-Lead-9",
+                  name: "普攻時，追加「以自身攻擊力40%對目標造成傷害」",
+                  type: 1,
+                  condition: Condition.BASIC_ATTACK,
+                  duration: 100,
+                  _1: {
+                    value: 0.4,
+                    target: Target.ENEMY,
+                    damageType: 0,
+                    isTrigger: false,
+                  },
+                },
+                {
+                  id: "517-Lead-10",
+                  name: "普攻時，追加「使目標受到普攻傷害增加18%(最多5層)」",
+                  type: 4,
+                  condition: Condition.BASIC_ATTACK,
+                  duration: 100,
+                  _4: {
+                    increaseStack: 1,
+                    targetSkill: "517-Lead-10-1",
+                    target: Target.ENEMY,
+                    applyBuff: {
+                      id: "517-Lead-10-1",
+                      name: "普攻時，追加「使目標受到普攻傷害增加18%(最多5層)」",
+                      type: 3,
+                      condition: Condition.NONE,
+                      duration: 100,
+                      _3: {
+                        id: "517-Lead-10-1",
+                        name: "受到普攻傷害增加18%",
+                        stack: 1,
+                        maxStack: 5,
+                        value: 0.18,
+                        affectType: AffectType.INCREASE_DMG_RECEIVED,
+                      },
+                    },
+                  },
+                },
+              ];
+            }
+          });
+        }
+      }
+      break;
     // 夏日 菲歐菈
     case "518":
       {

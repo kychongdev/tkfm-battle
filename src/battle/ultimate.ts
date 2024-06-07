@@ -8,6 +8,9 @@ import type { GameState } from "./GameState";
 export function activateUltimate(gameState: GameState, position: number) {
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
+    case "179":
+      // 使自身攻擊力增加50/65/80/95/110%(3/3/3/4/4回合)，再以攻擊力200%對目標造成傷害，使自身造成傷害增加0/0/10/15/20%(最多1層)，CD: 4
+      break;
     case "196":
       {
         gameState.characters.forEach((character) => {
@@ -120,6 +123,37 @@ export function activateUltimate(gameState: GameState, position: number) {
         calcUltDamage(position, ultPercentage, gameState, false, Target.ENEMY);
       }
       break;
+    // 夏日 巴爾
+    case "517":
+      calcUltDamage(position, 1, gameState, false, Target.ENEMY);
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "517-ult-1",
+          name: "普攻時，追加『以自身攻擊力96/115/135/154/173%對目標造成傷害』(4回合)",
+          type: 1,
+          condition: Condition.BASIC_ATTACK,
+          duration: 4,
+          _1: {
+            value:
+              bond === 1
+                ? 0.96
+                : bond === 2
+                  ? 1.15
+                  : bond === 3
+                    ? 1.35
+                    : bond === 4
+                      ? 1.54
+                      : 1.73,
+            isTrigger: false,
+            target: Target.ENEMY,
+            damageType: 0,
+          },
+        },
+      ];
+
+      break;
+
     case "518":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
