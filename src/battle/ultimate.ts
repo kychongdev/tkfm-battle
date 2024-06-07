@@ -45,7 +45,7 @@ export function activateUltimate(gameState: GameState, position: number) {
 
       calcUltDamage(position, 2, gameState, false, Target.ENEMY);
 
-      {
+      if (bond > 2) {
         const buff: Buff = {
           id: "179-ult-2",
           name: "造成傷害增加(最多1層)",
@@ -73,7 +73,6 @@ export function activateUltimate(gameState: GameState, position: number) {
             },
           },
         };
-
         triggerPassive(buff, gameState, position);
       }
       break;
