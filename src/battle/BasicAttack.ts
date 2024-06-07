@@ -9,6 +9,9 @@ export function basicAttack(
   gameState: GameState,
 ) {
   switch (id) {
+    case "179":
+      calcBasicDamage(position, 1.25, gameState, Target.ENEMY);
+      break;
     case "196":
       gameState.characters.forEach((character) => {
         const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.3);
@@ -28,7 +31,13 @@ export function basicAttack(
         ];
       });
       break;
+    case "198":
+      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      break;
     case "514":
+      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      break;
+    case "517":
       calcBasicDamage(position, 1, gameState, Target.ENEMY);
       break;
     case "518":
