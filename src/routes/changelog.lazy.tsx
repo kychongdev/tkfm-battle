@@ -29,6 +29,7 @@ export const Route = createLazyFileRoute("/changelog")({
               <br /> 聖誕雪狐 靜
               <br /> 調皮搗蛋 白
               <br /> 新春 凜月
+              <br /> 夏日 千鶴
             </Text>
           </Timeline.Item>
           <Timeline.Item title="3/6/2024 - Alpha v0.1" bullet={icon}>
@@ -41,4 +42,3 @@ export const Route = createLazyFileRoute("/changelog")({
     );
   },
 });
-
