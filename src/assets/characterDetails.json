@@ -2879,5 +2879,25 @@
       "initHP": 5185.6
     },
     "potentialType": 2
+  },
+  {
+    "id": "601",
+    "rarity": 3,
+    "tags": {
+      "attribute": 0,
+      "position": 5,
+      "race": -1,
+      "body": -1,
+      "oppai": -1,
+      "rank": -1,
+      "else": [],
+      "available": false
+    },
+    "stats": {
+      "initATK": 931.2,
+      "initHP": 3782.4,
+      "cd": 4
+    },
+    "potentialType": 2
   }
 ]

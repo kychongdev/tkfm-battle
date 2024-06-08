@@ -49,6 +49,7 @@ export default function SelectCharacterPage() {
       "525",
       "526",
       "528",
+      "601",
     ];
     if (available.includes(key)) {
       characterOption.push({ value: key, label: value });
@@ -282,7 +283,7 @@ export default function SelectCharacterPage() {
           <NumberInput
             label="HP潛力%"
             allowNegative={false}
-            min={1}
+            min={0}
             max={100}
             value={characterList[position].hpPot}
             onChange={(value) => {
@@ -306,7 +307,7 @@ export default function SelectCharacterPage() {
           <NumberInput
             label="ATK潛力%"
             allowNegative={false}
-            min={1}
+            min={0}
             max={100}
             value={characterList[position].atkPot}
             onChange={(value) => {
@@ -324,6 +325,29 @@ export default function SelectCharacterPage() {
             }}
             isAllowed={(numberFormatValue) =>
               validateNumber(numberFormatValue.value, 0, 100)
+            }
+          />
+          <NumberInput
+            label="寢"
+            allowNegative={false}
+            min={0}
+            max={3}
+            value={characterList[position].disclipline}
+            onChange={(value) => {
+              if (typeof value === "string") {
+                const _value = Number.parseInt(value);
+                updateCharacter(position, {
+                  ...characterList[position],
+                  disclipline: _value,
+                });
+              }
+              updateCharacter(position, {
+                ...characterList[position],
+                disclipline: +value,
+              });
+            }}
+            isAllowed={(numberFormatValue) =>
+              validateNumber(numberFormatValue.value, 0, 3)
             }
           />
         </Group>

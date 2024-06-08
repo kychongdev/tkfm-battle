@@ -1490,6 +1490,118 @@ export function initPassiveSkill(position: number, gameState: GameState) {
       break;
     case "532":
       break;
+    case "601":
+      gameState.characters.forEach((character, index) => {
+        if (character.class === CharacterClass.ATTACKER) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "601-passive-1",
+              name: "使目標受到普攻傷害增加30%",
+              type: 11,
+              condition: Condition.EVERY_X_TURN,
+              conditionTurn: 1,
+              duration: 100,
+              _11: {
+                target: Target.ENEMY,
+                applyBuff: [
+                  {
+                    id: "601-passive-1-1",
+                    name: "受到普攻傷害增加",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 1,
+                    _0: {
+                      value: 0.3,
+                      affectType: AffectType.INCREASE_BASIC_DAMAGE_RECEIVED,
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              id: "601-passive-2",
+              name: "必殺時，觸發「使我方『夏日 千鶴』攻擊力增加20%(4回合)」",
+              type: 13,
+              condition: Condition.ULTIMATE,
+              duration: 100,
+              _13: {
+                target: "601",
+                applyBuff: [
+                  {
+                    id: "601-passive-2-1",
+                    name: "攻擊力增加",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 4,
+                    _0: {
+                      value: 0.2,
+                      affectType: AffectType.ATK,
+                    },
+                  },
+                ],
+              },
+            },
+          ];
+        }
+      });
+      // 第一回合時，觸發「使自身當前必殺技CD減少4回合」
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "601-passive-3",
+            name: "使自身當前必殺技CD減少4回合",
+            type: 14,
+            condition: Condition.ON_TURN_START,
+            duration: 100,
+          },
+          {
+            id: "601-passive-4",
+            name: "必殺時，觸發「使目標受到傷害增加20%(最多2層)」",
+            type: 4,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _4: {
+              increaseStack: 1,
+              targetSkill: "601-passive-4-1",
+              target: Target.ENEMY,
+              applyBuff: {
+                id: "601-passive-4-1",
+                name: "受到傷害增加20%",
+                type: 3,
+                condition: Condition.NONE,
+                duration: 100,
+                _3: {
+                  id: "601-passive-4-1",
+                  name: "受到傷害增加20%",
+                  value: 0.2,
+                  stack: 1,
+                  maxStack: 2,
+                  affectType: AffectType.INCREASE_DMG_RECEIVED,
+                },
+              },
+            },
+          },
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "601-passive4",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
+            },
+          },
+        ];
+      }
+      break;
     default:
       break;
   }

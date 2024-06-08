@@ -1,4 +1,3 @@
-import { CharacterAttribute, CharacterClass } from "../types/Character";
 import type { Buff } from "../types/Skill";
 import {
   AffectType,
@@ -10,7 +9,6 @@ import {
 import type { GameState } from "./GameState";
 import { calcBasicDamage } from "./calcBasicDamage";
 import { calcUltDamage } from "./calcUltDamage";
-import { parseAttribute } from "./utilities";
 
 export function calculateStats(
   initStats: number,
@@ -22,7 +20,7 @@ export function calculateStats(
   const starStats = star === 3 ? 1 : star === 4 ? 1.125 : star === 5 ? 1.25 : 1;
   const roomStats =
     room === 1 ? 1.05 : room === 2 ? 1.15 : room === 3 ? 1.3 : 1;
-  const levelStats = level === 1 ? 1 : level - 1;
+  const levelStats = level - 1;
   const res = Math.floor(
     initStats * 1.1 ** levelStats * starStats * roomStats * (1 + pot / 100),
   );
@@ -609,6 +607,21 @@ export function triggerPassive(
             recursiveRandomPosition(buff._12.applyBuff);
           }
         }
+      }
+      break;
+    case 13:
+      if (!buff._13) {
+        console.log("Wrong data 13");
+        break;
+      }
+      {
+        const characterIndex = gameState.characters.findIndex((x) => {
+          return x.id === buff._13?.target;
+        });
+        gameState.characters[characterIndex].buff = [
+          ...gameState.characters[characterIndex].buff,
+          ...buff._13.applyBuff,
+        ];
       }
       break;
   }

@@ -607,5 +607,116 @@ export function activateUltimate(gameState: GameState, position: number) {
         Target.ENEMY,
       );
       break;
+    case "601":
+      // 使自身普攻傷害增加50/70/90/110/130%(4回合)、使自身造成傷害增加20/25/30/35/40%(4回合)、使我方全體攻擊者獲得普攻時，追加「以自身攻擊力20/30/30/40/60%對目標造成傷害、使我方『夏日 千鶴』攻擊力增加10/10/20/20/30%(1回合)」(4回合)、再以自身攻擊力200%對目標造成傷害，CD:4
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "601-ult-1",
+          name: "普攻傷害增加(4回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.INCREASE_BASIC_DAMAGE,
+            value:
+              bond === 1
+                ? 0.5
+                : bond === 2
+                  ? 0.7
+                  : bond === 3
+                    ? 0.9
+                    : bond === 4
+                      ? 1.1
+                      : 1.3,
+          },
+        },
+        {
+          id: "601-ult-2",
+          name: "造成傷害增加(4回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.INCREASE_DMG,
+            value:
+              bond === 1
+                ? 0.2
+                : bond === 2
+                  ? 0.25
+                  : bond === 3
+                    ? 0.3
+                    : bond === 4
+                      ? 0.35
+                      : 0.4,
+          },
+        },
+      ];
+
+      gameState.characters.forEach((character, index) => {
+        if (character.class === CharacterClass.ATTACKER) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "601-ult-3",
+              name: "普攻時，追加『以自身攻擊力20/30/30/40/60%對目標造成傷害』(4回合)",
+              type: 1,
+              condition: Condition.BASIC_ATTACK,
+              duration: 4,
+              _1: {
+                value:
+                  bond === 1
+                    ? 0.2
+                    : bond === 2
+                      ? 0.3
+                      : bond === 3
+                        ? 0.3
+                        : bond === 4
+                          ? 0.4
+                          : 0.6,
+                isTrigger: false,
+                target: Target.ENEMY,
+                damageType: 0,
+              },
+            },
+            {
+              id: "601-ult-4",
+              name: "攻擊力增加(1回合)",
+              type: 13,
+              condition: Condition.ATTACK,
+              duration: 4,
+              _13: {
+                target: "601",
+                applyBuff: [
+                  {
+                    id: "601-ult-4",
+                    name: "攻擊力增加(1回合)",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 1,
+                    _0: {
+                      affectType: AffectType.ATK,
+                      value:
+                        bond === 1
+                          ? 0.1
+                          : bond === 2
+                            ? 0.1
+                            : bond === 3
+                              ? 0.2
+                              : bond === 4
+                                ? 0.2
+                                : 0.3,
+                    },
+                  },
+                ],
+              },
+            },
+          ];
+        }
+      });
+
+      calcUltDamage(position, 2, gameState, false, Target.ENEMY);
+
+      break;
   }
 }

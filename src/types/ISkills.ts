@@ -113,3 +113,9 @@ export interface _12 {
   position: 0 | 1 | 2 | 3 | 4;
   applyBuff: Buff;
 }
+
+//Apply to X character buff
+export interface _13 {
+  target: string;
+  applyBuff: Buff[];
+}
