@@ -495,9 +495,9 @@ function dealBasicDamageToTarget(
           source: type,
         });
         gameState.log.push(
-          `${character.name}對敵人造成了${formatNumber(
+          `${character.name} 對敵${gameState.targeting + 1}造成${formatNumber(
             damage,
-          )}點傷害 (普攻傷害)`,
+          )}(普傷)`,
         );
       }
       break;

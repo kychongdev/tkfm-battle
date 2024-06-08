@@ -549,9 +549,9 @@ function dealDamageToTarget(
           source: type,
         });
         gameState.log.push(
-          `${character.name}對敵人造成了${formatNumber(damage)}點傷害 (${
-            isTrigger ? "觸發傷害" : "必殺傷害"
-          })`,
+          `${character.name}對敵${gameState.targeting + 1}造成${formatNumber(
+            damage,
+          )}(${isTrigger ? "觸" : "必"}傷)`,
         );
       }
       break;

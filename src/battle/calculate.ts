@@ -731,7 +731,7 @@ export function onTurnStart(gameState: GameState) {
       }
     }
   });
-  gameState.log.push(`---第${gameState.turns}回合---`);
+  gameState.log.push(`～～～～～～第${gameState.turns}回合～～～～～～`);
 }
 
 export function checkEndTurn(state: GameState) {

@@ -703,27 +703,27 @@ export default function Battle() {
                 data={[
                   {
                     name: characters[0].name,
-                    value: +(totalDamage / teamTotalDamage).toFixed(4) * 100,
+                    value: +((totalDamage / teamTotalDamage) * 100).toFixed(2),
                     color: "indigo.6",
                   },
                   {
                     name: characters[1].name,
-                    value: +(totalDamage1 / teamTotalDamage).toFixed(4) * 100,
+                    value: +((totalDamage1 / teamTotalDamage) * 100).toFixed(2),
                     color: "cyan.6",
                   },
                   {
                     name: characters[2].name,
-                    value: +(totalDamage2 / teamTotalDamage).toFixed(4) * 100,
+                    value: +((totalDamage2 / teamTotalDamage) * 100).toFixed(2),
                     color: "red.6",
                   },
                   {
                     name: characters[3].name,
-                    value: +(totalDamage3 / teamTotalDamage).toFixed(4) * 100,
+                    value: +((totalDamage3 / teamTotalDamage) * 100).toFixed(2),
                     color: "yellow.6",
                   },
                   {
                     name: characters[4].name,
-                    value: +(totalDamage4 / teamTotalDamage).toFixed(4) * 100,
+                    value: +((totalDamage4 / teamTotalDamage) * 100).toFixed(2),
                     color: "green.6",
                   },
                 ]}
