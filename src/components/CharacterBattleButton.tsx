@@ -37,7 +37,7 @@ export function CharacterBattleButton(props: { position: number }) {
           fallbackSrc="/tkfm-battle/character/char_nr.png"
         />
         {character.isMoved || !character.isExist || character.isDead ? (
-          <Overlay color="#000" backgroundOpacity={0.85} />
+          <Overlay fixed color="#000" backgroundOpacity={0.85} />
         ) : null}
       </AspectRatio>
       <Progress value={(character.hp / character.maxHp) * 100} radius={0} />

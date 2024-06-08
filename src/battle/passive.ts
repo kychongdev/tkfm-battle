@@ -551,8 +551,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         }
       });
 
-      //       我方隊伍中至少有(4/5)名水屬性隊員時，各發動「普攻時，追加『以自身攻擊力(15/15)%對目標造成傷害』」
-      // 我方隊伍中至少有(4/5)名水屬性隊員時，各發動「普攻時，追加『使目標受到普攻傷害增加(9/9)%(最多5層)』」
       {
         const fiveWaterCondtion = [
           CharacterAttribute.WATER,
@@ -731,32 +729,34 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         });
 
         if (twoAttackerCondition.length === 0) {
-          gameState.characters.forEach((_, index) => {
-            gameState.characters[index].buff = [
-              ...gameState.characters[index].buff,
-              {
-                id: "517-passive-7",
-                name: "造成傷害增加30%",
-                type: 0,
-                condition: Condition.NONE,
-                duration: 100,
-                _0: {
-                  value: 0.3,
-                  affectType: AffectType.INCREASE_DMG,
+          gameState.characters.forEach((character, index) => {
+            if (character.class === CharacterClass.ATTACKER) {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                {
+                  id: "517-passive-7",
+                  name: "造成傷害增加30%",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 100,
+                  _0: {
+                    value: 0.3,
+                    affectType: AffectType.INCREASE_DMG,
+                  },
                 },
-              },
-              {
-                id: "517-passive-8",
-                name: "普攻傷害增加30%",
-                type: 0,
-                condition: Condition.NONE,
-                duration: 100,
-                _0: {
-                  value: 0.3,
-                  affectType: AffectType.INCREASE_BASIC_DAMAGE,
+                {
+                  id: "517-passive-8",
+                  name: "普攻傷害增加30%",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 100,
+                  _0: {
+                    value: 0.3,
+                    affectType: AffectType.INCREASE_BASIC_DAMAGE,
+                  },
                 },
-              },
-            ];
+              ];
+            }
           });
         }
       }
