@@ -1497,7 +1497,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             ...gameState.characters[index].buff,
             {
               id: "601-passive-1",
-              name: "使目標受到普攻傷害增加30%",
+              name: "每經過1回合，使目標受到普攻傷害增加30%",
               type: 11,
               condition: Condition.EVERY_X_TURN,
               conditionTurn: 1,

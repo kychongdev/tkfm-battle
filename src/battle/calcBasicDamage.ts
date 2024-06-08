@@ -398,6 +398,19 @@ export function calcBasicDamage(
     }
 
     if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.INCREASE_BASIC_DAMAGE_RECEIVED
+    ) {
+      basicBuff += buff._0?.value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_BASIC_DAMAGE_RECEIVED
+    ) {
+      basicBuff -= buff._0?.value;
+    }
+
+    if (
       buff.type === 3 &&
       buff._3?.affectType === AffectType.INCREASE_BASIC_DAMAGE_RECEIVED
     ) {
