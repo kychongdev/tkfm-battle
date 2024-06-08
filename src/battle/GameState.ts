@@ -60,6 +60,11 @@ export const useGameState = create<GameState>()(
           state.enemies[0].hp = state.enemies[0].maxHp;
           state.enemies[0].buff = [];
           state.log = [];
+          state.characters.forEach((_, index) => {
+            state.characters[index].hp = state.characters[index].maxHp;
+            state.characters[index].buff = [];
+            state.characters[index].isMoved = false;
+          });
         });
       },
       initLeaderSkill: () => {
