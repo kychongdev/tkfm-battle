@@ -23,7 +23,6 @@ import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
 import characterJson from "../assets/character.json";
 import { LogList } from "../components/LogList";
-import { Link } from "@tanstack/react-router";
 
 export default function Battle() {
   const [saved1] = useLocalStorage<CharacterSelect[]>("saved-team");
@@ -153,22 +152,19 @@ export default function Battle() {
       >
         <BuffList character={enemies[targeting]} />
       </Modal>
-      <Link to="/">
-        <Button>回到首頁</Button>
-      </Link>
-      <Space h="xs" />
-      <Center>木樁</Center>
-      <Text m="sm">第{turns}回合</Text>
+      <Text>第{turns}回合</Text>
+      <Space h="sm" />
       <Progress
         value={(enemies[targeting].hp / enemies[targeting].maxHp) * 100}
-        m="sm"
       />
+      <Space h="sm" />
       <Text>
         {formatNumber(enemies[targeting].hp)}/
         {formatNumber(enemies[targeting].maxHp)}
       </Text>
       <Center m="xl">
         <Image
+          height={150}
           src={favicon}
           onClick={() => {
             setEnemyStatus(true);
@@ -184,10 +180,11 @@ export default function Battle() {
       </Group>
       <Space h="sm" />
       <Group justify="end">
-        <Button onClick={() => openLog(true)}>Logs</Button>
-        <Button onClick={() => startGame()}>開始</Button>
+        <Button onClick={() => openLog(true)}>傷害紀錄</Button>
+        <Button onClick={() => startGame()}>重新開始</Button>
         <Button onClick={() => setOpened(true)}>
           <IconEdit />
+          選擇隊伍
         </Button>
       </Group>
       <Modal
@@ -203,6 +200,7 @@ export default function Battle() {
           gap="xs"
           onClick={() => {
             initTeam(saved1);
+            startGame();
             setOpened(false);
           }}
         >
@@ -234,6 +232,7 @@ export default function Battle() {
           gap="xs"
           onClick={() => {
             initTeam(saved2);
+            startGame();
             setOpened(false);
           }}
         >
@@ -265,6 +264,7 @@ export default function Battle() {
           gap="xs"
           onClick={() => {
             initTeam(saved3);
+            startGame();
             setOpened(false);
           }}
         >
@@ -296,6 +296,7 @@ export default function Battle() {
           gap="xs"
           onClick={() => {
             initTeam(saved4);
+            startGame();
             setOpened(false);
           }}
         >
@@ -327,6 +328,7 @@ export default function Battle() {
           gap="xs"
           onClick={() => {
             initTeam(saved5);
+            startGame();
             setOpened(false);
           }}
         >
