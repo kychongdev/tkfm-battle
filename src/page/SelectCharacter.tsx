@@ -18,7 +18,6 @@ import { useLocalStorage, useLongPress } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
 import { Link } from "@tanstack/react-router";
-import { notifications } from "@mantine/notifications";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -73,50 +72,30 @@ export default function SelectCharacterPage() {
   const longPress1 = useLongPress(() => {
     if (saved1) {
       setCharacterList(saved1);
-      notifications.show({
-        message: "隊伍1已載入",
-        color: "blue",
-      });
       setOpenTeam(false);
     }
   }, defaultOptions);
   const longPress2 = useLongPress(() => {
     if (saved2) {
       setCharacterList(saved2);
-      notifications.show({
-        message: "隊伍2已載入",
-        color: "blue",
-      });
       setOpenTeam(false);
     }
   }, defaultOptions);
   const longPress3 = useLongPress(() => {
     if (saved3) {
       setCharacterList(saved3);
-      notifications.show({
-        message: "隊伍3已載入",
-        color: "blue",
-      });
       setOpenTeam(false);
     }
   }, defaultOptions);
   const longPress4 = useLongPress(() => {
     if (saved4) {
       setCharacterList(saved4);
-      notifications.show({
-        message: "隊伍4已載入",
-        color: "blue",
-      });
       setOpenTeam(false);
     }
   }, defaultOptions);
   const longPress5 = useLongPress(() => {
     if (saved5) {
       setCharacterList(saved5);
-      notifications.show({
-        message: "隊伍5已載入",
-        color: "blue",
-      });
       setOpenTeam(false);
     }
   }, defaultOptions);
