@@ -1,6 +1,6 @@
 import { CharacterAttribute, CharacterClass } from "../types/Character";
 import { AffectType, Target } from "../types/Skill";
-import type { GameState } from "./GameState";
+import type { GameState, IDamageLog } from "./GameState";
 import { formatNumber, parseAttribute } from "./utilities";
 
 export function calcBasicDamage(
@@ -8,6 +8,7 @@ export function calcBasicDamage(
   value: number,
   gameState: GameState,
   target: Target,
+  type?: "ultimate" | "basic",
 ) {
   const atk = gameState.characters[position].atk;
   let rawAtk = 0;
@@ -465,7 +466,13 @@ export function calcBasicDamage(
       attributeNum *
       value,
   );
-  dealBasicDamageToTarget(gameState, position, res, target);
+  dealBasicDamageToTarget(
+    gameState,
+    position,
+    res,
+    target,
+    type ? type : "none",
+  );
 }
 
 function dealBasicDamageToTarget(
@@ -473,18 +480,50 @@ function dealBasicDamageToTarget(
   position: number,
   damage: number,
   target: Target,
+  type: "ultimate" | "basic" | "none",
 ) {
   switch (target) {
     case Target.ENEMY:
       {
         const character = gameState.characters[position];
         gameState.enemies[gameState.targeting].hp -= damage;
+        writeToSpecificLog(gameState, position, {
+          damage,
+          type: "basic",
+          turn: gameState.turns,
+          position: gameState.targeting,
+          source: type,
+        });
         gameState.log.push(
           `${character.name}對敵人造成了${formatNumber(
             damage,
           )}點傷害 (普攻傷害)`,
         );
       }
+      break;
+  }
+}
+
+function writeToSpecificLog(
+  gameState: GameState,
+  position: number,
+  content: IDamageLog,
+) {
+  switch (position) {
+    case 0:
+      gameState.damageLog.push(content);
+      break;
+    case 1:
+      gameState.damageLog1.push(content);
+      break;
+    case 2:
+      gameState.damageLog2.push(content);
+      break;
+    case 3:
+      gameState.damageLog3.push(content);
+      break;
+    case 4:
+      gameState.damageLog4.push(content);
       break;
   }
 }

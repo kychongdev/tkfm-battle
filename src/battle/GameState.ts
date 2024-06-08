@@ -16,12 +16,25 @@ import { initPassiveSkill } from "./passive";
 import { activateUltimate } from "./ultimate";
 import { applyExtra } from "./extra";
 
+export interface IDamageLog {
+  damage: number;
+  type: "basic" | "ultimate" | "trigger";
+  turn: number;
+  position: number;
+  source: "ultimate" | "basic" | "none";
+}
+
 export interface GameState {
   turns: number;
   turnsState: "before" | "during" | "after";
   enemies: CharacterState[];
   targeting: number;
   characters: CharacterState[];
+  damageLog: IDamageLog[];
+  damageLog1: IDamageLog[];
+  damageLog2: IDamageLog[];
+  damageLog3: IDamageLog[];
+  damageLog4: IDamageLog[];
   resetBattle: () => void;
   applyHPBuff: () => void;
   initPassiveSkill: () => void;
@@ -53,6 +66,11 @@ export const useGameState = create<GameState>()(
           hp: 10854389981,
         },
       ],
+      damageLog: [],
+      damageLog1: [],
+      damageLog2: [],
+      damageLog3: [],
+      damageLog4: [],
       log: [],
       targeting: 0,
       characters: initTeamState,
@@ -67,6 +85,11 @@ export const useGameState = create<GameState>()(
           state.enemies[0].hp = state.enemies[0].maxHp;
           state.enemies[0].buff = [];
           state.log = [];
+          state.damageLog = [];
+          state.damageLog1 = [];
+          state.damageLog2 = [];
+          state.damageLog3 = [];
+          state.damageLog4 = [];
           state.characters.forEach((_, index) => {
             state.characters[index].hp = state.characters[index].maxHp;
             state.characters[index].buff = [];

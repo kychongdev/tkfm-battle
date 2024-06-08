@@ -28,7 +28,6 @@ export function basicAttack(
         ];
       });
       break;
-      break;
     case "179":
       calcBasicDamage(position, 1.25, gameState, Target.ENEMY);
       break;
@@ -52,7 +51,7 @@ export function basicAttack(
       });
       break;
     case "198":
-      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
     case "508":
       gameState.characters.forEach((character, index) => {
@@ -76,16 +75,16 @@ export function basicAttack(
       });
       break;
     case "514":
-      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
     case "517":
-      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
     case "518":
       heal(position, 0.75, gameState, true, Target.ALL);
       break;
     case "523":
-      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
     case "526":
       gameState.characters.forEach((character) => {
@@ -107,10 +106,10 @@ export function basicAttack(
       });
       break;
     case "528":
-      calcBasicDamage(position, 1, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
     case "601":
-      calcBasicDamage(position, 1.25, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1.25, gameState, Target.ENEMY, "basic");
       break;
   }
 }

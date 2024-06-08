@@ -10,6 +10,11 @@ import {
   Button,
   Modal,
   Text,
+  SegmentedControl,
+  Accordion,
+  AccordionItem,
+  Title,
+  Divider,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
 import type { CharacterSelect, CharacterState } from "../types/Character";
@@ -23,6 +28,7 @@ import { formatNumber } from "../battle/utilities";
 import { BuffList } from "../components/BuffList";
 import characterJson from "../assets/character.json";
 import { LogList } from "../components/LogList";
+import { DonutChart } from "@mantine/charts";
 
 export default function Battle() {
   const [saved1] = useLocalStorage<CharacterSelect[]>("saved-team");
@@ -33,6 +39,7 @@ export default function Battle() {
   const [opened, setOpened] = useState(false);
   const [enemyStatus, setEnemyStatus] = useState(false);
   const [logStatus, openLog] = useState(false);
+  const [logOption, setLogOption] = useState("damage");
 
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
@@ -44,6 +51,290 @@ export default function Battle() {
   const resetBattle = useGameState((state) => state.resetBattle);
   const initPassive = useGameState((state) => state.initPassiveSkill);
   const applyHpBuff = useGameState((state) => state.applyHPBuff);
+  const characters = useGameState((state) => state.characters);
+
+  const totalDamage = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => acc + log.damage, 0),
+  );
+  const triggerDamage = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => {
+      if (log.type === "trigger") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const ultimateDamage = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => {
+      if (log.type === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const basicDamage = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => {
+      if (log.type === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const sourceBasic = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => {
+      if (log.source === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const sourceUltimate = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => {
+      if (log.source === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const sourceNone = useGameState((state) =>
+    state.damageLog.reduce((acc, log) => {
+      if (log.source === "none") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const totalDamage1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => acc + log.damage, 0),
+  );
+
+  const triggerDamage1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => {
+      if (log.type === "trigger") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const ultimateDamage1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => {
+      if (log.type === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const basicDamage1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => {
+      if (log.type === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceBasic1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => {
+      if (log.source === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const sourceUltimate1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => {
+      if (log.source === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+  const sourceNone1 = useGameState((state) =>
+    state.damageLog1.reduce((acc, log) => {
+      if (log.source === "none") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const totalDamage2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => acc + log.damage, 0),
+  );
+
+  const triggerDamage2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => {
+      if (log.type === "trigger") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const ultimateDamage2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => {
+      if (log.type === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const basicDamage2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => {
+      if (log.type === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceBasic2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => {
+      if (log.source === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceUltimate2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => {
+      if (log.source === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceNone2 = useGameState((state) =>
+    state.damageLog2.reduce((acc, log) => {
+      if (log.source === "none") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const totalDamage3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => acc + log.damage, 0),
+  );
+
+  const triggerDamage3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => {
+      if (log.type === "trigger") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const ultimateDamage3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => {
+      if (log.type === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const basicDamage3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => {
+      if (log.type === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceBasic3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => {
+      if (log.source === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceUltimate3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => {
+      if (log.source === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceNone3 = useGameState((state) =>
+    state.damageLog3.reduce((acc, log) => {
+      if (log.source === "none") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const totalDamage4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => acc + log.damage, 0),
+  );
+
+  const triggerDamage4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => {
+      if (log.type === "trigger") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const ultimateDamage4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => {
+      if (log.type === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const basicDamage4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => {
+      if (log.type === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceBasic4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => {
+      if (log.source === "basic") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceUltimate4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => {
+      if (log.source === "ultimate") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const sourceNone4 = useGameState((state) =>
+    state.damageLog4.reduce((acc, log) => {
+      if (log.source === "none") {
+        return acc + log.damage;
+      }
+      return acc;
+    }, 0),
+  );
+
+  const teamTotalDamage =
+    totalDamage + totalDamage1 + totalDamage2 + totalDamage3 + totalDamage4;
 
   function initTeam(value: CharacterSelect[] | undefined) {
     if (value) {
@@ -390,8 +681,133 @@ export default function Battle() {
         onClose={() => {
           openLog(false);
         }}
+        withCloseButton={false}
       >
-        <LogList logs={log} />
+        <SegmentedControl
+          value={logOption}
+          onChange={setLogOption}
+          data={[
+            { label: "傷害比例", value: "damage" },
+            { label: "輸出清單", value: "all" },
+          ]}
+        />
+        <Space h="sm" />
+        {logOption === "all" ? <LogList logs={log} /> : null}
+        {logOption === "damage" ? (
+          <>
+            <Center>
+              <DonutChart
+                withLabelsLine
+                withLabels
+                valueFormatter={(value) => `${value}%`}
+                data={[
+                  {
+                    name: characters[0].name,
+                    value: +(totalDamage / teamTotalDamage).toFixed(4) * 100,
+                    color: "indigo.6",
+                  },
+                  {
+                    name: characters[1].name,
+                    value: +(totalDamage1 / teamTotalDamage).toFixed(4) * 100,
+                    color: "cyan.6",
+                  },
+                  {
+                    name: characters[2].name,
+                    value: +(totalDamage2 / teamTotalDamage).toFixed(4) * 100,
+                    color: "red.6",
+                  },
+                  {
+                    name: characters[3].name,
+                    value: +(totalDamage3 / teamTotalDamage).toFixed(4) * 100,
+                    color: "yellow.6",
+                  },
+                  {
+                    name: characters[4].name,
+                    value: +(totalDamage4 / teamTotalDamage).toFixed(4) * 100,
+                    color: "green.6",
+                  },
+                ]}
+              />
+            </Center>
+            <Space h="sm" />
+            <Center>
+              <Title order={5}>總傷害</Title>
+            </Center>
+            <Space h="sm" />
+            <Accordion variant="contained">
+              <AccordionItem value="1">
+                <Accordion.Control>
+                  {characters[0].name}: {formatNumber(totalDamage)}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Text>普攻型攻擊: {formatNumber(basicDamage)}</Text>
+                  <Text>必殺型傷害: {formatNumber(ultimateDamage)}</Text>
+                  <Text>觸發型傷害: {formatNumber(triggerDamage)}</Text>
+                  <Divider my="sm" />
+                  <Text>普攻傷害: {formatNumber(sourceBasic)}</Text>
+                  <Text>必殺傷害: {formatNumber(sourceUltimate)}</Text>
+                  <Text>觸發/追加傷害: {formatNumber(sourceNone)}</Text>
+                </Accordion.Panel>
+              </AccordionItem>
+              <AccordionItem value="2">
+                <Accordion.Control>
+                  {characters[1].name}: {formatNumber(totalDamage1)}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Text>普攻型攻擊: {formatNumber(basicDamage1)}</Text>
+                  <Text>必殺型傷害: {formatNumber(ultimateDamage1)}</Text>
+                  <Text>觸發型傷害: {formatNumber(triggerDamage1)}</Text>
+                  <Divider my="sm" />
+                  <Text>普攻傷害: {formatNumber(sourceBasic1)}</Text>
+                  <Text>必殺傷害: {formatNumber(sourceUltimate1)}</Text>
+                  <Text>觸發/追加傷害: {formatNumber(sourceNone1)}</Text>
+                </Accordion.Panel>
+              </AccordionItem>
+              <AccordionItem value="3">
+                <Accordion.Control>
+                  {characters[2].name}: {formatNumber(totalDamage2)}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Text>普攻型攻擊: {formatNumber(basicDamage2)}</Text>
+                  <Text>必殺型傷害: {formatNumber(ultimateDamage2)}</Text>
+                  <Text>觸發型傷害: {formatNumber(triggerDamage2)}</Text>
+                  <Divider my="sm" />
+                  <Text>普攻傷害: {formatNumber(sourceBasic2)}</Text>
+                  <Text>必殺傷害: {formatNumber(sourceUltimate2)}</Text>
+                  <Text>觸發/追加傷害: {formatNumber(sourceNone2)}</Text>
+                </Accordion.Panel>
+              </AccordionItem>
+              <AccordionItem value="4">
+                <Accordion.Control>
+                  {characters[3].name}: {formatNumber(totalDamage3)}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Text>普攻型攻擊: {formatNumber(basicDamage3)}</Text>
+                  <Text>必殺型傷害: {formatNumber(ultimateDamage3)}</Text>
+                  <Text>觸發型傷害: {formatNumber(triggerDamage3)}</Text>
+                  <Divider my="sm" />
+                  <Text>普攻傷害: {formatNumber(sourceBasic3)}</Text>
+                  <Text>必殺傷害: {formatNumber(sourceUltimate3)}</Text>
+                  <Text>觸發/追加傷害: {formatNumber(sourceNone3)}</Text>
+                </Accordion.Panel>
+              </AccordionItem>
+              <AccordionItem value="5">
+                <Accordion.Control>
+                  {characters[4].name}: {formatNumber(totalDamage4)}
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <Text>普攻型攻擊: {formatNumber(basicDamage4)}</Text>
+                  <Text>必殺型傷害: {formatNumber(ultimateDamage4)}</Text>
+                  <Text>觸發型傷害: {formatNumber(triggerDamage4)}</Text>
+                  <Divider my="sm" />
+                  <Text>普攻傷害: {formatNumber(sourceBasic4)}</Text>
+                  <Text>必殺傷害: {formatNumber(sourceUltimate4)}</Text>
+                  <Text>觸發/追加傷害: {formatNumber(sourceNone4)}</Text>
+                </Accordion.Panel>
+              </AccordionItem>
+            </Accordion>
+          </>
+        ) : null}
       </Modal>
     </Container>
   );

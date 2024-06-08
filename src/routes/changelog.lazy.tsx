@@ -17,6 +17,11 @@ export const Route = createLazyFileRoute("/changelog")({
     return (
       <Center>
         <Timeline bulletSize={30}>
+          <Timeline.Item title="9/6/2024 - Alpha v0.3" bullet={icon}>
+            <Text c="dimmed" size="sm">
+              增加查看傷害比例功能
+            </Text>
+          </Timeline.Item>
           <Timeline.Item title="8/6/2024 - Alpha v0.2" bullet={icon}>
             <Text c="dimmed" size="sm">
               添加以下角色：

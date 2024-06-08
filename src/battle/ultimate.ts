@@ -118,7 +118,7 @@ export function activateUltimate(gameState: GameState, position: number) {
         },
       ];
 
-      calcUltDamage(position, 2, gameState, false, Target.ENEMY);
+      calcUltDamage(position, 2, gameState, false, Target.ENEMY, "ultimate");
 
       if (bond > 2) {
         const buff: Buff = {
@@ -281,6 +281,7 @@ export function activateUltimate(gameState: GameState, position: number) {
         gameState,
         false,
         Target.ENEMY,
+        "ultimate",
       );
 
       break;
@@ -327,12 +328,19 @@ export function activateUltimate(gameState: GameState, position: number) {
                 : bond === 4
                   ? 5.6
                   : 6.18;
-        calcUltDamage(position, ultPercentage, gameState, false, Target.ENEMY);
+        calcUltDamage(
+          position,
+          ultPercentage,
+          gameState,
+          false,
+          Target.ENEMY,
+          "ultimate",
+        );
       }
       break;
     // 夏日 巴爾
     case "517":
-      calcUltDamage(position, 1, gameState, false, Target.ENEMY);
+      calcUltDamage(position, 1, gameState, false, Target.ENEMY, "ultimate");
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
@@ -520,7 +528,14 @@ export function activateUltimate(gameState: GameState, position: number) {
                 : bond === 4
                   ? 3.64
                   : 3.97;
-        calcUltDamage(position, ultPercentage, gameState, false, Target.ENEMY);
+        calcUltDamage(
+          position,
+          ultPercentage,
+          gameState,
+          false,
+          Target.ENEMY,
+          "ultimate",
+        );
       }
       break;
     case "525":
@@ -750,7 +765,9 @@ export function activateUltimate(gameState: GameState, position: number) {
         gameState,
         false,
         Target.ENEMY,
+        "ultimate",
       );
+
       break;
     case "601":
       // 使自身普攻傷害增加50/70/90/110/130%(4回合)、使自身造成傷害增加20/25/30/35/40%(4回合)、使我方全體攻擊者獲得普攻時，追加「以自身攻擊力20/30/30/40/60%對目標造成傷害、使我方『夏日 千鶴』攻擊力增加10/10/20/20/30%(1回合)」(4回合)、再以自身攻擊力200%對目標造成傷害，CD:4
@@ -860,7 +877,7 @@ export function activateUltimate(gameState: GameState, position: number) {
         }
       });
 
-      calcUltDamage(position, 2, gameState, false, Target.ENEMY);
+      calcUltDamage(position, 2, gameState, false, Target.ENEMY, "ultimate");
 
       break;
   }
