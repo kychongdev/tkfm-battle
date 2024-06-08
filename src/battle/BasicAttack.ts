@@ -34,6 +34,27 @@ export function basicAttack(
     case "198":
       calcBasicDamage(position, 1, gameState, Target.ENEMY);
       break;
+    case "508":
+      gameState.characters.forEach((character, index) => {
+        const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.2);
+        if (index !== position) {
+          character.buff = [
+            ...character.buff,
+            {
+              id: "RAWATTACK",
+              name: "攻擊力",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: attack,
+                affectType: AffectType.RAWATK,
+              },
+            },
+          ];
+        }
+      });
+      break;
     case "514":
       calcBasicDamage(position, 1, gameState, Target.ENEMY);
       break;

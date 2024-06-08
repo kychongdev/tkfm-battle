@@ -18,7 +18,6 @@ import { produce } from "immer";
 import { useLocalStorage, useLongPress } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
-import { Link } from "@tanstack/react-router";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -42,6 +41,7 @@ export default function SelectCharacterPage() {
       "179",
       "196",
       "198",
+      "508",
       "514",
       "517",
       "518",

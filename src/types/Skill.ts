@@ -120,7 +120,8 @@ enum Condition {
   ON_TURN_START = 7,
   APPLY_BUFF = 8,
   GET_HEAL = 9,
-  NONE = 10,
+  GUARD = 10,
+  NONE = 11,
 }
 
 enum SpecialCondition {

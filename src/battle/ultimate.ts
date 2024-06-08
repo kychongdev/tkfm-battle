@@ -9,7 +9,6 @@ export function activateUltimate(gameState: GameState, position: number) {
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
     case "179":
-      // 使自身攻擊力增加50/65/80/95/110%(3/3/3/4/4回合)，再以攻擊力200%對目標造成傷害，使自身造成傷害增加0/0/10/15/20%(最多1層)，CD: 4
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
@@ -286,6 +285,76 @@ export function activateUltimate(gameState: GameState, position: number) {
 
       break;
 
+    case "508":
+      // 以自身攻擊力20%使自身以外我方全體攻擊力增加(1回合)，使目標受到傷害增加15/15/22.5/22.5/30%(最多3/3/2/2/2層)，以自身攻擊力96/110/123/137/150%每回合對我方全體進行治療(3回合)，CD: 4
+      gameState.characters.forEach((character, index) => {
+        const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.2);
+        if (index !== position) {
+          character.buff = [
+            ...character.buff,
+            {
+              id: "508-ult-1",
+              name: "攻擊力",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: attack,
+                affectType: AffectType.RAWATK,
+              },
+            },
+          ];
+        }
+      });
+      {
+        const buff: Buff = {
+          id: "508-ult-2",
+          name: "受到傷害增加(最多1層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "508-ult-2-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "508-ult-2-1",
+              name: "受到傷害增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "508-ult-2-1",
+                name: "受到傷害增加",
+                stack: 1,
+                maxStack:
+                  bond === 1
+                    ? 3
+                    : bond === 2
+                      ? 3
+                      : bond === 3
+                        ? 2
+                        : bond === 4
+                          ? 2
+                          : 2,
+                affectType: AffectType.INCREASE_DMG_RECEIVED,
+                value:
+                  bond === 1
+                    ? 0.15
+                    : bond === 2
+                      ? 0.15
+                      : bond === 3
+                        ? 0.225
+                        : bond === 4
+                          ? 0.225
+                          : 0.3,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+      break;
     case "518":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
