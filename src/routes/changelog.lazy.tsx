@@ -31,6 +31,7 @@ export const Route = createLazyFileRoute("/changelog")({
               <br /> 新春 凜月
               <br /> 夏日 千鶴
               <br /> 甜心可可 巴爾
+              <br /> 傳說女僕 艾蜜莉
             </Text>
           </Timeline.Item>
           <Timeline.Item title="3/6/2024 - Alpha v0.1" bullet={icon}>

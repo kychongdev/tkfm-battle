@@ -120,7 +120,14 @@ export interface _13 {
   applyBuff: Buff[];
 }
 
+// Reduce CD on target
 export interface _14 {
   reduceCD: number;
   target: Target;
+}
+
+//Reduce CD on position
+export interface _15 {
+  position: 0 | 1 | 2 | 3 | 4;
+  reduceCD: number;
 }

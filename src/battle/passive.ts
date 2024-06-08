@@ -18,6 +18,105 @@ export function initPassiveSkill(position: number, gameState: GameState) {
   const id = gameState.characters[position].id;
 
   switch (id) {
+    case "163":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "163-passive-1",
+          name: "普攻時，觸發「使自身攻擊力增加10%(最多4層)」",
+          type: 4,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "163-passive-1-1",
+            target: Target.SELF,
+            applyBuff: {
+              id: "163-passive-1-1",
+              name: "攻擊力增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "163-passive-1-1",
+                name: "攻擊力增加",
+                value: 0.1,
+                stack: 1,
+                maxStack: 4,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        },
+        {
+          id: "163-passive-2",
+          name: "必殺時，觸發「使我方站位5的隊員攻擊力增加40%(2回合)」",
+          type: 12,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _12: {
+            position: 4,
+            applyBuff: {
+              id: "163-passive-2-1",
+              name: "攻擊力增加",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 2,
+              _0: {
+                value: 0.4,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        },
+      ];
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "163-passive-3",
+            name: "必殺時，觸發「使我方全體造成傷害增加30%(1回合)」",
+            type: 11,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _11: {
+              target: Target.ALL,
+              applyBuff: [
+                {
+                  id: "163-passive-3-1",
+                  name: "造成傷害增加",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 1,
+                  _0: {
+                    value: 0.3,
+                    affectType: AffectType.INCREASE_DMG,
+                  },
+                },
+              ],
+            },
+          },
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "163-passive-4",
+            name: "使自身受到傷害減少5%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.DECREASE_DMG_RECEIVED,
+            },
+          },
+        ];
+      }
+
+      // :detail_passive2: 減傷+ (6潛)
+      break;
     //新春 凜月
     case "179":
       gameState.characters[position].buff = [

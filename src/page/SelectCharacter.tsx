@@ -38,6 +38,7 @@ export default function SelectCharacterPage() {
   const characterOption = [];
   for (const [key, value] of Object.entries(character.name)) {
     const available = [
+      "163",
       "179",
       "196",
       "198",

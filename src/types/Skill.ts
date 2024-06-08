@@ -14,6 +14,7 @@ import type {
   _12,
   _13,
   _14,
+  _15,
 } from "./ISkills";
 
 interface IBuff {
@@ -41,6 +42,7 @@ interface Buff extends IBuff {
   _12?: _12;
   _13?: _13;
   _14?: _14;
+  _15?: _15;
 }
 
 // biome-ignore lint/style/useEnumInitializers: <explanation>

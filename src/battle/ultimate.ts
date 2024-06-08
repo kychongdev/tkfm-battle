@@ -8,6 +8,82 @@ import type { GameState } from "./GameState";
 export function activateUltimate(gameState: GameState, position: number) {
   const bond = gameState.characters[position].bond;
   switch (gameState.characters[position].id) {
+    case "163":
+      gameState.characters.forEach((character) => {
+        const attack = Math.floor(
+          applyRawAttBuff(gameState, position) *
+            (bond === 1
+              ? 0.15
+              : bond === 2
+                ? 0.2
+                : bond === 3
+                  ? 0.3
+                  : bond === 4
+                    ? 0.3
+                    : 0.3),
+        );
+        character.buff = [
+          ...character.buff,
+          {
+            id: "RAWATTACK",
+            name: "攻擊力",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 1,
+            _0: {
+              value: attack,
+              affectType: AffectType.RAWATK,
+            },
+          },
+        ];
+      });
+      {
+        const buff: Buff = {
+          id: "163-ult-2",
+          name: "必殺時，觸發「使我方站位5的隊員攻擊力增加%(2回合)」",
+          type: 12,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _12: {
+            position: 4,
+            applyBuff: {
+              id: "163-passive-2-1",
+              name: "攻擊力增加",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 2,
+              _0: {
+                value:
+                  bond === 1
+                    ? 0.2
+                    : bond === 2
+                      ? 0.25
+                      : bond === 3
+                        ? 0.3
+                        : bond === 4
+                          ? 0.45
+                          : 0.6,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+
+        const buff2: Buff = {
+          id: "163-passive-2-1",
+          name: "使5號位當前必殺技CD減少4回合",
+          type: 15,
+          condition: Condition.NONE,
+          duration: 100,
+          _15: {
+            reduceCD: 4,
+            position: 4,
+          },
+        };
+        triggerPassive(buff2, gameState, position);
+      }
+      break;
     case "179":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,

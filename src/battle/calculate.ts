@@ -632,8 +632,53 @@ export function triggerPassive(
       {
         if (buff._14.target === Target.SELF) {
           gameState.characters[position].cd -= buff._14.reduceCD;
+          if (gameState.characters[position].cd < 0) {
+            gameState.characters[position].cd = 0;
+          }
         }
       }
+      break;
+    case 15:
+      {
+        if (!buff._15) {
+          console.log("Wrong data 15");
+          break;
+        }
+        const positionList = [0, 1, 2, 3, 4];
+        positionList.splice(buff._15?.position, 1);
+        function recursiveRandomPosition1(reduce: number) {
+          if (positionList.length === 0) {
+            return;
+          }
+          const randomPosition = Math.floor(
+            Math.random() * positionList.length,
+          );
+          if (
+            gameState.characters[randomPosition].isExist &&
+            !gameState.characters[randomPosition].isDead
+          ) {
+            gameState.characters[randomPosition].cd -= reduce;
+            if (gameState.characters[randomPosition].cd < 0) {
+              gameState.characters[randomPosition].cd = 0;
+            }
+          } else {
+            positionList.splice(randomPosition, 1);
+            recursiveRandomPosition1(reduce);
+          }
+        }
+        if (
+          gameState.characters[buff._15.position].isExist &&
+          !gameState.characters[buff._15.position].isDead
+        ) {
+          gameState.characters[position].cd -= buff._15.reduceCD;
+          if (gameState.characters[position].cd < 0) {
+            gameState.characters[position].cd = 0;
+          }
+        } else {
+          recursiveRandomPosition1(buff._15.reduceCD);
+        }
+      }
+      break;
   }
 }
 
