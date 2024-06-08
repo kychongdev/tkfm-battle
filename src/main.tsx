@@ -11,6 +11,7 @@ import {
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import { Notifications } from "@mantine/notifications";
 
 const memoryHistory = createMemoryHistory({
   initialEntries: ["/"], // Pass your initial url
@@ -34,6 +35,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <MantineProvider forceColorScheme="dark">
+        <Notifications />
         <RouterProvider router={router} />
       </MantineProvider>
     </StrictMode>,

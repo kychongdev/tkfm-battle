@@ -251,8 +251,6 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
       break;
     // 夏日 巴爾
     case "517":
-      // 自身與我方全體火、光屬性隊員最大HP增加20%
-      // 自身與我方全體火、光屬性隊員造成傷害增加20%
       gameState.characters.forEach((character, index) => {
         if (
           character.attribute === CharacterAttribute.FIRE ||
@@ -377,7 +375,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
 
         if (twoFireCondition.length === 0) {
           gameState.characters.forEach((character, index) => {
-            if (character.attribute === CharacterAttribute.FIRE) {
+            if (
+              character.class === CharacterClass.ATTACKER ||
+              character.class === CharacterClass.OBSTRUCTER
+            ) {
               gameState.characters[index].buff = [
                 ...gameState.characters[index].buff,
                 {
@@ -427,7 +428,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
 
         if (twoLightCondition.length === 0) {
           gameState.characters.forEach((character, index) => {
-            if (character.attribute === CharacterAttribute.FIRE) {
+            if (
+              character.class === CharacterClass.ATTACKER ||
+              character.class === CharacterClass.OBSTRUCTER
+            ) {
               gameState.characters[index].buff = [
                 ...gameState.characters[index].buff,
                 {

@@ -9,18 +9,16 @@ import {
   Modal,
   Stack,
   NumberInput,
-  Card,
-  Flex,
-  Text,
   Checkbox,
 } from "@mantine/core";
 import { useCallback, useState } from "react";
 import character from "../assets/character.json";
 import { produce } from "immer";
-import { useLocalStorage } from "react-use";
+import { useLocalStorage, useLongPress } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
 import type { CharacterSelect } from "../types/Character";
 import { Link } from "@tanstack/react-router";
+import { notifications } from "@mantine/notifications";
 
 // const gallery = Object.values(
 //   import.meta.glob("../assets/character/*.{png,jpg,jpeg,PNG,JPEG}", {
@@ -57,10 +55,77 @@ export default function SelectCharacterPage() {
     }
   }
 
-  const [value, setValue, remove] = useLocalStorage("last-session");
+  const [saved1, saveTeam1, removeTeam1] =
+    useLocalStorage<CharacterSelect[]>("saved-team");
+  const [saved2, saveTeam2, removeTeam2] =
+    useLocalStorage<CharacterSelect[]>("saved-team2");
+  const [saved3, saveTeam3, removeTeam3] =
+    useLocalStorage<CharacterSelect[]>("saved-team3");
+  const [saved4, saveTeam4, removeTeam4] =
+    useLocalStorage<CharacterSelect[]>("saved-team4");
+  const [saved5, saveTeam5, removeTeam5] =
+    useLocalStorage<CharacterSelect[]>("saved-team5");
+
+  const defaultOptions = {
+    isPreventDefault: false,
+    delay: 1000,
+  };
+  const longPress1 = useLongPress(() => {
+    if (saved1) {
+      setCharacterList(saved1);
+      notifications.show({
+        message: "隊伍1已載入",
+        color: "blue",
+      });
+      setOpenTeam(false);
+    }
+  }, defaultOptions);
+  const longPress2 = useLongPress(() => {
+    if (saved2) {
+      setCharacterList(saved2);
+      notifications.show({
+        message: "隊伍2已載入",
+        color: "blue",
+      });
+      setOpenTeam(false);
+    }
+  }, defaultOptions);
+  const longPress3 = useLongPress(() => {
+    if (saved3) {
+      setCharacterList(saved3);
+      notifications.show({
+        message: "隊伍3已載入",
+        color: "blue",
+      });
+      setOpenTeam(false);
+    }
+  }, defaultOptions);
+  const longPress4 = useLongPress(() => {
+    if (saved4) {
+      setCharacterList(saved4);
+      notifications.show({
+        message: "隊伍4已載入",
+        color: "blue",
+      });
+      setOpenTeam(false);
+    }
+  }, defaultOptions);
+  const longPress5 = useLongPress(() => {
+    if (saved5) {
+      setCharacterList(saved5);
+      notifications.show({
+        message: "隊伍5已載入",
+        color: "blue",
+      });
+      setOpenTeam(false);
+    }
+  }, defaultOptions);
 
   const [opened, setOpened] = useState(false);
+  const [openTeam, setOpenTeam] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [position, setPosition] = useState<number>(1);
+  const [selectedSlot, setSelectedSlot] = useState<number>(0);
   const [characterList, setCharacterList] = useState<CharacterSelect[]>([
     initCharacterSelection(0),
     initCharacterSelection(1),
@@ -124,28 +189,6 @@ export default function SelectCharacterPage() {
           {atkPot}%
         </Group>
       </Stack>
-    );
-  };
-
-  const characterInfo = (position: number) => {
-    return (
-      <>
-        <Card padding={"xs"}>
-          <Text fw={500} c="yellow">
-            {characterList[position].id === null
-              ? "未選擇"
-              : //@ts-ignore
-                character.name[characterList[position].id]}
-          </Text>
-          <Flex gap={"xs"} wrap={"wrap"}>
-            <Text>等級: {characterList[position].level}</Text>
-            <Text>星數: {characterList[position].stars}</Text>
-            <Text>絆數: {characterList[position].bond}</Text>
-            <Text>HP: {characterList[position].hpPot}%</Text>
-            <Text>ATK: {characterList[position].atkPot}%</Text>
-          </Flex>
-        </Card>
-      </>
     );
   };
 
@@ -321,14 +364,254 @@ export default function SelectCharacterPage() {
       </Modal>
       <Space h="lg" />
       <Button
-        color="blue"
-        onClick={() =>
-          // @ts-ignore
-          setValue(characterList)
-        }
+        onClick={() => {
+          setOpenTeam(true);
+        }}
       >
-        <Link to="/battle/start">開始戰鬥</Link>
+        儲存隊伍
       </Button>
+      <Button color="blue">
+        <Link to="/battle/start">前往戰鬥頁面</Link>
+      </Button>
+
+      <Modal
+        title="選擇儲存欄"
+        opened={openTeam}
+        onClose={() => {
+          setOpenTeam(false);
+        }}
+      >
+        <Group
+          grow
+          wrap="nowrap"
+          gap="xs"
+          {...longPress1}
+          onClick={() => {
+            setSelectedSlot(0);
+            setConfirm(true);
+          }}
+        >
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved1 ? saved1[0].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved1 ? saved1[1].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved1 ? saved1[2].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved1 ? saved1[3].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved1 ? saved1[4].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+        </Group>
+        <Space h="lg" />
+        <Group
+          grow
+          wrap="nowrap"
+          gap="xs"
+          {...longPress2}
+          onClick={() => {
+            setSelectedSlot(1);
+            setConfirm(true);
+          }}
+        >
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved2 ? saved2[0].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved2 ? saved2[1].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved2 ? saved2[2].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved2 ? saved2[3].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved2 ? saved2[4].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+        </Group>
+        <Space h="lg" />
+        <Group
+          grow
+          wrap="nowrap"
+          gap="xs"
+          {...longPress3}
+          onClick={() => {
+            setSelectedSlot(2);
+            setConfirm(true);
+          }}
+        >
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved3 ? saved3[0].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved3 ? saved3[1].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved3 ? saved3[2].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved3 ? saved3[3].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved3 ? saved3[4].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+        </Group>
+        <Space h="lg" />
+        <Group
+          grow
+          wrap="nowrap"
+          gap="xs"
+          {...longPress4}
+          onClick={() => {
+            setSelectedSlot(3);
+            setConfirm(true);
+          }}
+        >
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved4 ? saved4[0].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved4 ? saved4[1].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved4 ? saved4[2].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved4 ? saved4[3].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved4 ? saved4[4].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+        </Group>
+        <Space h="lg" />
+        <Group
+          grow
+          wrap="nowrap"
+          gap="xs"
+          {...longPress5}
+          onClick={() => {
+            setSelectedSlot(4);
+            setConfirm(true);
+          }}
+        >
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved5 ? saved5[0].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved5 ? saved5[1].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved5 ? saved5[2].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved5 ? saved5[3].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${saved5 ? saved5[4].id : "scarecow"}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+        </Group>
+      </Modal>
+      <Modal
+        title={"確認要儲存這個隊伍嗎?"}
+        centered
+        opened={confirm}
+        onClose={() => setConfirm(false)}
+      >
+        <Group
+          grow
+          wrap="nowrap"
+          gap="xs"
+          {...longPress5}
+          onClick={() => {
+            saveTeam5(characterList);
+          }}
+        >
+          <Image
+            src={`/tkfm-battle/character/char_small_${characterList[0].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${characterList[1].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${characterList[2].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${characterList[3].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+          <Image
+            src={`/tkfm-battle/character/char_small_${characterList[4].id}.png`}
+            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+          />
+        </Group>
+        <Space h="xs" />
+        <Group justify="end">
+          <Button
+            onClick={() => {
+              switch (selectedSlot) {
+                case 0:
+                  saveTeam1(characterList);
+                  setConfirm(false);
+                  break;
+                case 1:
+                  saveTeam2(characterList);
+                  setConfirm(false);
+                  break;
+                case 2:
+                  saveTeam3(characterList);
+                  setConfirm(false);
+                  break;
+                case 3:
+                  saveTeam4(characterList);
+                  setConfirm(false);
+                  break;
+                case 4:
+                  saveTeam5(characterList);
+                  setConfirm(false);
+                  break;
+              }
+            }}
+          >
+            確認
+          </Button>
+          <Button color="red" onClick={() => setConfirm(false)}>
+            取消
+          </Button>
+        </Group>
+      </Modal>
     </Container>
   );
 }
