@@ -56,6 +56,10 @@ export const useGameState = create<GameState>()(
       init: (characters: CharacterState[]) => {
         set((state) => {
           state.characters = characters;
+          state.turns = 0;
+          state.enemies[0].hp = state.enemies[0].maxHp;
+          state.enemies[0].buff = [];
+          state.log = [];
         });
       },
       initLeaderSkill: () => {
@@ -64,6 +68,11 @@ export const useGameState = create<GameState>()(
           state.enemies[0].hp = state.enemies[0].maxHp;
           state.enemies[0].buff = [];
           state.log = [];
+          state.characters.forEach((_, index) => {
+            state.characters[index].hp = state.characters[index].maxHp;
+            state.characters[index].buff = [];
+            state.characters[index].isMoved = false;
+          });
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });
