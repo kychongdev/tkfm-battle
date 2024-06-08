@@ -33,16 +33,17 @@ export default function Battle() {
   const [opened, setOpened] = useState(false);
   const [enemyStatus, setEnemyStatus] = useState(false);
   const [logStatus, openLog] = useState(false);
-  const [team, setTeam] = useState();
 
   const turns = useGameState((state) => state.turns);
   const addTurn = useGameState((state) => state.addTurn);
   const initCharacters = useGameState((state) => state.init);
   const enemies = useGameState((state) => state.enemies);
   const targeting = useGameState((state) => state.targeting);
-  const character = useGameState((state) => state.characters);
   const activeLeader = useGameState((state) => state.initLeaderSkill);
   const log = useGameState((state) => state.log);
+  const resetBattle = useGameState((state) => state.resetBattle);
+  const initPassive = useGameState((state) => state.initPassiveSkill);
+  const applyHpBuff = useGameState((state) => state.applyHPBuff);
 
   function initTeam(value: CharacterSelect[] | undefined) {
     if (value) {
@@ -137,7 +138,16 @@ export default function Battle() {
   }
 
   function startGame() {
+    resetBattle();
     activeLeader();
+    initPassive();
+    applyHpBuff();
+    addTurn();
+  }
+  function restartGame() {
+    resetBattle();
+    activeLeader();
+    initPassive();
     addTurn();
   }
 
@@ -181,7 +191,7 @@ export default function Battle() {
       <Space h="sm" />
       <Group justify="end">
         <Button onClick={() => openLog(true)}>傷害紀錄</Button>
-        <Button onClick={() => startGame()}>重新開始</Button>
+        <Button onClick={() => restartGame()}>重新開始</Button>
         <Button onClick={() => setOpened(true)}>
           <IconEdit />
           選擇隊伍

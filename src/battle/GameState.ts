@@ -10,7 +10,7 @@ import {
   onTurnStart,
   parseCondition,
 } from "./calculate";
-import { AffectType, Condition } from "../types/Skill";
+import { Condition } from "../types/Skill";
 import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./passive";
 import { activateUltimate } from "./ultimate";
@@ -22,6 +22,9 @@ export interface GameState {
   enemies: CharacterState[];
   targeting: number;
   characters: CharacterState[];
+  resetBattle: () => void;
+  applyHPBuff: () => void;
+  initPassiveSkill: () => void;
   init: (characters: CharacterState[]) => void;
   initLeaderSkill: () => void;
   addTurn: () => void;
@@ -56,18 +59,9 @@ export const useGameState = create<GameState>()(
       init: (characters: CharacterState[]) => {
         set((state) => {
           state.characters = characters;
-          state.turns = 0;
-          state.enemies[0].hp = state.enemies[0].maxHp;
-          state.enemies[0].buff = [];
-          state.log = [];
-          state.characters.forEach((_, index) => {
-            state.characters[index].hp = state.characters[index].maxHp;
-            state.characters[index].buff = [];
-            state.characters[index].isMoved = false;
-          });
         });
       },
-      initLeaderSkill: () => {
+      resetBattle: () => {
         set((state) => {
           state.turns = 0;
           state.enemies[0].hp = state.enemies[0].maxHp;
@@ -81,8 +75,20 @@ export const useGameState = create<GameState>()(
           state.characters.forEach((_, index) => {
             state.characters[index].cd = state.characters[index].maxCd;
           });
-          triggerLeaderSkill(state.characters[0].id, state);
+        });
+      },
+      applyHPBuff: () => {
+        set((state) => {
           applyHpBuff(state);
+        });
+      },
+      initLeaderSkill: () => {
+        set((state) => {
+          triggerLeaderSkill(state.characters[0].id, state);
+        });
+      },
+      initPassiveSkill: () => {
+        set((state) => {
           initPassiveSkill(0, state);
           initPassiveSkill(1, state);
           initPassiveSkill(2, state);
