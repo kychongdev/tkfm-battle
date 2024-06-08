@@ -198,6 +198,10 @@ export default function Battle() {
           grow
           wrap="nowrap"
           gap="xs"
+          style={{
+            border: "1px solid",
+            borderRadius: "5px",
+          }}
           onClick={() => {
             initTeam(saved1);
             startGame();
@@ -206,23 +210,23 @@ export default function Battle() {
         >
           <Image
             src={`/tkfm-battle/character/char_small_${saved1 ? saved1[0].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved1 ? saved1[1].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved1 ? saved1[2].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved1 ? saved1[3].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved1 ? saved1[4].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
         </Group>
         <Space h="lg" />
@@ -230,6 +234,10 @@ export default function Battle() {
           grow
           wrap="nowrap"
           gap="xs"
+          style={{
+            border: "1px solid",
+            borderRadius: "5px",
+          }}
           onClick={() => {
             initTeam(saved2);
             startGame();
@@ -238,23 +246,23 @@ export default function Battle() {
         >
           <Image
             src={`/tkfm-battle/character/char_small_${saved2 ? saved2[0].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved2 ? saved2[1].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved2 ? saved2[2].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved2 ? saved2[3].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved2 ? saved2[4].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
         </Group>
         <Space h="lg" />
@@ -262,6 +270,10 @@ export default function Battle() {
           grow
           wrap="nowrap"
           gap="xs"
+          style={{
+            border: "1px solid",
+            borderRadius: "5px",
+          }}
           onClick={() => {
             initTeam(saved3);
             startGame();
@@ -270,23 +282,23 @@ export default function Battle() {
         >
           <Image
             src={`/tkfm-battle/character/char_small_${saved3 ? saved3[0].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved3 ? saved3[1].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved3 ? saved3[2].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved3 ? saved3[3].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved3 ? saved3[4].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
         </Group>
         <Space h="lg" />
@@ -294,6 +306,10 @@ export default function Battle() {
           grow
           wrap="nowrap"
           gap="xs"
+          style={{
+            border: "1px solid",
+            borderRadius: "5px",
+          }}
           onClick={() => {
             initTeam(saved4);
             startGame();
@@ -302,23 +318,23 @@ export default function Battle() {
         >
           <Image
             src={`/tkfm-battle/character/char_small_${saved4 ? saved4[0].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved4 ? saved4[1].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved4 ? saved4[2].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved4 ? saved4[3].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved4 ? saved4[4].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
         </Group>
         <Space h="lg" />
@@ -326,6 +342,10 @@ export default function Battle() {
           grow
           wrap="nowrap"
           gap="xs"
+          style={{
+            border: "1px solid",
+            borderRadius: "5px",
+          }}
           onClick={() => {
             initTeam(saved5);
             startGame();
@@ -334,23 +354,23 @@ export default function Battle() {
         >
           <Image
             src={`/tkfm-battle/character/char_small_${saved5 ? saved5[0].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved5 ? saved5[1].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved5 ? saved5[2].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved5 ? saved5[3].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
           <Image
             src={`/tkfm-battle/character/char_small_${saved5 ? saved5[4].id : "scarecow"}.png`}
-            fallbackSrc={"/tkfm-battle/character/char_small_scarecrow.png"}
+            fallbackSrc={"/tkfm-battle/character/x.png"}
           />
         </Group>
       </Modal>
