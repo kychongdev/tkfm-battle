@@ -30,14 +30,14 @@ export function CharacterBattleButton(props: { position: number }) {
       >
         <BuffList character={character} />
       </Modal>
-      <AspectRatio ratio={167 / 512}>
+      <AspectRatio ratio={167 / 512} pos={"relative"}>
         <Image
           onClick={() => basicMove(props.position)}
           src={`/tkfm-battle/character/char_${character.id}.png`}
           fallbackSrc="/tkfm-battle/character/char_nr.png"
         />
         {character.isMoved || !character.isExist || character.isDead ? (
-          <Overlay fixed color="#000" backgroundOpacity={0.85} />
+          <Overlay color="#000" backgroundOpacity={0.85} />
         ) : null}
       </AspectRatio>
       <Progress value={(character.hp / character.maxHp) * 100} radius={0} />
