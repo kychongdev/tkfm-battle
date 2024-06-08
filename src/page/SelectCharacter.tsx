@@ -370,7 +370,7 @@ export default function SelectCharacterPage() {
           setOpenTeam(true);
         }}
       >
-        儲存隊伍
+        打開隊伍欄
       </Button>
       <Modal
         title="選擇儲存欄"
@@ -558,6 +558,7 @@ export default function SelectCharacterPage() {
             fallbackSrc={"/tkfm-battle/character/x.png"}
           />
         </Group>
+        <Space h="lg" />
         <Text>*點擊以儲存隊伍,長按以載入隊伍</Text>
         <Text>*更改數據也需要重新儲存</Text>
       </Modal>

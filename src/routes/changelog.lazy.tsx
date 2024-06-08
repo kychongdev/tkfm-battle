@@ -41,7 +41,11 @@ export const Route = createLazyFileRoute("/changelog")({
           </Timeline.Item>
           <Timeline.Item title="3/6/2024 - Alpha v0.1" bullet={icon}>
             <Text c="dimmed" size="sm">
-              基本功能
+              增加了以下功能：
+              <br />
+              基礎戰鬥模式
+              <br />
+              儲存/讀取隊伍
             </Text>
           </Timeline.Item>
         </Timeline>
