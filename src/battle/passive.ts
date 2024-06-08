@@ -1555,6 +1555,10 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             type: 14,
             condition: Condition.ON_TURN_START,
             duration: 100,
+            _14: {
+              reduceCD: 4,
+              target: Target.SELF,
+            },
           },
           {
             id: "601-passive-4",

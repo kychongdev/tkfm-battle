@@ -624,6 +624,16 @@ export function triggerPassive(
         ];
       }
       break;
+    case 14:
+      if (!buff._14) {
+        console.log("Wrong data 14");
+        break;
+      }
+      {
+        if (buff._14.target === Target.SELF) {
+          gameState.characters[position].cd -= buff._14.reduceCD;
+        }
+      }
   }
 }
 

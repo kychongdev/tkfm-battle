@@ -119,3 +119,8 @@ export interface _13 {
   target: string;
   applyBuff: Buff[];
 }
+
+export interface _14 {
+  reduceCD: number;
+  target: Target;
+}
