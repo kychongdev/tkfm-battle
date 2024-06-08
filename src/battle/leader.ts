@@ -251,6 +251,31 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
       break;
     // 夏日 巴爾
     case "517":
+      gameState.characters[0].buff = [
+        ...gameState.characters[0].buff,
+        {
+          id: "517-Lead-1",
+          name: "最大HP增加20%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            affectType: AffectType.MAXHP,
+            value: 0.2,
+          },
+        },
+        {
+          id: "517-Lead-2",
+          name: "造成傷害增加20%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            affectType: AffectType.INCREASE_DMG,
+            value: 0.2,
+          },
+        },
+      ];
       gameState.characters.forEach((character, index) => {
         if (
           character.attribute === CharacterAttribute.FIRE ||
@@ -396,7 +421,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 },
                 {
                   id: "517-Lead-8",
-                  name: "普攻傷害增加18%",
+                  name: "普攻時，追加「使目標受到普攻傷害增加18%(最多5層)」",
                   type: 4,
                   condition: Condition.BASIC_ATTACK,
                   duration: 100,
@@ -416,7 +441,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                         stack: 1,
                         maxStack: 5,
                         value: 0.18,
-                        affectType: AffectType.INCREASE_DMG_RECEIVED,
+                        affectType: AffectType.INCREASE_BASIC_DAMAGE_RECEIVED,
                       },
                     },
                   },
@@ -469,7 +494,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                         stack: 1,
                         maxStack: 5,
                         value: 0.18,
-                        affectType: AffectType.INCREASE_DMG_RECEIVED,
+                        affectType: AffectType.INCREASE_BASIC_DAMAGE_RECEIVED,
                       },
                     },
                   },

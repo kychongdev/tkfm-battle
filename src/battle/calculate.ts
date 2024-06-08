@@ -634,8 +634,6 @@ export function applyRawAttBuff(gameState: GameState, position: number) {
       tempAtk += buff._3?.value;
     }
   }
-  console.log(tempAtk);
-  console.log(atkPercentage);
 
   const res = Math.floor(atk * atkPercentage) + tempAtk;
   return res;
@@ -659,6 +657,9 @@ export function onTurnStart(gameState: GameState) {
             triggerPassive(buff, gameState, position);
           }
         }
+      }
+      if (buff.condition === Condition.ON_TURN_START && gameState.turns === 1) {
+        triggerPassive(buff, gameState, position);
       }
     }
   });

@@ -729,34 +729,32 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         });
 
         if (twoAttackerCondition.length === 0) {
-          gameState.characters.forEach((character, index) => {
-            if (character.class === CharacterClass.ATTACKER) {
-              gameState.characters[index].buff = [
-                ...gameState.characters[index].buff,
-                {
-                  id: "517-passive-7",
-                  name: "造成傷害增加30%",
-                  type: 0,
-                  condition: Condition.NONE,
-                  duration: 100,
-                  _0: {
-                    value: 0.3,
-                    affectType: AffectType.INCREASE_DMG,
-                  },
+          gameState.characters.forEach((_, index) => {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: "517-passive-7",
+                name: "造成傷害增加30%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  value: 0.3,
+                  affectType: AffectType.INCREASE_DMG,
                 },
-                {
-                  id: "517-passive-8",
-                  name: "普攻傷害增加30%",
-                  type: 0,
-                  condition: Condition.NONE,
-                  duration: 100,
-                  _0: {
-                    value: 0.3,
-                    affectType: AffectType.INCREASE_BASIC_DAMAGE,
-                  },
+              },
+              {
+                id: "517-passive-8",
+                name: "普攻傷害增加30%",
+                type: 0,
+                condition: Condition.NONE,
+                duration: 100,
+                _0: {
+                  value: 0.3,
+                  affectType: AffectType.INCREASE_BASIC_DAMAGE,
                 },
-              ];
-            }
+              },
+            ];
           });
         }
       }
