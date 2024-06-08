@@ -42,14 +42,23 @@ const BattleSelectLazyRoute = BattleSelectLazyImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/battle/select': {
+      id: '/battle/select'
+      path: '/battle/select'
+      fullPath: '/battle/select'
       preLoaderRoute: typeof BattleSelectLazyImport
       parentRoute: typeof rootRoute
     }
     '/battle/start': {
+      id: '/battle/start'
+      path: '/battle/start'
+      fullPath: '/battle/start'
       preLoaderRoute: typeof BattleStartLazyImport
       parentRoute: typeof rootRoute
     }
@@ -58,10 +67,34 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   BattleSelectLazyRoute,
   BattleStartLazyRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/battle/select",
+        "/battle/start"
+      ]
+    },
+    "/": {
+      "filePath": "index.lazy.tsx"
+    },
+    "/battle/select": {
+      "filePath": "battle/select.lazy.tsx"
+    },
+    "/battle/start": {
+      "filePath": "battle/start.lazy.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */
