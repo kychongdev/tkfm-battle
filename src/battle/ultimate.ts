@@ -1058,10 +1058,10 @@ export function activateUltimate(gameState: GameState, position: number) {
                         ? 40
                         : 60
               }%對目標造成傷害』(4回合)`,
-              type: 1,
+              type: 101,
               condition: Condition.BASIC_ATTACK,
               duration: 4,
-              _1: {
+              _101: {
                 value:
                   bond === 1
                     ? 0.2
