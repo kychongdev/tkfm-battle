@@ -28,8 +28,11 @@ export function basicAttack(
         ];
       });
       break;
+    case "178":
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
+      break;
     case "179":
-      calcBasicDamage(position, 1.25, gameState, Target.ENEMY);
+      calcBasicDamage(position, 1.25, gameState, Target.ENEMY, "basic");
       break;
     case "196":
       gameState.characters.forEach((character) => {

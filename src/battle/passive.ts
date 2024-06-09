@@ -117,6 +117,152 @@ export function initPassiveSkill(position: number, gameState: GameState) {
 
       // :detail_passive2: 減傷+ (6潛)
       break;
+    case "178":
+      //       攻擊時，觸發「使自身攻擊力增加10%(最多5層)」
+
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "178-passive-1",
+          name: "普攻時，觸發「使自身攻擊力增加10%(最多5層)」",
+          type: 4,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "178-passive-1-1",
+            target: Target.SELF,
+            applyBuff: {
+              id: "178-passive-1-1",
+              name: "攻擊力增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "178-passive-1-1",
+                name: "攻擊力增加",
+                value: 0.1,
+                stack: 1,
+                maxStack: 5,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        },
+        {
+          id: "178-passive-2",
+          name: "攻擊時，觸發「使目標被治療時回復量減少50%(1回合)」",
+          type: 11,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _11: {
+            target: Target.ENEMY,
+            applyBuff: [
+              {
+                id: "178-passive-2-1",
+                name: "被治療時回復量減少",
+                type: 0,
+                condition: Condition.GET_HEAL,
+                duration: 1,
+                _0: {
+                  value: 0.5,
+                  affectType: AffectType.DECREASE_HEAL_RECEIVED,
+                },
+              },
+            ],
+          },
+        },
+        {
+          id: "178-passive-3",
+          name: "普攻時，追加『以自身攻擊力35%對目標造成傷害』",
+          type: 1,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _1: {
+            value: 0.35,
+            isTrigger: false,
+            target: Target.ENEMY,
+            damageType: 1,
+          },
+        },
+      ];
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "178-passive-4",
+            name: "普攻時，觸發「使目標受到水屬性傷害增加2%(最多5層)」",
+            type: 4,
+            condition: Condition.BASIC_ATTACK,
+            duration: 100,
+            _4: {
+              increaseStack: 1,
+              targetSkill: "178-passive-4-1",
+              target: Target.ENEMY,
+              applyBuff: {
+                id: "178-passive-4-1",
+                name: "受到水屬性傷害增加",
+                type: 3,
+                condition: Condition.NONE,
+                duration: 100,
+                _3: {
+                  id: "178-passive-4-1",
+                  name: "受到水屬性傷害增加2%",
+                  value: 0.02,
+                  stack: 1,
+                  maxStack: 5,
+                  affectType: AffectType.INCREASE_WATER_DMG_RECEIVED,
+                },
+              },
+            },
+          },
+          {
+            id: "178-passive-5",
+            name: "普攻時，觸發「使目標受到普攻傷害增加15%(最多5層)」",
+            type: 4,
+            condition: Condition.BASIC_ATTACK,
+            duration: 100,
+            _4: {
+              increaseStack: 1,
+              targetSkill: "178-passive-5-1",
+              target: Target.ENEMY,
+              applyBuff: {
+                id: "178-passive-5-1",
+                name: "受到普攻傷害增加",
+                type: 3,
+                condition: Condition.NONE,
+                duration: 100,
+                _3: {
+                  id: "178-passive-5-1",
+                  name: "受到普攻傷害增加15%",
+                  value: 0.15,
+                  stack: 1,
+                  maxStack: 5,
+                  affectType: AffectType.INCREASE_BASIC_DAMAGE_RECEIVED,
+                },
+              },
+            },
+          },
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "178-passive-4",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
+            },
+          },
+        ];
+      }
+
+      break;
     //新春 凜月
     case "179":
       gameState.characters[position].buff = [
