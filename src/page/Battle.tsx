@@ -31,6 +31,7 @@ import characterJson from "../assets/character.json";
 import { LogList } from "../components/LogList";
 import { DonutChart } from "@mantine/charts";
 import { Analysis } from "../components/Analysis";
+import { TurnsFilter } from "../components/TurnsFilter";
 
 export default function Battle() {
   const [saved1] = useLocalStorage<CharacterSelect[]>("saved-team");
@@ -812,7 +813,7 @@ export default function Battle() {
             </Accordion>
           </>
         ) : null}
-        {logOption === "filter" ? <div /> : null}
+        {logOption === "filter" ? <TurnsFilter /> : null}
         {logOption === "chart" ? <Analysis /> : null}
       </Modal>
     </Container>
