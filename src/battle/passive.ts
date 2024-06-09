@@ -114,12 +114,8 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         ];
       }
-
-      // :detail_passive2: 減傷+ (6潛)
       break;
     case "178":
-      //       攻擊時，觸發「使自身攻擊力增加10%(最多5層)」
-
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
@@ -182,7 +178,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
             value: 0.35,
             isTrigger: false,
             target: Target.ENEMY,
-            damageType: 1,
+            damageType: 0,
           },
         },
       ];
