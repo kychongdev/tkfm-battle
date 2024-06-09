@@ -24,6 +24,7 @@ export const Route = createLazyFileRoute("/")({
               localStorage.removeItem("saved-team2");
               localStorage.removeItem("saved-team3");
               localStorage.removeItem("saved-team4");
+              localStorage.removeItem("saved-team5");
             }}
           >
             資料重置（更新後需要按這個，按完後請刷新網頁）
