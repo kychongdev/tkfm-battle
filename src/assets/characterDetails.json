@@ -966,7 +966,8 @@
     },
     "stats": {
       "initATK": 1017.6,
-      "initHP": 3462.4
+      "initHP": 3462.4,
+      "cd": 4
     },
     "potentialType": 2
   },

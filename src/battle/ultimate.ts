@@ -86,8 +86,131 @@ export function activateUltimate(gameState: GameState, position: number) {
       break;
     //花嫁 巴爾
     case "172":
-      // 以自身攻擊力40/40/45/45/50%使自身攻擊力增加(1回合)，以自身攻擊力65/65/70/70/75%使我方站位2攻擊力增加(1回合)，使我方站位2普攻傷害增加80/90/90/100/100%(2回合)，使我方站位2必殺傷害增加30/35/35/40/40%(1回合)，CD: 4
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "172-ult-1",
+          name: "攻擊力增加(1回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 1,
+          _0: {
+            affectType: AffectType.ATK,
+            value:
+              bond === 1
+                ? 0.4
+                : bond === 2
+                  ? 0.4
+                  : bond === 3
+                    ? 0.45
+                    : bond === 4
+                      ? 0.45
+                      : 0.5,
+          },
+        },
+      ];
+      {
+        const atk = Math.floor(
+          applyRawAttBuff(gameState, position) *
+            (bond === 1
+              ? 0.65
+              : bond === 2
+                ? 0.65
+                : bond === 3
+                  ? 0.7
+                  : bond === 4
+                    ? 0.7
+                    : 0.75),
+        );
+        console.log(atk);
+        const buff: Buff = {
+          id: "172-ult-1",
+          name: "攻擊力",
+          type: 12,
+          condition: Condition.NONE,
+          duration: 1,
+          _12: {
+            position: 1,
+            applyBuff: {
+              id: "172-ult-1",
+              name: "攻擊力",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: atk,
+                affectType: AffectType.RAWATK,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+        const buff2: Buff = {
+          id: "172-ult-2",
+          name: "普攻傷害增加(2回合)",
+          type: 12,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _12: {
+            position: 1,
+            applyBuff: {
+              id: "172-ult-2",
+              name: "普攻傷害增加",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 2,
+              _0: {
+                value:
+                  bond === 1
+                    ? 0.8
+                    : bond === 2
+                      ? 0.9
+                      : bond === 3
+                        ? 0.9
+                        : bond === 4
+                          ? 1
+                          : 1,
+                affectType: AffectType.INCREASE_BASIC_DAMAGE,
+              },
+            },
+          },
+        };
+        triggerPassive(buff2, gameState, position);
+
+        const buff3: Buff = {
+          id: "172-ult-3",
+          name: "必殺傷害增加(1回合)",
+          type: 12,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _12: {
+            position: 1,
+            applyBuff: {
+              id: "172-ult-3",
+              name: "必殺傷害增加",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value:
+                  bond === 1
+                    ? 0.3
+                    : bond === 2
+                      ? 0.35
+                      : bond === 3
+                        ? 0.35
+                        : bond === 4
+                          ? 0.4
+                          : 0.4,
+                affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
+              },
+            },
+          },
+        };
+        triggerPassive(buff3, gameState, position);
+      }
       break;
+
     case "178":
       {
         const buff: Buff = {
