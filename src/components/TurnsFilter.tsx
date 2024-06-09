@@ -89,7 +89,7 @@ export const TurnsFilter = () => {
         max={turns}
         value={value}
         onChange={setValue}
-        minRange={1}
+        minRange={0}
       />
       <Space h={"xs"} />
       <Center>

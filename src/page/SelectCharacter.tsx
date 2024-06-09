@@ -11,9 +11,13 @@ import {
   NumberInput,
   Checkbox,
   Text,
+  SegmentedControl,
+  Avatar,
+  Center,
 } from "@mantine/core";
 import { useCallback, useState } from "react";
 import character from "../assets/character.json";
+import characterDetails from "../assets/characterDetails.json";
 import { produce } from "immer";
 import { useLocalStorage, useLongPress } from "react-use";
 import { initCharacterSelection } from "../battle/Data";
@@ -35,28 +39,41 @@ export default function SelectCharacterPage() {
   const star = "/tkfm-battle/character/ui_star_ssr.png";
   const atk = "/tkfm-battle/character/ui_small_atk.png";
   const hp = "/tkfm-battle/character/ui_small_hp.png";
-  const characterOption = [];
-  for (const [key, value] of Object.entries(character.name)) {
-    const available = [
-      "163",
-      "178",
-      "179",
-      "196",
-      "198",
-      "508",
-      "514",
-      "517",
-      "518",
-      "523",
-      "525",
-      "526",
-      "528",
-      "601",
-    ];
-    if (available.includes(key)) {
-      characterOption.push({ value: key, label: value });
+  function generateCharOptions() {
+    const characterOptions = [];
+    for (const [key, value] of Object.entries(character.name)) {
+      const available = [
+        "163",
+        "178",
+        "179",
+        "196",
+        "198",
+        "508",
+        "514",
+        "517",
+        "518",
+        "523",
+        "525",
+        "526",
+        "528",
+        "601",
+      ];
+      if (available.includes(key)) {
+        const find = characterDetails.find((item) => item.id === key);
+        if (
+          find &&
+          find.tags.attribute === +attributeOptions &&
+          find.tags.position === +classOptions
+        ) {
+          characterOptions.push({ value: key, label: value });
+        }
+      }
     }
+    return characterOptions;
   }
+
+  const [attributeOptions, setAttributeOptions] = useState("0");
+  const [classOptions, setClassOptions] = useState("5");
 
   const [saved1, saveTeam1, removeTeam1] =
     useLocalStorage<CharacterSelect[]>("saved-team");
@@ -195,8 +212,110 @@ export default function SelectCharacterPage() {
         {characterImage(4)}
       </Group>
       <Modal opened={opened} onClose={() => setOpened(false)} title="選擇角色">
+        <Group grow wrap="nowrap">
+          <SegmentedControl
+            color="blue"
+            value={attributeOptions}
+            onChange={setAttributeOptions}
+            data={[
+              {
+                value: "0",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/fire.jpg" />
+                  </Center>
+                ),
+              },
+              {
+                value: "1",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/water.jpg" />
+                  </Center>
+                ),
+              },
+              {
+                value: "2",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/wind.jpg" />
+                  </Center>
+                ),
+              },
+              {
+                value: "3",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/light.jpg" />
+                  </Center>
+                ),
+              },
+              {
+                value: "4",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/dark.jpg" />,
+                  </Center>
+                ),
+              },
+            ]}
+          />
+        </Group>
+        <Space h="xs" />
+
+        <Group grow wrap="nowrap">
+          <SegmentedControl
+            color="indigo"
+            value={classOptions}
+            onChange={setClassOptions}
+            data={[
+              {
+                value: "5",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/ui_attacker.png" />
+                  </Center>
+                ),
+              },
+              {
+                value: "6",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/ui_defender.png" />
+                  </Center>
+                ),
+              },
+              {
+                value: "7",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/ui_healer.png" />
+                  </Center>
+                ),
+              },
+              {
+                value: "8",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/ui_obsructer.png" />
+                  </Center>
+                ),
+              },
+              {
+                value: "9",
+                label: (
+                  <Center>
+                    <Avatar src="/tkfm-battle/character/ui_supporter.png" />,
+                  </Center>
+                ),
+              },
+            ]}
+          />
+        </Group>
+        <Space h="xs" />
         <Select
-          data={characterOption}
+          checkIconPosition="left"
+          data={generateCharOptions()}
           value={characterList[position].id}
           onChange={(value) => {
             updateCharacter(position, {
