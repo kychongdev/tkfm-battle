@@ -582,7 +582,7 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           id: "198-passive-3",
           name: "自身被治療時回復量增加25%",
           type: 0,
-          condition: Condition.GET_HEAL,
+          condition: Condition.NONE,
           duration: 100,
           _0: {
             value: 0.25,

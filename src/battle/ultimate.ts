@@ -689,8 +689,9 @@ export function activateUltimate(gameState: GameState, position: number) {
           },
         },
       ];
-      // HEAL function
-      parseCondition(position, [Condition.GET_HEAL], gameState);
+      gameState.characters.forEach((_, index) => {
+        parseCondition(index, [Condition.GET_HEAL], gameState);
+      });
 
       gameState.enemies[gameState.targeting].buff = [
         ...gameState.enemies[gameState.targeting].buff,

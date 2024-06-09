@@ -124,7 +124,9 @@ function parseHealTarget(
       });
       break;
   }
-  parseCondition(position, [Condition.GET_HEAL], gameState);
+  gameState.characters.forEach((_, index) => {
+    parseCondition(index, [Condition.GET_HEAL], gameState);
+  });
 }
 
 export function triggerPassive(
