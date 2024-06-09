@@ -16,12 +16,18 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const RecordLazyImport = createFileRoute('/record')()
 const ChangelogLazyImport = createFileRoute('/changelog')()
 const IndexLazyImport = createFileRoute('/')()
 const BattleStartLazyImport = createFileRoute('/battle/start')()
 const BattleSelectLazyImport = createFileRoute('/battle/select')()
 
 // Create/Update Routes
+
+const RecordLazyRoute = RecordLazyImport.update({
+  path: '/record',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/record.lazy').then((d) => d.Route))
 
 const ChangelogLazyRoute = ChangelogLazyImport.update({
   path: '/changelog',
@@ -61,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChangelogLazyImport
       parentRoute: typeof rootRoute
     }
+    '/record': {
+      id: '/record'
+      path: '/record'
+      fullPath: '/record'
+      preLoaderRoute: typeof RecordLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/battle/select': {
       id: '/battle/select'
       path: '/battle/select'
@@ -83,6 +96,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   ChangelogLazyRoute,
+  RecordLazyRoute,
   BattleSelectLazyRoute,
   BattleStartLazyRoute,
 })
@@ -97,6 +111,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/changelog",
+        "/record",
         "/battle/select",
         "/battle/start"
       ]
@@ -106,6 +121,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/changelog": {
       "filePath": "changelog.lazy.tsx"
+    },
+    "/record": {
+      "filePath": "record.lazy.tsx"
     },
     "/battle/select": {
       "filePath": "battle/select.lazy.tsx"

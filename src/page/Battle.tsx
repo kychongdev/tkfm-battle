@@ -15,7 +15,6 @@ import {
   AccordionItem,
   Title,
   Divider,
-  RangeSlider,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
 import type { CharacterSelect, CharacterState } from "../types/Character";

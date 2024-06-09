@@ -8,8 +8,8 @@ import {
 import { useState } from "react";
 import classes from "../navbutton.module.css";
 
-const data = ["首頁", "更新紀錄", "隊伍設定", "戰鬥模式"];
-const route = ["/", "/changelog", "/battle/select", "/battle/start"];
+const data = ["首頁", "更新紀錄", "隊伍設定", "戰鬥模式", "開發日記"];
+const route = ["/", "/changelog", "/battle/select", "/battle/start", "/record"];
 
 export const Route = createRootRoute({
   component: () => {
