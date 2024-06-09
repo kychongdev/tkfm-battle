@@ -9,6 +9,7 @@ import {
 import type { GameState } from "./GameState";
 import { calcBasicDamage } from "./calcBasicDamage";
 import { calcUltDamage } from "./calcUltDamage";
+import { triggerAddOn } from "./triggerAddOn";
 
 export function calculateStats(
   initStats: number,
@@ -49,6 +50,7 @@ export function parseCondition(
 ) {
   for (const char of state.characters[position].buff) {
     if (condition.includes(char.condition)) {
+      triggerAddOn(char, state, position);
       triggerPassive(char, state, position);
     }
   }
@@ -125,65 +127,6 @@ function parseHealTarget(
   }
   parseCondition(position, [Condition.GET_HEAL], gameState);
 }
-
-// export function parseRawAttackBuff(
-//   gameState: GameState,
-//   position: number,
-//   duration: number,
-//   target: Target,
-//   value: number,
-// ) {
-//   const atk = gameState.characters[position].atk;
-//   let rawAtk = 0;
-//   let atkPercentage = 1;
-//
-//   for (const buff of gameState.characters[position].buff) {
-//     if (buff.type === 0 && buff._0?.affectType === AffectType.ATK) {
-//       atkPercentage += buff._0?.value;
-//     }
-//     if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
-//       rawAtk += buff._0?.value;
-//     }
-//   }
-//   const rawAttBuff = Math.ceil(atk * atkPercentage + rawAtk) * value;
-//
-//   switch (target) {
-//     case Target.SELF:
-//       gameState.characters[position].buff = [
-//         ...gameState.characters[position].buff,
-//         {
-//           id: "RAWATTACK",
-//           name: "攻擊力",
-//           type: 0,
-//           condition: Condition.NONE,
-//           duration: duration,
-//           _0: {
-//             value: rawAttBuff,
-//             affectType: AffectType.RAWATK,
-//           },
-//         },
-//       ];
-//       break;
-//     case Target.ALL:
-//       gameState.characters.forEach((character) => {
-//         character.buff = [
-//           ...character.buff,
-//           {
-//             id: "RAWATTACK",
-//             name: "攻擊力",
-//             type: 0,
-//             condition: Condition.NONE,
-//             duration: duration,
-//             _0: {
-//               value: rawAttBuff,
-//               affectType: AffectType.RAWATK,
-//             },
-//           },
-//         ];
-//       });
-//       break;
-//   }
-// }
 
 export function triggerPassive(
   buff: Buff,

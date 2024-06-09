@@ -409,10 +409,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 {
                   id: "517-Lead-7",
                   name: "普攻時，追加「以自身攻擊力40%對目標造成傷害」",
-                  type: 1,
+                  type: 101,
                   condition: Condition.BASIC_ATTACK,
                   duration: 100,
-                  _1: {
+                  _101: {
                     value: 0.4,
                     target: Target.ENEMY,
                     damageType: 0,
@@ -422,10 +422,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 {
                   id: "517-Lead-8",
                   name: "普攻時，追加「使目標受到普攻傷害增加18%(最多5層)」",
-                  type: 4,
+                  type: 104,
                   condition: Condition.BASIC_ATTACK,
                   duration: 100,
-                  _4: {
+                  _104: {
                     increaseStack: 1,
                     targetSkill: "517-Lead-8-1",
                     target: Target.ENEMY,
@@ -462,10 +462,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 {
                   id: "517-Lead-9",
                   name: "普攻時，追加「以自身攻擊力40%對目標造成傷害」",
-                  type: 1,
+                  type: 101,
                   condition: Condition.BASIC_ATTACK,
                   duration: 100,
-                  _1: {
+                  _101: {
                     value: 0.4,
                     target: Target.ENEMY,
                     damageType: 0,
@@ -475,10 +475,10 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
                 {
                   id: "517-Lead-10",
                   name: "普攻時，追加「使目標受到普攻傷害增加18%(最多5層)」",
-                  type: 4,
+                  type: 104,
                   condition: Condition.BASIC_ATTACK,
                   duration: 100,
-                  _4: {
+                  _104: {
                     increaseStack: 1,
                     targetSkill: "517-Lead-10-1",
                     target: Target.ENEMY,

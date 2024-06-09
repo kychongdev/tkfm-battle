@@ -131,3 +131,21 @@ export interface _15 {
   position: 0 | 1 | 2 | 3 | 4;
   reduceCD: number;
 }
+
+// ---------------------------- ADD ON BUFF ----------------------------
+export interface _101 {
+  value: number;
+  isTrigger: boolean;
+  target: Target;
+  // 0 is basic, 1 is ultimate
+  damageType: 0 | 1;
+}
+
+// increase _3 stack buff
+// 增加層次的BUFF
+export interface _104 {
+  increaseStack: number;
+  targetSkill: string;
+  target: Target | CharacterClass;
+  applyBuff?: Buff;
+}

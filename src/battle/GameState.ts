@@ -15,6 +15,7 @@ import { basicAttack } from "./BasicAttack";
 import { initPassiveSkill } from "./passive";
 import { activateUltimate } from "./ultimate";
 import { applyExtra } from "./extra";
+import { parseConditionAddOn } from "./triggerAddOn";
 
 export interface IDamageLog {
   damage: number;
@@ -130,6 +131,11 @@ export const useGameState = create<GameState>()(
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
           basicAttack(state.characters[position].id, position, state);
+          parseConditionAddOn(
+            position,
+            [Condition.BASIC_ATTACK, Condition.MOVE, Condition.ATTACK],
+            state,
+          );
           parseCondition(
             position,
             [Condition.BASIC_ATTACK, Condition.MOVE, Condition.ATTACK],
@@ -143,6 +149,11 @@ export const useGameState = create<GameState>()(
           state.characters[position].isMoved =
             !state.characters[position].isMoved;
           activateUltimate(state, position);
+          parseConditionAddOn(
+            position,
+            [Condition.ULTIMATE, Condition.MOVE, Condition.ATTACK],
+            state,
+          );
           parseCondition(
             position,
             [Condition.ULTIMATE, Condition.MOVE, Condition.ATTACK],
