@@ -13,7 +13,7 @@ export const Route = createLazyFileRoute("/")({
           <br />
           <br /> 數值因小數點關係，會有二位數的偏差，請以遊戲內為準。
           <br />
-          <br /> 目前不支援：治療和護盾數值上的功能，多敵人木樁
+          <br /> 目前不支援：治療和護盾數值上的功能，多敵人木樁，少於5人的隊伍
         </Blockquote>
         <Center>
           <Button

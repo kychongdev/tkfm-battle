@@ -692,7 +692,7 @@ export default function Battle() {
           data={[
             { label: "傷害比例", value: "damage" },
             { label: "傷害折綫圖", value: "chart" },
-            { label: "回合過濾", value: "filter" },
+            { label: "回合篩選", value: "filter" },
             { label: "傷害清單", value: "all" },
           ]}
         />

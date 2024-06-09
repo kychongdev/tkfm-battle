@@ -23,6 +23,7 @@ export const Route = createLazyFileRoute("/changelog")({
               <br />
               - 傷害比例
               <br />- 傷害折線圖
+              <br />- 回合篩選
             </Text>
           </Timeline.Item>
           <Timeline.Item title="8/6/2024 - Alpha v0.2" bullet={icon}>
