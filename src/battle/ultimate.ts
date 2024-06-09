@@ -821,7 +821,17 @@ export function activateUltimate(gameState: GameState, position: number) {
             ...gameState.characters[index].buff,
             {
               id: "601-ult-3",
-              name: "普攻時，追加『以自身攻擊力20/30/30/40/60%對目標造成傷害』(4回合)",
+              name: `普攻時，追加『以自身攻擊力${
+                bond === 1
+                  ? 20
+                  : bond === 2
+                    ? 30
+                    : bond === 3
+                      ? 30
+                      : bond === 4
+                        ? 40
+                        : 60
+              }%對目標造成傷害』(4回合)`,
               type: 1,
               condition: Condition.BASIC_ATTACK,
               duration: 4,
@@ -843,7 +853,7 @@ export function activateUltimate(gameState: GameState, position: number) {
             },
             {
               id: "601-ult-4",
-              name: "攻擊力增加(1回合)",
+              name: "必殺時，觸發『使我方夏日 千鶴攻擊力增加10/10/20/20/30%(1回合)』(4回合)",
               type: 13,
               condition: Condition.ATTACK,
               duration: 4,
