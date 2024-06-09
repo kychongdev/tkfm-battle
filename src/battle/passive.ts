@@ -401,13 +401,13 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           ...gameState.characters[position].buff,
           {
             id: "178-passive-4",
-            name: "使自身攻擊力增加10%",
+            name: "使自身造成傷害增加7.5%",
             type: 0,
             condition: Condition.NONE,
             duration: 100,
             _0: {
-              value: 0.1,
-              affectType: AffectType.ATK,
+              value: 0.075,
+              affectType: AffectType.INCREASE_DMG,
             },
           },
         ];

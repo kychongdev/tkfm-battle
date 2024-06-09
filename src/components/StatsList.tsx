@@ -292,6 +292,9 @@ export const StatsList = (props: { character: CharacterState }) => {
     return acc;
     //TO BE ADDED
   }, 0);
+  function roundNum(num: number) {
+    return (Math.round(num * 1000) / 10).toFixed(2);
+  }
 
   return (
     <Stack gap={5}>
@@ -299,40 +302,40 @@ export const StatsList = (props: { character: CharacterState }) => {
         基礎攻擊力: {formatNumber(atkBuff)}
       </Card>
       <Card py={5} px={10}>
-        攻擊力加成%: {Math.floor(atkPercentage * 100)}%
+        攻擊力加成%: {roundNum(atkPercentage)}%
       </Card>
       <Card py={5} px={10}>
         攻擊力加成(定值): {formatNumber(rawAtk)}
       </Card>
       <Card py={5} px={10}>
-        造成傷害加成%: {Math.floor(increaseDmg * 100)}%
+        造成傷害加成%: {roundNum(increaseDmg)}%
       </Card>
       <Card py={5} px={10}>
-        火屬性傷害加成%: {Math.floor(fireAttribute * 100)}%
+        火屬性傷害加成%: {roundNum(fireAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        水屬性傷害加成%: {Math.floor(waterAttribute * 100)}%
+        水屬性傷害加成%: {roundNum(waterAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        風屬性傷害加成%: {Math.floor(windAttribute * 100)}%
+        風屬性傷害加成%: {roundNum(windAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        光屬性傷害加成%: {Math.floor(lightAttribute * 100)}%
+        光屬性傷害加成%: {roundNum(lightAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        暗屬性傷害加成%: {Math.floor(darkAttribute * 100)}%
+        暗屬性傷害加成%: {roundNum(darkAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        必殺效果加成%: {Math.floor(ultimateAttribute * 100)}%
+        必殺效果加成%: {roundNum(ultimateAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        普攻效果加成%: {Math.floor(basicAtkBuff * 100)}%
+        普攻效果加成%: {roundNum(basicAtkBuff)}%
       </Card>
       <Card py={5} px={10}>
-        觸發效果加成%: {Math.floor(triggerAttribute * 100)}%
+        觸發效果加成%: {roundNum(triggerAttribute)}%
       </Card>
       <Card py={5} px={10}>
-        其他類效果加成%: {Math.floor(otherAttribute * 100)}%
+        其他類效果加成%: {roundNum(otherAttribute)}%
       </Card>
     </Stack>
   );
