@@ -50,7 +50,6 @@ export function parseCondition(
 ) {
   for (const char of state.characters[position].buff) {
     if (condition.includes(char.condition)) {
-      triggerAddOn(char, state, position);
       triggerPassive(char, state, position);
     }
   }

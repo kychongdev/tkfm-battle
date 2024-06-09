@@ -326,10 +326,10 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         {
           id: "178-passive-3",
           name: "普攻時，追加『以自身攻擊力35%對目標造成傷害』",
-          type: 1,
+          type: 101,
           condition: Condition.BASIC_ATTACK,
           duration: 100,
-          _1: {
+          _101: {
             value: 0.35,
             isTrigger: false,
             target: Target.ENEMY,

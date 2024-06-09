@@ -445,18 +445,6 @@ export function calcBasicDamage(
   if (attributeDamage < 0) {
     attributeDamage = 0;
   }
-  console.log(
-    atk,
-    atkPercentage,
-    rawAtk,
-    basicBuff,
-    increaseDamage,
-    enemyDamageReceivedIncrease,
-    attributeDamage,
-    attributeNum,
-    value,
-  );
-
   const res = Math.floor(
     (atk * atkPercentage + rawAtk) *
       basicBuff *
