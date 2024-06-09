@@ -505,7 +505,7 @@ export function calcUltDamage(
         attributeNum *
         value,
     );
-    dealDamageToTarget(gameState, position, res, target, isTrigger);
+    dealDamageToTarget(gameState, position, res, target, isTrigger, "ultimate");
     return;
   }
 
