@@ -706,27 +706,27 @@ export default function Battle() {
                 valueFormatter={(value) => `${value}%`}
                 data={[
                   {
-                    name: characters[0].name,
+                    name: `[1] ${characters[0].name}`,
                     value: +((totalDamage / teamTotalDamage) * 100).toFixed(2),
                     color: "indigo.6",
                   },
                   {
-                    name: characters[1].name,
+                    name: `[2] ${characters[1].name}`,
                     value: +((totalDamage1 / teamTotalDamage) * 100).toFixed(2),
                     color: "cyan.6",
                   },
                   {
-                    name: characters[2].name,
+                    name: `[3] ${characters[2].name}`,
                     value: +((totalDamage2 / teamTotalDamage) * 100).toFixed(2),
                     color: "red.6",
                   },
                   {
-                    name: characters[3].name,
+                    name: `[4] ${characters[3].name}`,
                     value: +((totalDamage3 / teamTotalDamage) * 100).toFixed(2),
                     color: "yellow.6",
                   },
                   {
-                    name: characters[4].name,
+                    name: `[5] ${characters[4].name}`,
                     value: +((totalDamage4 / teamTotalDamage) * 100).toFixed(2),
                     color: "green.6",
                   },

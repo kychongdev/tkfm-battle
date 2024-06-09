@@ -51,11 +51,11 @@ export const Analysis = () => {
   for (let i = 0; i < turns; i++) {
     data.push({
       turn: i + 1,
-      [characters[0].name]: damageArr[i] ? damageArr[i].damage : 0,
-      [characters[1].name]: damageArr1[i] ? damageArr1[i].damage : 0,
-      [characters[2].name]: damageArr2[i] ? damageArr2[i].damage : 0,
-      [characters[3].name]: damageArr3[i] ? damageArr3[i].damage : 0,
-      [characters[4].name]: damageArr4[i] ? damageArr4[i].damage : 0,
+      [`[1] ${characters[0].name}`]: damageArr[i] ? damageArr[i].damage : 0,
+      [`[2] ${characters[1].name}`]: damageArr1[i] ? damageArr1[i].damage : 0,
+      [`[3] ${characters[2].name}`]: damageArr2[i] ? damageArr2[i].damage : 0,
+      [`[4] ${characters[3].name}`]: damageArr3[i] ? damageArr3[i].damage : 0,
+      [`[5] ${characters[4].name}`]: damageArr4[i] ? damageArr4[i].damage : 0,
     });
   }
 
@@ -67,11 +67,11 @@ export const Analysis = () => {
       withYAxis={false}
       valueFormatter={(value) => `${formatNumber(value)}`}
       series={[
-        { name: characters[0].name, color: "#8884d8" },
-        { name: characters[1].name, color: "#82ca9d" },
-        { name: characters[2].name, color: "#ffc658" },
-        { name: characters[3].name, color: "#ff7300" },
-        { name: characters[4].name, color: "#ff0000" },
+        { name: `[1] ${characters[0].name}`, color: "#8884d8" },
+        { name: `[2] ${characters[1].name}`, color: "#82ca9d" },
+        { name: `[3] ${characters[2].name}`, color: "#ffc658" },
+        { name: `[4] ${characters[3].name}`, color: "#ff7300" },
+        { name: `[5] ${characters[4].name}`, color: "#ff0000" },
       ]}
       curveType="linear"
     />
