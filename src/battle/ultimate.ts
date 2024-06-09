@@ -86,16 +86,16 @@ export function activateUltimate(gameState: GameState, position: number) {
       break;
     //花嫁 巴爾
     case "172":
-      gameState.characters[position].buff = [
-        ...gameState.characters[position].buff,
-        {
+      {
+        const buff: Buff = {
           id: "172-ult-1",
-          name: "攻擊力增加(1回合)",
-          type: 0,
+          name: "攻擊力",
+          type: 6,
           condition: Condition.NONE,
           duration: 1,
-          _0: {
-            affectType: AffectType.ATK,
+          _6: {
+            duration: 1,
+            base: false,
             value:
               bond === 1
                 ? 0.4
@@ -106,9 +106,12 @@ export function activateUltimate(gameState: GameState, position: number) {
                     : bond === 4
                       ? 0.45
                       : 0.5,
+            affectType: AffectType.RAWATK,
+            target: Target.SELF,
           },
-        },
-      ];
+        };
+        triggerPassive(buff, gameState, position);
+      }
       {
         const atk = Math.floor(
           applyRawAttBuff(gameState, position) *
@@ -122,7 +125,6 @@ export function activateUltimate(gameState: GameState, position: number) {
                     ? 0.7
                     : 0.75),
         );
-        console.log(atk);
         const buff: Buff = {
           id: "172-ult-1",
           name: "攻擊力",
