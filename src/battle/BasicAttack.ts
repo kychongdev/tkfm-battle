@@ -30,7 +30,7 @@ export function basicAttack(
       break;
     case "172":
       {
-        const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.7);
+        const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.75);
         const buff: Buff = {
           id: "172-basic-1",
           name: "攻擊力",

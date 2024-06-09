@@ -1,6 +1,7 @@
 import { Card, Stack } from "@mantine/core";
 import type { CharacterState } from "../types/Character";
 import { AffectType } from "../types/Skill";
+import { formatNumber } from "../battle/utilities";
 
 export const StatsList = (props: { character: CharacterState }) => {
   const atkBuff = props.character.atk;
@@ -11,6 +12,12 @@ export const StatsList = (props: { character: CharacterState }) => {
     if (buff.type === 3 && buff._3?.affectType === AffectType.ATK) {
       const _value = buff._3?.value * buff._3?.stack;
       return acc + _value;
+    }
+    return acc;
+  }, 0);
+  const rawAtk = props.character.buff.reduce((acc, buff) => {
+    if (buff.type === 0 && buff._0?.affectType === AffectType.RAWATK) {
+      return acc + buff._0?.value;
     }
     return acc;
   }, 0);
@@ -289,10 +296,13 @@ export const StatsList = (props: { character: CharacterState }) => {
   return (
     <Stack gap={5}>
       <Card py={5} px={10}>
-        基礎攻擊力: {atkBuff}
+        基礎攻擊力: {formatNumber(atkBuff)}
       </Card>
       <Card py={5} px={10}>
         攻擊力加成%: {Math.floor(atkPercentage * 100)}%
+      </Card>
+      <Card py={5} px={10}>
+        攻擊力加成(定值): {formatNumber(rawAtk)}
       </Card>
       <Card py={5} px={10}>
         造成傷害加成%: {Math.floor(increaseDmg * 100)}%
