@@ -84,6 +84,104 @@ export function activateUltimate(gameState: GameState, position: number) {
         triggerPassive(buff2, gameState, position);
       }
       break;
+    case "178":
+      {
+        const buff: Buff = {
+          id: "178-ult-1",
+          name: "受到傷害增加(最多2層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "178-ult-1-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "178-ult-1-1",
+              name: "受到傷害增加(最多2層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "178-ult-1-1",
+                name: "受到傷害增加(最多1層)",
+                stack: 1,
+                maxStack: 2,
+                affectType: AffectType.INCREASE_DMG_RECEIVED,
+                value:
+                  bond === 1
+                    ? 0.075
+                    : bond === 2
+                      ? 0.075
+                      : bond === 3
+                        ? 0.1
+                        : bond === 4
+                          ? 0.125
+                          : 0.15,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+
+        const buff2: Buff = {
+          id: "178-ult-2",
+          name: "受到水屬性傷害增加(最多2層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "178-ult-2-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "178-ult-2-1",
+              name: "受到水屬性傷害增加(最多2層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "178-ult-2-1",
+                name: "受到水屬性傷害增加(最多1層)",
+                stack: 1,
+                maxStack: 2,
+                affectType: AffectType.INCREASE_WATER_DMG_RECEIVED,
+                value:
+                  bond === 1
+                    ? 0.05
+                    : bond === 2
+                      ? 0.075
+                      : bond === 3
+                        ? 0.075
+                        : bond === 4
+                          ? 0.1
+                          : 0.125,
+              },
+            },
+          },
+        };
+        triggerPassive(buff2, gameState, position);
+
+        // 使目標受到傷害增加7.5/7.5/10/12.5/15%(最多2層)，使目標受到水屬性傷害增加5/7.5/7.5/10/12.5%(最多2層)，再以自身攻擊力330/376/422/468/514%對目標造成傷害，CD:4
+        calcUltDamage(
+          position,
+          bond === 1
+            ? 3.3
+            : bond === 2
+              ? 3.76
+              : bond === 3
+                ? 4.22
+                : bond === 4
+                  ? 4.68
+                  : 5.14,
+          gameState,
+          false,
+          Target.ENEMY,
+          "ultimate",
+        );
+      }
+
+      break;
     case "179":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
