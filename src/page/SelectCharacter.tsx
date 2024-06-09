@@ -218,7 +218,7 @@ export default function SelectCharacterPage() {
       <Modal opened={opened} onClose={() => setOpened(false)} title="選擇角色">
         <Group grow wrap="nowrap">
           <SegmentedControl
-            color="blue"
+            color="yellow"
             value={attributeOptions}
             onChange={setAttributeOptions}
             data={[
@@ -269,7 +269,7 @@ export default function SelectCharacterPage() {
 
         <Group grow wrap="nowrap">
           <SegmentedControl
-            color="indigo"
+            color="yellow"
             value={classOptions}
             onChange={setClassOptions}
             data={[

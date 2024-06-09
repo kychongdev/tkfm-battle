@@ -5,6 +5,7 @@ import {
   Modal,
   Overlay,
   Progress,
+  SegmentedControl,
   Space,
   Stack,
 } from "@mantine/core";
@@ -12,23 +13,43 @@ import { useGameState } from "../battle/GameState";
 import { formatNumber } from "../battle/utilities";
 import { useState } from "react";
 import { BuffList } from "./BuffList";
+import { StatsList } from "./StatsList";
+import { AffectType } from "../types/Skill";
 
 export function CharacterBattleButton(props: { position: number }) {
   const basicMove = useGameState((state) => state.basicMove);
   const ultimateMove = useGameState((state) => state.ultimateMove);
   const character = useGameState((state) => state.characters[props.position]);
   const [opened, setOpened] = useState(false);
+  const [stats, setStats] = useState("attribute");
 
   return (
     <Stack gap={0}>
       <Modal
         padding={"xs"}
         opened={opened}
+        withCloseButton={false}
         onClose={() => {
           setOpened(false);
         }}
       >
-        <BuffList character={character} />
+        <SegmentedControl
+          value={stats}
+          onChange={setStats}
+          data={[
+            {
+              label: "屬性",
+              value: "attribute",
+            },
+            {
+              label: "狀態欄",
+              value: "buff",
+            },
+          ]}
+        />
+        <Space h="xs" />
+        {stats === "attribute" ? <StatsList character={character} /> : null}
+        {stats === "buff" ? <BuffList character={character} /> : null}
       </Modal>
       <AspectRatio ratio={167 / 512} pos={"relative"}>
         <Image
