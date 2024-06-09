@@ -251,6 +251,36 @@ export const StatsList = (props: { character: CharacterState }) => {
     return acc;
   }, 0);
 
+  const ultimateAttribute = props.character.buff.reduce((acc, buff) => {
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.INCREASE_ULTIMATE_DAMAGE
+    ) {
+      return acc + buff._0?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.INCREASE_ULTIMATE_DAMAGE
+    ) {
+      const _value = buff._3?.value * buff._3?.stack;
+      return acc + _value;
+    }
+    if (
+      buff.type === 0 &&
+      buff._0?.affectType === AffectType.DECREASE_ULTIMATE_DAMAGE
+    ) {
+      return acc - buff._0?.value;
+    }
+    if (
+      buff.type === 3 &&
+      buff._3?.affectType === AffectType.DECREASE_ULTIMATE_DAMAGE
+    ) {
+      const _value = buff._3?.value * buff._3?.stack;
+      return acc - _value;
+    }
+    return acc;
+  }, 0);
+
   const otherAttribute = props.character.buff.reduce((acc, buff) => {
     return acc;
     //TO BE ADDED
@@ -281,6 +311,9 @@ export const StatsList = (props: { character: CharacterState }) => {
       </Card>
       <Card py={5} px={10}>
         暗屬性傷害加成%: {Math.floor(darkAttribute * 100)}%
+      </Card>
+      <Card py={5} px={10}>
+        必殺效果加成%: {Math.floor(ultimateAttribute * 100)}%
       </Card>
       <Card py={5} px={10}>
         普攻效果加成%: {Math.floor(basicAtkBuff * 100)}%

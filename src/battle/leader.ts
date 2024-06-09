@@ -1295,7 +1295,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
       break;
 
     case "601":
-      //       使我方全體HP增加40%
+      // 使我方全體HP增加40%
       // 使我方全體攻擊力增加50%
       // 我方隊伍攻擊者角色有3人以上時，發動《加入比賽》
       //

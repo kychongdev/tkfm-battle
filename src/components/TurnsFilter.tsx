@@ -68,7 +68,6 @@ export const TurnsFilter = () => {
     const total = data.reduce((acc: number, curr: any) => {
       if (curr.turn >= value[0] && curr.turn <= value[1]) {
         if (curr[characters[pos].name]) {
-          console.log(curr[characters[pos].name]);
           return acc + Number.parseFloat(curr[characters[pos].name]);
         }
       }
