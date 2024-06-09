@@ -84,6 +84,10 @@ export function activateUltimate(gameState: GameState, position: number) {
         triggerPassive(buff2, gameState, position);
       }
       break;
+    //花嫁 巴爾
+    case "172":
+      // 以自身攻擊力40/40/45/45/50%使自身攻擊力增加(1回合)，以自身攻擊力65/65/70/70/75%使我方站位2攻擊力增加(1回合)，使我方站位2普攻傷害增加80/90/90/100/100%(2回合)，使我方站位2必殺傷害增加30/35/35/40/40%(1回合)，CD: 4
+      break;
     case "178":
       {
         const buff: Buff = {
@@ -161,8 +165,6 @@ export function activateUltimate(gameState: GameState, position: number) {
           },
         };
         triggerPassive(buff2, gameState, position);
-
-        // 使目標受到傷害增加7.5/7.5/10/12.5/15%(最多2層)，使目標受到水屬性傷害增加5/7.5/7.5/10/12.5%(最多2層)，再以自身攻擊力330/376/422/468/514%對目標造成傷害，CD:4
         calcUltDamage(
           position,
           bond === 1
@@ -182,6 +184,7 @@ export function activateUltimate(gameState: GameState, position: number) {
       }
 
       break;
+
     case "179":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,

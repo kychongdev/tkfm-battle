@@ -115,6 +115,161 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         ];
       }
       break;
+    // 花嫁 巴爾
+    case "172":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "172-passive-1",
+          name: "第1回合時，觸發「使我方站位2的角色造成傷害增加25%」",
+          type: 12,
+          condition: Condition.ON_TURN_START,
+          duration: 100,
+          _12: {
+            position: 1,
+            applyBuff: {
+              id: "172-passive-1-1",
+              name: "造成傷害增加",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                value: 0.25,
+                affectType: AffectType.INCREASE_DMG,
+              },
+            },
+          },
+        },
+        {
+          id: "172-passive-2",
+          name: "第1回合時，觸發「使我方站位4的角色受到傷害減少20%(50回合)」",
+          type: 12,
+          condition: Condition.ON_TURN_START,
+          duration: 100,
+          _12: {
+            position: 3,
+            applyBuff: {
+              id: "172-passive-2-1",
+              name: "受到傷害減少",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 50,
+              _0: {
+                value: 0.2,
+                affectType: AffectType.DECREASE_DMG_RECEIVED,
+              },
+            },
+          },
+        },
+        {
+          id: "172-passive-3",
+          name: "第1回合時，觸發「使自身當前必殺技CD減少4回合」",
+          type: 14,
+          condition: Condition.ON_TURN_START,
+          duration: 100,
+          _14: {
+            reduceCD: 4,
+            target: Target.SELF,
+          },
+        },
+
+        {
+          id: "172-passive-4",
+          name: "每經過1回合，觸發「使自身攻擊力增加15%(最多8層)」",
+          type: 4,
+          condition: Condition.EVERY_X_TURN,
+          conditionTurn: 1,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "172-passive-4-1",
+            target: Target.SELF,
+            applyBuff: {
+              id: "172-passive-4-1",
+              name: "攻擊力增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "172-passive-4-1",
+                name: "攻擊力增加",
+                value: 0.15,
+                stack: 1,
+                maxStack: 8,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        },
+      ];
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "172-passive-5",
+            name: "每經過2回合，觸發「使自身《若即若離的吸引力》賦予的攻擊力增加狀態增加1層」效果",
+            type: 4,
+            condition: Condition.EVERY_X_TURN,
+            conditionTurn: 2,
+            duration: 100,
+            _4: {
+              increaseStack: 1,
+              targetSkill: "172-passive-4-1",
+              target: Target.SELF,
+              applyBuff: {
+                id: "172-passive-4-1",
+                name: "攻擊力增加",
+                type: 3,
+                condition: Condition.NONE,
+                duration: 100,
+                _3: {
+                  id: "172-passive-4-1",
+                  name: "攻擊力增加",
+                  value: 0.15,
+                  stack: 1,
+                  maxStack: 8,
+                  affectType: AffectType.ATK,
+                },
+              },
+            },
+          },
+          {
+            id: "172-passive-6",
+            name: "每經過1回合，觸發「以自身攻擊力35%使自身攻擊力增加(1回合)」",
+            type: 6,
+            condition: Condition.EVERY_X_TURN,
+            conditionTurn: 1,
+            duration: 100,
+            _6: {
+              value: 0.35,
+              target: Target.SELF,
+              affectType: AffectType.RAWATK,
+              duration: 1,
+              base: false,
+            },
+          },
+        ];
+      }
+
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "172-passive-5",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
+            },
+          },
+        ];
+      }
+      break;
+
     case "178":
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,

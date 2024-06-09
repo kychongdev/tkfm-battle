@@ -415,6 +415,24 @@ export function triggerPassive(
               },
             ];
           }
+        } else if (buff._6?.target === Target.SELF) {
+          gameState.characters[position].buff = [
+            ...gameState.characters[position].buff,
+            {
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value:
+                  buff._6?.base === true
+                    ? Math.floor(baseAtk * buff._6.value)
+                    : Math.floor(rawAttBuff * buff._6.value),
+                affectType: buff._6?.affectType,
+              },
+            },
+          ];
         }
       });
       break;

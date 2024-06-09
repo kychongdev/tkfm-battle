@@ -1,6 +1,6 @@
-import { AffectType, Condition, Target } from "../types/Skill";
+import { AffectType, Buff, Condition, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
-import { applyRawAttBuff, heal } from "./calculate";
+import { applyRawAttBuff, heal, triggerPassive } from "./calculate";
 import { calcBasicDamage } from "./calcBasicDamage";
 
 export function basicAttack(
@@ -27,6 +27,33 @@ export function basicAttack(
           },
         ];
       });
+      break;
+    case "172":
+      {
+        const attack = Math.floor(applyRawAttBuff(gameState, position) * 0.7);
+        const buff: Buff = {
+          id: "172-basic-1",
+          name: "攻擊力",
+          type: 12,
+          condition: Condition.NONE,
+          duration: 1,
+          _12: {
+            position: 1,
+            applyBuff: {
+              id: "172-basic-1",
+              name: "攻擊力",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: attack,
+                affectType: AffectType.RAWATK,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
       break;
     case "178":
       calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
