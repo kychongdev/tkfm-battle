@@ -4,6 +4,115 @@ import { CharacterAttribute, CharacterClass } from "../types/Character";
 
 export function triggerLeaderSkill(leader: string, gameState: GameState) {
   switch (leader) {
+    case "177":
+      gameState.characters[0].buff = [
+        ...gameState.characters[0].buff,
+        {
+          id: "177-Lead-1",
+          name: "最大HP增加50%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            affectType: AffectType.MAXHP,
+            value: 0.5,
+          },
+        },
+        {
+          id: "177-Lead-2",
+          name: "普攻時，觸發「以自身最大HP6%使我方全體攻擊力增加(1回合)」",
+          type: 16,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _16: {
+            value: 0.6,
+            affectType: AffectType.RAWATK,
+            target: Target.ALL,
+            duration: 1,
+          },
+        },
+        {
+          id: "177-Lead-3",
+          name: "必殺時，觸發「以自身最大HP8%使我方全體攻擊力增加(1回合)」",
+          type: 16,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _16: {
+            value: 0.8,
+            affectType: AffectType.RAWATK,
+            target: Target.ALL,
+            duration: 1,
+          },
+        },
+      ];
+      gameState.characters.forEach((character, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "177-Lead-4",
+            name: "攻擊力增加60%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              affectType: AffectType.ATK,
+              value: 0.6,
+            },
+          },
+        ];
+        if (
+          character.class === CharacterClass.ATTACKER ||
+          character.class === CharacterClass.OBSTRUCTER
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "177-Lead-5",
+              name: "造成傷害增加50%",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.INCREASE_DMG,
+                value: 0.5,
+              },
+            },
+          ];
+        }
+        if (
+          character.class === CharacterClass.PROTECTOR ||
+          character.class === CharacterClass.HEALER ||
+          character.class === CharacterClass.SUPPORT
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "177-Lead-6",
+              name: "必殺技傷害增加30%",
+              type: 11,
+              condition: Condition.NONE,
+              duration: 100,
+              _11: {
+                target: Target.ALL,
+                applyBuff: [
+                  {
+                    id: "177-Lead-6-1",
+                    name: "必殺技傷害增加30%",
+                    type: 0,
+                    condition: Condition.NONE,
+                    duration: 2,
+                    _0: {
+                      affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
+                      value: 0.3,
+                    },
+                  },
+                ],
+              },
+            },
+          ];
+        }
+      });
+      break;
     case "514":
       gameState.characters.forEach((_, index) => {
         gameState.characters[index].buff = [

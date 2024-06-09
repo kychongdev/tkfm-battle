@@ -45,6 +45,7 @@ export default function SelectCharacterPage() {
       const available = [
         "163",
         "172",
+        "177",
         "178",
         "179",
         "196",

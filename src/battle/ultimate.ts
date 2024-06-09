@@ -212,6 +212,47 @@ export function activateUltimate(gameState: GameState, position: number) {
         triggerPassive(buff3, gameState, position);
       }
       break;
+    // 黑鷹 貝里絲
+    case "177":
+      {
+        const buff: Buff = {
+          id: "177-ult-1",
+          name: "以自身最大HP10/10/12.5/15/20%使自身攻擊力增加(3/3/4/4/4回合)",
+          type: 16,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _16: {
+            value:
+              bond === 1
+                ? 0.1
+                : bond === 2
+                  ? 0.1
+                  : bond === 3
+                    ? 0.125
+                    : bond === 4
+                      ? 0.15
+                      : 0.2,
+            affectType: AffectType.RAWATK,
+            target: Target.SELF,
+            duration:
+              bond === 1
+                ? 3
+                : bond === 2
+                  ? 3
+                  : bond === 3
+                    ? 4
+                    : bond === 4
+                      ? 4
+                      : 4,
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+      //再以自身攻擊力100/125/150/175/200%對我方全體進行治療，再以自身最大HP30/35/40/45/50%每回合對我方全體進行治療(4回合)，CD：4
+      gameState.characters.forEach((_, index) => {
+        parseCondition(index, [Condition.GET_HEAL], gameState);
+      });
+      break;
 
     case "178":
       {

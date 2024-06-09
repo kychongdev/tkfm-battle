@@ -132,6 +132,14 @@ export interface _15 {
   reduceCD: number;
 }
 
+//用HP傳功
+export interface _16 {
+  value: number;
+  affectType: AffectType.RAWATK;
+  target: Target | CharacterClass;
+  duration: number;
+}
+
 // ---------------------------- ADD ON BUFF ----------------------------
 export interface _101 {
   value: number;

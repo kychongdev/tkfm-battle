@@ -645,6 +645,79 @@ export function triggerPassive(
         }
       }
       break;
+    case 16:
+      if (!buff._16) {
+        console.log("Wrong data 16");
+        break;
+      }
+      gameState.characters.forEach((character, index) => {
+        const hp = gameState.characters[position].maxHp;
+        if (character.class === buff._16?.target) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: Math.floor(hp * buff._16.value),
+                affectType: buff._16?.affectType,
+              },
+            },
+          ];
+        } else if (buff._16?.target === Target.ALL) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: `${buff.id}-buff`,
+              name: buff.name,
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                value: Math.floor(hp * buff._16.value),
+                affectType: buff._16?.affectType,
+              },
+            },
+          ];
+        } else if (buff._16?.target === Target.ALL_EXCEPT_SELF) {
+          if (index !== position) {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              {
+                id: `${buff.id}-buff`,
+                name: buff.name,
+                type: 0,
+                condition: Condition.NONE,
+                duration: 1,
+                _0: {
+                  value: Math.floor(hp * buff._16.value),
+                  affectType: buff._16?.affectType,
+                },
+              },
+            ];
+          }
+        }
+      });
+      if (buff._16?.target === Target.SELF) {
+        const hp = gameState.characters[position].maxHp;
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: `${buff.id}-buff`,
+            name: buff.name,
+            type: 0,
+            condition: Condition.NONE,
+            duration: 1,
+            _0: {
+              value: Math.floor(hp * buff._16.value),
+              affectType: buff._16?.affectType,
+            },
+          },
+        ];
+      }
   }
 }
 
