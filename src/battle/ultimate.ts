@@ -25,7 +25,7 @@ export function activateUltimate(gameState: GameState, position: number) {
         character.buff = [
           ...character.buff,
           {
-            id: "RAWATTACK",
+            id: "163-ult-1",
             name: "攻擊力",
             type: 0,
             condition: Condition.NONE,
@@ -71,7 +71,7 @@ export function activateUltimate(gameState: GameState, position: number) {
         triggerPassive(buff, gameState, position);
 
         const buff2: Buff = {
-          id: "163-passive-2-1",
+          id: "163-ult-3",
           name: "使5號位當前必殺技CD減少4回合",
           type: 15,
           condition: Condition.NONE,

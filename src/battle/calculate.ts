@@ -670,10 +670,11 @@ export function triggerPassive(
           gameState.characters[buff._15.position].isExist &&
           !gameState.characters[buff._15.position].isDead
         ) {
-          gameState.characters[position].cd -= buff._15.reduceCD;
-          if (gameState.characters[position].cd < 0) {
-            gameState.characters[position].cd = 0;
+          gameState.characters[buff._15.position].cd -= buff._15.reduceCD;
+          if (gameState.characters[buff._15.position].cd < 0) {
+            gameState.characters[buff._15.position].cd = 0;
           }
+          console.log(gameState.characters[position].cd);
         } else {
           recursiveRandomPosition1(buff._15.reduceCD);
         }
