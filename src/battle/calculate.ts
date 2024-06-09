@@ -580,13 +580,14 @@ export function triggerPassive(
         break;
       }
       {
-        const characterIndex = gameState.characters.findIndex((x) => {
-          return x.id === buff._13?.target;
+        gameState.characters.forEach((character, index) => {
+          if (character.id === buff._13?.target) {
+            gameState.characters[index].buff = [
+              ...gameState.characters[index].buff,
+              ...buff._13.applyBuff,
+            ];
+          }
         });
-        gameState.characters[characterIndex].buff = [
-          ...gameState.characters[characterIndex].buff,
-          ...buff._13.applyBuff,
-        ];
       }
       break;
     case 14:
