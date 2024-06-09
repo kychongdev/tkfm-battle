@@ -254,7 +254,7 @@ export default function SelectCharacterPage() {
                 value: "4",
                 label: (
                   <Center>
-                    <Avatar src="/tkfm-battle/character/dark.jpg" />,
+                    <Avatar src="/tkfm-battle/character/dark.jpg" />
                   </Center>
                 ),
               },
@@ -305,7 +305,7 @@ export default function SelectCharacterPage() {
                 value: "9",
                 label: (
                   <Center>
-                    <Avatar src="/tkfm-battle/character/ui_supporter.png" />,
+                    <Avatar src="/tkfm-battle/character/ui_supporter.png" />
                   </Center>
                 ),
               },
