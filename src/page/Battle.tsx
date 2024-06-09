@@ -15,6 +15,7 @@ import {
   AccordionItem,
   Title,
   Divider,
+  RangeSlider,
 } from "@mantine/core";
 import { CharacterBattleButton } from "../components/CharacterBattleButton";
 import type { CharacterSelect, CharacterState } from "../types/Character";
@@ -29,6 +30,7 @@ import { BuffList } from "../components/BuffList";
 import characterJson from "../assets/character.json";
 import { LogList } from "../components/LogList";
 import { DonutChart } from "@mantine/charts";
+import { Analysis } from "../components/Analysis";
 
 export default function Battle() {
   const [saved1] = useLocalStorage<CharacterSelect[]>("saved-team");
@@ -688,7 +690,9 @@ export default function Battle() {
           onChange={setLogOption}
           data={[
             { label: "傷害比例", value: "damage" },
-            { label: "輸出清單", value: "all" },
+            { label: "傷害折綫圖", value: "chart" },
+            { label: "回合過濾", value: "filter" },
+            { label: "傷害清單", value: "all" },
           ]}
         />
         <Space h="sm" />
@@ -808,6 +812,8 @@ export default function Battle() {
             </Accordion>
           </>
         ) : null}
+        {logOption === "filter" ? <div /> : null}
+        {logOption === "chart" ? <Analysis /> : null}
       </Modal>
     </Container>
   );
