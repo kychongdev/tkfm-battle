@@ -155,6 +155,7 @@ export default function SelectCharacterPage() {
     const stars = characterList[position].stars;
     const hpPot = characterList[position].hpPot;
     const atkPot = characterList[position].atkPot;
+    const room = characterList[position].disclipline;
     return (
       <Stack>
         <Image
@@ -187,6 +188,9 @@ export default function SelectCharacterPage() {
         <Group grow wrap="nowrap">
           <Image src={atk} />
           {atkPot}%
+        </Group>
+        <Group grow wrap="nowrap">
+          寢{room}
         </Group>
       </Stack>
     );
