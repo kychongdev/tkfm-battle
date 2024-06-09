@@ -22,8 +22,13 @@ export const Route = createLazyFileRoute("/changelog")({
               增加以下功能:
               <br />
               - 傷害比例
-              <br />- 傷害折線圖
-              <br />- 回合篩選
+              <br /> - 傷害折線圖
+              <br /> - 回合篩選
+              <br />
+              <br />
+              添加以下角色：
+              <br /> - 慵懶貓貓 露露
+              <br /> - 花嫁 巴爾
             </Text>
           </Timeline.Item>
           <Timeline.Item title="8/6/2024 - Alpha v0.2" bullet={icon}>
