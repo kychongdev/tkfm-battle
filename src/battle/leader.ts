@@ -88,9 +88,9 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
             ...gameState.characters[index].buff,
             {
               id: "177-Lead-6",
-              name: "必殺技傷害增加30%",
+              name: "必殺時，觸發「使我方全體必殺技傷害增加30%」",
               type: 11,
-              condition: Condition.NONE,
+              condition: Condition.ULTIMATE,
               duration: 100,
               _11: {
                 target: Target.ALL,
