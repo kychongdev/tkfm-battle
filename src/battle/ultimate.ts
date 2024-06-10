@@ -40,7 +40,7 @@ export function activateUltimate(gameState: GameState, position: number) {
       {
         const buff: Buff = {
           id: "163-ult-2",
-          name: "必殺時，觸發「使我方站位5的隊員攻擊力增加%(2回合)」",
+          name: "必殺時，觸發「使我方站位5的隊員攻擊力增加%(1回合)」",
           type: 12,
           condition: Condition.ULTIMATE,
           duration: 100,
@@ -51,7 +51,7 @@ export function activateUltimate(gameState: GameState, position: number) {
               name: "攻擊力增加",
               type: 0,
               condition: Condition.NONE,
-              duration: 2,
+              duration: 1,
               _0: {
                 value:
                   bond === 1
