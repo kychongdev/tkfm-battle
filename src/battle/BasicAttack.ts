@@ -150,5 +150,8 @@ export function basicAttack(
     case "601":
       calcBasicDamage(position, 1.25, gameState, Target.ENEMY, "basic");
       break;
+    case "801":
+      // 以自身攻擊力25給予我方全體護盾(1回合)、以自身最大HP30給予我方全體護盾(1回合)
+      break;
   }
 }

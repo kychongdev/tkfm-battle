@@ -105,7 +105,7 @@ export const Route = createLazyFileRoute("/record")({
       {
         name: "甜心偶像 星空奈奈美",
         leader: false,
-        teammate: false,
+        teammate: true,
         leadtest: false,
         teammatetest: false,
       },

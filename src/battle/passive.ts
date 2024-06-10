@@ -2218,6 +2218,50 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         ];
       }
       break;
+    case "801":
+      // 使自身造成護盾效果增加15%
+      // 必殺時，追加「以自身攻擊力25給予我方全體護盾(1回合)、以自身最大HP30%給予我方全體護盾(1回合)」
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "801-passive-4",
+            name: "每經過1回合時，觸發「以自身攻擊力25使我方全體攻擊力增加(1回合)」",
+            type: 6,
+            condition: Condition.EVERY_X_TURN,
+            conditionTurn: 1,
+            duration: 100,
+            _6: {
+              base: false,
+              duration: 1,
+              value: 0.25,
+              target: Target.ALL,
+              affectType: AffectType.RAWATK,
+            },
+          },
+        ];
+      }
+
+      // 使自身攻擊力增加10%
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "801-passive4",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
+            },
+          },
+        ];
+      }
+      break;
+
     default:
       break;
   }

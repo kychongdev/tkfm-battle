@@ -1158,5 +1158,60 @@ export function activateUltimate(gameState: GameState, position: number) {
       calcUltDamage(position, 2, gameState, false, Target.ENEMY, "ultimate");
 
       break;
+    case "801":
+      {
+        const buff: Buff = {
+          id: "801-ult-1",
+          name: "攻擊力",
+          type: 6,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _6: {
+            affectType: AffectType.RAWATK,
+            value:
+              bond === 1
+                ? 0.5
+                : bond === 2
+                  ? 0.55
+                  : bond === 3
+                    ? 0.6
+                    : bond === 4
+                      ? 0.65
+                      : 0.7,
+            target: Target.ALL,
+            duration: 4,
+            base: true,
+          },
+        };
+        triggerPassive(buff, gameState, position);
+      }
+
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "801-ult-2",
+            name: "攻擊力",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 4,
+            _0: {
+              affectType: AffectType.INCREASE_ULTIMATE_DAMAGE,
+              value:
+                bond === 1
+                  ? 0.2
+                  : bond === 2
+                    ? 0.25
+                    : bond === 3
+                      ? 0.3
+                      : bond === 4
+                        ? 0.35
+                        : 0.4,
+            },
+          },
+        ];
+      });
+
+      break;
   }
 }

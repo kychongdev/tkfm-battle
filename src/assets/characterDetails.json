@@ -2903,5 +2903,45 @@
       "cd": 4
     },
     "potentialType": 2
+  },
+  {
+    "id": "801",
+    "rarity": 3,
+    "tags": {
+      "attribute": 4,
+      "position": 9,
+      "race": -1,
+      "body": -1,
+      "oppai": -1,
+      "rank": -1,
+      "else": [],
+      "available": false
+    },
+    "stats": {
+      "initATK": 1052.8,
+      "initHP": 3345.6,
+      "cd": 3
+    },
+    "potentialType": 2
+  },
+  {
+    "id": "802",
+    "rarity": 3,
+    "tags": {
+      "attribute": 2,
+      "position": 7,
+      "race": -1,
+      "body": -1,
+      "oppai": -1,
+      "rank": -1,
+      "else": [],
+      "available": false
+    },
+    "stats": {
+      "initATK": 1044.8,
+      "initHP": 3372.8,
+      "cd": 4
+    },
+    "potentialType": 2
   }
 ]
