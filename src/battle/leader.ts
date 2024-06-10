@@ -25,7 +25,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           condition: Condition.BASIC_ATTACK,
           duration: 100,
           _16: {
-            value: 0.6,
+            value: 0.06,
             affectType: AffectType.RAWATK,
             target: Target.ALL,
             duration: 1,
@@ -38,7 +38,7 @@ export function triggerLeaderSkill(leader: string, gameState: GameState) {
           condition: Condition.ULTIMATE,
           duration: 100,
           _16: {
-            value: 0.8,
+            value: 0.08,
             affectType: AffectType.RAWATK,
             target: Target.ALL,
             duration: 1,
