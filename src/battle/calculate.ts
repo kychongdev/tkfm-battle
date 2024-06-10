@@ -711,7 +711,7 @@ export function triggerPassive(
             name: buff.name,
             type: 0,
             condition: Condition.NONE,
-            duration: buff.16?.duration,
+            duration: buff._16?.duration,
             _0: {
               value: Math.floor(hp * buff._16.value),
               affectType: buff._16?.affectType,
