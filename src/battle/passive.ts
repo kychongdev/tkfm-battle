@@ -2261,6 +2261,64 @@ export function initPassiveSkill(position: number, gameState: GameState) {
         ];
       }
       break;
+    case "802":
+      // 攻擊力增加35%
+
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "802-passive-1",
+          name: "攻擊力增加35%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.35,
+            affectType: AffectType.ATK,
+          },
+        },
+        {
+          id: "802-passive-2",
+          name: "必殺時，觸發「以自身攻擊力15使自身以外我方全體攻擊力增加(1回合)」",
+          type: 6,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _6: {
+            base: false,
+            duration: 1,
+            value: 0.15,
+            target: Target.ALL_EXCEPT_SELF,
+            affectType: AffectType.RAWATK,
+          },
+        },
+      ];
+
+      // 普攻時，觸發「以自身攻擊力40每回合對我方全體進行治療(1回合)」
+      // 必殺時，觸發「以自身攻擊力80每回合對我方全體進行治療(1回合)」
+
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "802-passive-5",
+            name: "必殺時，觸發「以自身攻擊力15使自身以外我方全體攻擊力增加(1回合)」",
+            type: 6,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _6: {
+              base: false,
+              duration: 1,
+              value: 0.15,
+              target: Target.ALL_EXCEPT_SELF,
+              affectType: AffectType.RAWATK,
+            },
+          },
+        ];
+      }
+      // 防禦時，觸發「以自身攻擊力120每回合對我方全體進行治療(1回合)」
+
+      // 使自身造成治療量提升15%
+      break;
 
     default:
       break;

@@ -1213,5 +1213,55 @@ export function activateUltimate(gameState: GameState, position: number) {
       });
 
       break;
+    case "802":
+      gameState.characters.forEach((character, index) => {
+        if (
+          character.class === CharacterClass.ATTACKER ||
+          character.class === CharacterClass.OBSTRUCTER
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "802-ult-2",
+              name: `必殺時，追加『以自身攻擊力${
+                bond === 1 ? 65 : 75
+              }對目標造成傷害』(1回合)`,
+              type: 101,
+              condition: Condition.ULTIMATE,
+              duration: 1,
+              _101: {
+                value: bond === 1 ? 0.65 : 0.75,
+                target: Target.ENEMY,
+                damageType: 1,
+                isTrigger: false,
+              },
+            },
+            {
+              id: "802-ult-2",
+              name: "造成傷害增加(1回合)",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 1,
+              _0: {
+                affectType: AffectType.INCREASE_DMG,
+                value:
+                  bond === 1
+                    ? 0.3
+                    : bond === 2
+                      ? 0.375
+                      : bond === 3
+                        ? 0.45
+                        : bond === 4
+                          ? 0.525
+                          : 0.6,
+              },
+            },
+          ];
+        }
+      });
+      gameState.characters.forEach((_, index) => {
+        parseCondition(index, [Condition.GET_HEAL], gameState);
+      });
+      break;
   }
 }
