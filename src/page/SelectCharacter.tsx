@@ -59,6 +59,7 @@ export default function SelectCharacterPage() {
         "526",
         "528",
         "601",
+        "801",
       ];
       if (available.includes(key)) {
         const find = characterDetails.find((item) => item.id === key);
