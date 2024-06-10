@@ -79,7 +79,7 @@ export const Route = createLazyFileRoute("/record")({
         leader: false,
         teammate: true,
         leadtest: false,
-        teammatetest: false,
+        teammatetest: true,
       },
       {
         name: "傳說女僕 艾蜜莉",
