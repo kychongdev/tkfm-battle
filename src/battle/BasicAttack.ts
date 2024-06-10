@@ -1,6 +1,11 @@
 import { AffectType, Buff, Condition, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
-import { applyRawAttBuff, heal, triggerPassive } from "./calculate";
+import {
+  applyRawAttBuff,
+  heal,
+  parseCondition,
+  triggerPassive,
+} from "./calculate";
 import { calcBasicDamage } from "./calcBasicDamage";
 
 export function basicAttack(
@@ -102,6 +107,10 @@ export function basicAttack(
             },
           ];
         }
+      });
+
+      gameState.characters.forEach((_, index) => {
+        parseCondition(index, [Condition.GET_HEAL], gameState);
       });
       break;
     case "514":
