@@ -103,7 +103,21 @@ export const Route = createLazyFileRoute("/record")({
         teammatetest: true,
       },
       {
+        name: "副手 貝蕾朵",
+        leader: false,
+        teammate: false,
+        leadtest: false,
+        teammatetest: false,
+      },
+      {
         name: "甜心偶像 星空奈奈美",
+        leader: false,
+        teammate: true,
+        leadtest: false,
+        teammatetest: false,
+      },
+      {
+        name: "閃耀歌姬 黑白諾艾莉",
         leader: false,
         teammate: true,
         leadtest: false,
@@ -146,20 +160,6 @@ export const Route = createLazyFileRoute("/record")({
       },
       {
         name: "夏日 凱薩",
-        leader: false,
-        teammate: false,
-        leadtest: false,
-        teammatetest: false,
-      },
-      {
-        name: "閃耀歌姬 黑白諾艾莉",
-        leader: false,
-        teammate: false,
-        leadtest: false,
-        teammatetest: false,
-      },
-      {
-        name: "副手 貝蕾朵",
         leader: false,
         teammate: false,
         leadtest: false,
