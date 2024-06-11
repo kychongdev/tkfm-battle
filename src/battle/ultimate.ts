@@ -1266,5 +1266,73 @@ export function activateUltimate(gameState: GameState, position: number) {
         parseCondition(index, [Condition.GET_HEAL], gameState);
       });
       break;
+    case "804":
+      gameState.enemies[gameState.targeting].buff = [
+        ...gameState.enemies[gameState.targeting].buff,
+        {
+          id: "804-ult-1",
+          name: "受到傷害增加(4回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.INCREASE_DMG_RECEIVED,
+            value:
+              bond === 1
+                ? 0.3
+                : bond === 2
+                  ? 0.35
+                  : bond === 3
+                    ? 0.4
+                    : bond === 4
+                      ? 0.45
+                      : 0.5,
+          },
+        },
+      ];
+      calcUltDamage(
+        position,
+        bond === 1
+          ? 3.3
+          : bond === 2
+            ? 3.76
+            : bond === 3
+              ? 4.22
+              : bond === 4
+                ? 4.68
+                : 5.14,
+        gameState,
+        false,
+        Target.ENEMY,
+        "ultimate",
+      );
+      // 自身獲得「普攻時，追加『以自身攻擊力15/15/22.5/22.5/30%對目標造成傷害』(4回合)」
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "804-ult-2",
+          name: "普攻時，追加『以自身攻擊力15/15/22.5/22.5/30%對目標造成傷害』",
+          type: 1,
+          condition: Condition.BASIC_ATTACK,
+          duration: 4,
+          _1: {
+            value:
+              bond === 1
+                ? 0.15
+                : bond === 2
+                  ? 0.15
+                  : bond === 3
+                    ? 0.225
+                    : bond === 4
+                      ? 0.225
+                      : 0.3,
+            isTrigger: false,
+            target: Target.ENEMY,
+            damageType: 0,
+          },
+        },
+      ];
+
+      break;
   }
 }

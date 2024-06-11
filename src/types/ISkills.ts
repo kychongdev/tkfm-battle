@@ -1,4 +1,4 @@
-import type { CharacterClass } from "./Character";
+import type { CharacterAttribute, CharacterClass } from "./Character";
 import type {
   AffectType,
   Buff,
@@ -138,6 +138,20 @@ export interface _16 {
   affectType: AffectType.RAWATK;
   target: Target | CharacterClass;
   duration: number;
+}
+
+// based on multiple condition apply buff
+export interface _17 {
+  target: CharacterClass[];
+  attributeTarget: CharacterAttribute;
+  applyBuff: Buff[];
+  includeSelf: boolean;
+}
+
+export interface _18 {
+  reduceCD: number;
+  includeSelf: boolean;
+  attribute: CharacterAttribute;
 }
 
 // ---------------------------- ADD ON BUFF ----------------------------

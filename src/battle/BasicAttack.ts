@@ -158,5 +158,8 @@ export function basicAttack(
         parseCondition(index, [Condition.GET_HEAL], gameState);
       });
       break;
+    case "804":
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
+      break;
   }
 }

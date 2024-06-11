@@ -2157,7 +2157,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           ];
         }
       });
-      // 第一回合時，觸發「使自身當前必殺技CD減少4回合」
       if (gameState.characters[position].stars === 5) {
         gameState.characters[position].buff = [
           ...gameState.characters[position].buff,
@@ -2219,9 +2218,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
       }
       break;
     case "801":
-      // 使自身造成護盾效果增加15%
-      // 必殺時，追加「以自身攻擊力25給予我方全體護盾(1回合)、以自身最大HP30%給予我方全體護盾(1回合)」
-
       if (gameState.characters[position].stars === 5) {
         gameState.characters[position].buff = [
           ...gameState.characters[position].buff,
@@ -2242,8 +2238,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         ];
       }
-
-      // 使自身攻擊力增加10%
       if (gameState.characters[position].passive4) {
         gameState.characters[position].buff = [
           ...gameState.characters[position].buff,
@@ -2262,8 +2256,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
       }
       break;
     case "802":
-      // 攻擊力增加35%
-
       gameState.characters[position].buff = [
         ...gameState.characters[position].buff,
         {
@@ -2292,10 +2284,6 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         },
       ];
-
-      // 普攻時，觸發「以自身攻擊力40每回合對我方全體進行治療(1回合)」
-      // 必殺時，觸發「以自身攻擊力80每回合對我方全體進行治療(1回合)」
-
       if (gameState.characters[position].stars === 5) {
         gameState.characters[position].buff = [
           ...gameState.characters[position].buff,
@@ -2315,9 +2303,145 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         ];
       }
-      // 防禦時，觸發「以自身攻擊力120每回合對我方全體進行治療(1回合)」
+      break;
+    case "804":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "804-passive-1",
+          name: "普攻傷害增加70%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.7,
+            affectType: AffectType.INCREASE_BASIC_DAMAGE,
+          },
+        },
+      ];
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "805-passive-1",
+          name: "必殺時，觸發「使我方全體水屬性的攻擊者、守護者、妨礙者獲得《傳遞飛刀》」",
+          type: 17,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _17: {
+            includeSelf: true,
+            target: [
+              CharacterClass.ATTACKER,
+              CharacterClass.PROTECTOR,
+              CharacterClass.OBSTRUCTER,
+            ],
+            attributeTarget: Attribute.WATER,
+            applyBuff: [
+              {
+                id: "805-passive-1-1",
+                name: "普攻時，追加「以自身攻擊力30%對目標造成傷害」(1回合)",
+                type: 101,
+                condition: Condition.BASIC_ATTACK,
+                duration: 1,
+                _101: {
+                  value: 0.3,
+                  isTrigger: false,
+                  target: Target.ENEMY,
+                  damageType: 0,
+                },
+              },
+            ],
+          },
+        },
+        {
+          id: "804-passive-2",
+          name: "必殺時，觸發「使我方全體水屬性的攻擊者、守護者、妨礙者獲得「必殺時，觸發『使我方賞金獵人安潔娜爾』獲得《傳遞飛刀》』」",
+          type: 17,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _17: {
+            includeSelf: false,
+            target: [
+              CharacterClass.ATTACKER,
+              CharacterClass.PROTECTOR,
+              CharacterClass.OBSTRUCTER,
+            ],
+            attributeTarget: Attribute.WATER,
+            applyBuff: [
+              {
+                id: "804-passive-2-1",
+                name: "必殺時，觸發「使我方賞金獵人安潔娜爾獲得《傳遞飛刀》」",
+                type: 13,
+                condition: Condition.ULTIMATE,
+                duration: 4,
+                _13: {
+                  target: "804",
+                  applyBuff: [
+                    {
+                      id: "804-passive-2-2",
+                      name: "普攻時，追加「以自身攻擊力30%對目標造成傷害」(1回合)",
+                      type: 101,
+                      condition: Condition.BASIC_ATTACK,
+                      duration: 1,
+                      _101: {
+                        value: 0.3,
+                        isTrigger: false,
+                        target: Target.ENEMY,
+                        damageType: 0,
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ];
 
-      // 使自身造成治療量提升15%
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "804-passive-3",
+            name: "第一回合時，使自身當前必殺技CD減少4回合",
+            type: 14,
+            condition: Condition.ON_TURN_START,
+            duration: 100,
+            _14: {
+              reduceCD: 4,
+              target: Target.SELF,
+            },
+          },
+          {
+            id: "804-passive-4",
+            name: "第一回合時，使自身以外的我方全體水屬性隊員當前必殺技CD減少1回合",
+            type: 18,
+            condition: Condition.ON_TURN_START,
+            duration: 100,
+            _18: {
+              reduceCD: 1,
+              attribute: Attribute.WATER,
+              includeSelf: false,
+            },
+          },
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "804-passive4",
+            name: "普攻傷害增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.INCREASE_BASIC_DAMAGE,
+            },
+          },
+        ];
+      }
+
       break;
 
     default:

@@ -719,6 +719,59 @@ export function triggerPassive(
           },
         ];
       }
+      break;
+    case 17:
+      if (!buff._17) {
+        console.log("Wrong data 17");
+        break;
+      }
+      gameState.characters.forEach((character, index) => {
+        if (buff._17?.includeSelf) {
+          if (buff._17?.target.includes(character.class)) {
+            if (character.attribute === buff._17.attributeTarget) {
+              gameState.characters[index].buff = [
+                ...gameState.characters[index].buff,
+                ...buff._17.applyBuff,
+              ];
+            }
+          }
+        } else {
+          if (index !== position) {
+            if (buff._17?.target.includes(character.class)) {
+              if (character.attribute === buff._17.attributeTarget) {
+                gameState.characters[index].buff = [
+                  ...gameState.characters[index].buff,
+                  ...buff._17.applyBuff,
+                ];
+              }
+            }
+          }
+        }
+      });
+      break;
+    case 18:
+      if (!buff._18) {
+        console.log("Wrong data 18");
+        break;
+      }
+      gameState.characters.forEach((character, index) => {
+        if (buff._18?.attribute === character.attribute) {
+          if (buff._18.includeSelf) {
+            gameState.characters[index].cd -= buff._18.reduceCD;
+            if (gameState.characters[index].cd < 0) {
+              gameState.characters[index].cd = 0;
+            }
+          } else {
+            if (index !== position) {
+              gameState.characters[index].cd -= buff._18.reduceCD;
+              if (gameState.characters[index].cd < 0) {
+                gameState.characters[index].cd = 0;
+              }
+            }
+          }
+        }
+      });
+      break;
   }
 }
 
