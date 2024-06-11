@@ -7,6 +7,7 @@ import {
   triggerPassive,
 } from "./calculate";
 import { calcBasicDamage } from "./calcBasicDamage";
+import { calcUltDamage } from "./calcUltDamage";
 
 export function basicAttack(
   id: string,
@@ -160,6 +161,25 @@ export function basicAttack(
       break;
     case "804":
       calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
+      break;
+    case "805":
+      // 使自身攻擊力增加50%(1回合)、再以自身攻擊力70%對目標造成傷害
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "805-basic-1",
+          name: "攻擊力",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 1,
+          _0: {
+            value: 0.5,
+            affectType: AffectType.ATK,
+          },
+        },
+      ];
+
+      calcBasicDamage(position, 0.7, gameState, Target.ENEMY, "basic");
       break;
   }
 }

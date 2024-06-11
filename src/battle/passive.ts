@@ -2441,7 +2441,128 @@ export function initPassiveSkill(position: number, gameState: GameState) {
           },
         ];
       }
+      break;
+    case "805":
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "805-passive-1",
+          name: "普攻時，觸發「使自身攻擊力增加15%(最多6層)」",
+          type: 4,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "805-passive-1-1",
+            target: Target.SELF,
+            applyBuff: {
+              id: "805-passive-1-1",
+              name: "攻擊力增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "805-passive-1-1",
+                name: "攻擊力增加15%",
+                value: 0.15,
+                maxStack: 6,
+                stack: 1,
+                affectType: AffectType.ATK,
+              },
+            },
+          },
+        },
+        {
+          id: "805-passive-2",
+          name: "普攻時，觸發「使目標受到普攻傷害增加15%(最多6層)」",
+          type: 4,
+          condition: Condition.BASIC_ATTACK,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "805-passive-2-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "805-passive-2-1",
+              name: "受到普攻傷害增加",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "805-passive-2-1",
+                name: "受到普攻傷害增加15%",
+                value: 0.15,
+                maxStack: 6,
+                stack: 1,
+                affectType: AffectType.INCREASE_BASIC_DAMAGE_RECEIVED,
+              },
+            },
+          },
+        },
+      ];
 
+      // 造成傷害增加20%
+      // 必殺時，觸發「使目標受到風屬性傷害增加10%(最多3層)」
+      if (gameState.characters[position].stars === 5) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "805-passive-3",
+            name: "造成傷害增加20%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.2,
+              affectType: AffectType.INCREASE_DMG,
+            },
+          },
+          {
+            id: "805-passive-4",
+            name: "必殺時，觸發「使目標受到風屬性傷害增加10%(最多3層)」",
+            type: 4,
+            condition: Condition.ULTIMATE,
+            duration: 100,
+            _4: {
+              increaseStack: 1,
+              targetSkill: "805-passive-4-1",
+              target: Target.ENEMY,
+              applyBuff: {
+                id: "805-passive-4-1",
+                name: "受到風屬性傷害增加",
+                type: 3,
+                condition: Condition.NONE,
+                duration: 100,
+                _3: {
+                  id: "805-passive-4-1",
+                  name: "受到風屬性傷害增加10%",
+                  value: 0.1,
+                  stack: 1,
+                  maxStack: 3,
+                  affectType: AffectType.INCREASE_WIND_DMG_RECEIVED,
+                },
+              },
+            },
+          },
+        ];
+      }
+
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "805-passive4",
+            name: "使自身普攻傷害增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.INCREASE_BASIC_DAMAGE,
+            },
+          },
+        ];
+      }
       break;
 
     default:

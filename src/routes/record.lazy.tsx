@@ -126,7 +126,7 @@ export const Route = createLazyFileRoute("/record")({
       {
         name: "春情白兔 鈴蘭",
         leader: false,
-        teammate: false,
+        teammate: true,
         leadtest: false,
         teammatetest: false,
       },
@@ -194,4 +194,3 @@ export const Route = createLazyFileRoute("/record")({
     );
   },
 });
-

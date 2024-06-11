@@ -1334,5 +1334,100 @@ export function activateUltimate(gameState: GameState, position: number) {
       ];
 
       break;
+    case "805":
+      // 使目標受到傷害增加20/25/30/35/40%(4回合)、使我方全體攻擊者、守護者、妨礙者獲得「普攻時，追加以自身攻擊力10/15/20/25/30%對目標造成傷害』(4回合)」、再使自身獲得「普攻時， 追加『以自身攻擊力20/30/40/50/60%對目標造成傷害』(4回合)」，CD:4
+      gameState.enemies[gameState.targeting].buff = [
+        ...gameState.enemies[gameState.targeting].buff,
+        {
+          id: "805-ult-1",
+          name: "受到傷害增加(4回合)",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.INCREASE_DMG_RECEIVED,
+            value:
+              bond === 1
+                ? 0.2
+                : bond === 2
+                  ? 0.25
+                  : bond === 3
+                    ? 0.3
+                    : bond === 4
+                      ? 0.35
+                      : 0.4,
+          },
+        },
+      ];
+      gameState.characters.forEach((character, index) => {
+        if (
+          character.class === CharacterClass.ATTACKER ||
+          character.class === CharacterClass.OBSTRUCTER ||
+          character.class === CharacterClass.PROTECTOR
+        ) {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "805-ult-2",
+              name: `普攻時，追加『以自身攻擊力${
+                bond === 1
+                  ? 0.1
+                  : bond === 2
+                    ? 0.15
+                    : bond === 3
+                      ? 0.2
+                      : bond === 4
+                        ? 0.25
+                        : 0.3
+              }%對目標造成傷害』`,
+              type: 101,
+              condition: Condition.BASIC_ATTACK,
+              duration: 4,
+              _101: {
+                value:
+                  bond === 1
+                    ? 0.1
+                    : bond === 2
+                      ? 0.15
+                      : bond === 3
+                        ? 0.2
+                        : bond === 4
+                          ? 0.25
+                          : 0.3,
+                isTrigger: false,
+                target: Target.ENEMY,
+                damageType: 0,
+              },
+            },
+          ];
+        }
+      });
+
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "805-ult-3",
+          name: "普攻時，追加『以自身攻擊力20/30/40/50/60%對目標造成傷害』",
+          type: 101,
+          condition: Condition.BASIC_ATTACK,
+          duration: 4,
+          _101: {
+            value:
+              bond === 1
+                ? 0.2
+                : bond === 2
+                  ? 0.3
+                  : bond === 3
+                    ? 0.4
+                    : bond === 4
+                      ? 0.5
+                      : 0.6,
+            isTrigger: false,
+            target: Target.ENEMY,
+            damageType: 0,
+          },
+        },
+      ];
+      break;
   }
 }
