@@ -1043,7 +1043,8 @@
     },
     "stats": {
       "initATK": 713.6,
-      "initHP": 4934.4
+      "initHP": 4934.4,
+      "cd": 4
     },
     "potentialType": 2
   },
@@ -2940,6 +2941,26 @@
     "stats": {
       "initATK": 1044.8,
       "initHP": 3372.8,
+      "cd": 4
+    },
+    "potentialType": 2
+  },
+  {
+    "id": "804",
+    "rarity": 3,
+    "tags": {
+      "attribute": 1,
+      "position": 8,
+      "race": -1,
+      "body": -1,
+      "oppai": -1,
+      "rank": -1,
+      "else": [],
+      "available": false
+    },
+    "stats": {
+      "initATK": 897.6,
+      "initHP": 3924.8,
       "cd": 4
     },
     "potentialType": 2
