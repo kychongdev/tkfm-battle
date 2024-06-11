@@ -69,6 +69,9 @@ export function activateUltimate(gameState: GameState, position: number) {
           },
         };
         triggerPassive(buff, gameState, position);
+        gameState.characters.forEach((character, index) => {
+          parseCondition(index, [Condition.GET_HEAL], gameState);
+        });
 
         const buff2: Buff = {
           id: "163-ult-3",
