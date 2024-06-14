@@ -822,6 +822,13 @@ export function onTurnStart(gameState: GameState) {
       if (buff.condition === Condition.ON_TURN_START && gameState.turns === 1) {
         triggerPassive(buff, gameState, position);
       }
+
+      if (
+        buff.condition === Condition.ON_SPECIFIC_TURN &&
+        gameState.turns === buff.conditionTurn
+      ) {
+        triggerPassive(buff, gameState, position);
+      }
     }
   });
   gameState.log.push(`～～～～～～第${gameState.turns}回合～～～～～～`);

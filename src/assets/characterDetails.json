@@ -3001,6 +3001,26 @@
     "stats": {
       "initATK": 1062.4,
       "initHP": 3320,
+      "cd": 5
+    },
+    "potentialType": 2
+  },
+  {
+    "id": "813",
+    "rarity": 3,
+    "tags": {
+      "attribute": 1,
+      "position": 7,
+      "race": -1,
+      "body": -1,
+      "oppai": -1,
+      "rank": -1,
+      "else": [],
+      "available": false
+    },
+    "stats": {
+      "initATK": 974.4,
+      "initHP": 3619.2,
       "cd": 4
     },
     "potentialType": 2

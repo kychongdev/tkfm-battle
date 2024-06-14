@@ -184,5 +184,7 @@ export function basicAttack(
     case "806":
       calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
+    case "813":
+      break;
   }
 }

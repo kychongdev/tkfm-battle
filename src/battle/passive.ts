@@ -2675,6 +2675,71 @@ export function initPassiveSkill(position: number, gameState: GameState) {
       }
       break;
 
+    case "813":
+      // 每Wave的第9回合時，觸發「使敵方全體受到傷害增加50%(50回合)
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "813-passive-1",
+          name: "攻擊力增加30%",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 100,
+          _0: {
+            value: 0.3,
+            affectType: AffectType.ATK,
+          },
+        },
+      ];
+      if (gameState.characters[position].stars === 5) {
+        // 每Wave的第9回合時，觸發「使敵方全體受到傷害增加50%(50回合)
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "813-passive-2",
+            name: "每Wave的第9回合時，觸發「使敵方全體受到傷害增加50%(50回合)」",
+            type: 11,
+            condition: Condition.ON_SPECIFIC_TURN,
+            duration: 100,
+            conditionTurn: 9,
+            _11: {
+              target: Target.ENEMY,
+              applyBuff: [
+                {
+                  id: "813-passive-2-1",
+                  name: "受到傷害增加",
+                  type: 0,
+                  condition: Condition.NONE,
+                  duration: 50,
+                  _0: {
+                    value: 0.5,
+                    affectType: AffectType.INCREASE_DMG_RECEIVED,
+                  },
+                },
+              ],
+            },
+          },
+        ];
+      }
+      if (gameState.characters[position].passive4) {
+        gameState.characters[position].buff = [
+          ...gameState.characters[position].buff,
+          {
+            id: "813-passive4",
+            name: "使自身攻擊力增加10%",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 100,
+            _0: {
+              value: 0.1,
+              affectType: AffectType.ATK,
+            },
+          },
+        ];
+      }
+
+      break;
+
     default:
       break;
   }

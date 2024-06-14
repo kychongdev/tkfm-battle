@@ -1536,5 +1536,79 @@ export function activateUltimate(gameState: GameState, position: number) {
         "ultimate",
       );
       break;
+
+    case "813":
+      // 使我方全體普攻傷害增加30/45/60/75/90%(4回合)，使我方全體獲得普攻時，追加「以自身攻擊力4/4/6/6/10%對我方全體進行治療」(4回合)，使自身獲得普攻時，追加「以自身攻擊力60/80/100/120/140%對目標造成傷害」(4回合)，再使自身攻擊力增加0/0/30/60/90%(4回合)，CD:4
+      gameState.characters.forEach((_, index) => {
+        gameState.characters[index].buff = [
+          ...gameState.characters[index].buff,
+          {
+            id: "813-ult-1",
+            name: "普攻傷害增加(4回合)",
+            type: 0,
+            condition: Condition.NONE,
+            duration: 4,
+            _0: {
+              affectType: AffectType.INCREASE_BASIC_DAMAGE,
+              value:
+                bond === 1
+                  ? 0.3
+                  : bond === 2
+                    ? 0.45
+                    : bond === 3
+                      ? 0.6
+                      : bond === 4
+                        ? 0.75
+                        : 0.9,
+            },
+          },
+        ];
+      });
+      gameState.characters[position].buff = [
+        ...gameState.characters[position].buff,
+        {
+          id: "813-ult-2",
+          name: "普攻時，追加『以自身攻擊力60/80/100/120/140%對目標造成傷害』",
+          type: 101,
+          condition: Condition.BASIC_ATTACK,
+          duration: 4,
+          _101: {
+            value:
+              bond === 1
+                ? 0.6
+                : bond === 2
+                  ? 0.8
+                  : bond === 3
+                    ? 1
+                    : bond === 4
+                      ? 1.2
+                      : 1.4,
+            isTrigger: false,
+            target: Target.ENEMY,
+            damageType: 0,
+          },
+        },
+        {
+          id: "813-ult-3",
+          name: "攻擊力",
+          type: 0,
+          condition: Condition.NONE,
+          duration: 4,
+          _0: {
+            affectType: AffectType.ATK,
+            value:
+              bond === 1
+                ? 0
+                : bond === 2
+                  ? 0
+                  : bond === 3
+                    ? 0.3
+                    : bond === 4
+                      ? 0.6
+                      : 0.9,
+          },
+        },
+      ];
+      break;
   }
 }

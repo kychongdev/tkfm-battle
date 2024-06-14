@@ -135,7 +135,8 @@ enum Condition {
   APPLY_BUFF = 8,
   GET_HEAL = 9,
   GUARD = 10,
-  NONE = 11,
+  ON_SPECIFIC_TURN = 11,
+  NONE = 12,
 }
 
 enum SpecialCondition {
