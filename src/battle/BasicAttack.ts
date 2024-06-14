@@ -1,4 +1,4 @@
-import { AffectType, Buff, Condition, Target } from "../types/Skill";
+import { AffectType, type Buff, Condition, Target } from "../types/Skill";
 import type { GameState } from "./GameState";
 import {
   applyRawAttBuff,
@@ -180,6 +180,9 @@ export function basicAttack(
       ];
 
       calcBasicDamage(position, 0.7, gameState, Target.ENEMY, "basic");
+      break;
+    case "806":
+      calcBasicDamage(position, 1, gameState, Target.ENEMY, "basic");
       break;
   }
 }

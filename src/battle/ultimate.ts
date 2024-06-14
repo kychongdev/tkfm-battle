@@ -1,3 +1,4 @@
+import { identity } from "lodash";
 import { CharacterClass } from "../types/Character";
 import { AffectType, Condition, Target } from "../types/Skill";
 import type { Buff } from "../types/Skill";
@@ -1428,6 +1429,112 @@ export function activateUltimate(gameState: GameState, position: number) {
           },
         },
       ];
+      break;
+    case "806":
+      // 使目標受到光屬性傷害增加10/15/20/20/20%(最多1層)、使目標受到傷害增加10%(最多1/2/2/2/2層)、使我方全體攻擊力增加0/10/10/10/10%(最多1層)、並以自身攻擊力520/550/580/610/640%對目標造成傷害，CD: 5
+
+      {
+        const buff: Buff = {
+          id: "806-ult-1",
+          name: "受到光屬性傷害增加(最多1層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "806-ult-1-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "806-ult-1-1",
+              name: "受到光屬性傷害增加(最多1層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "806-ult-1-1",
+                name: "受到光屬性傷害增加(最多1層)",
+                stack: 1,
+                maxStack: 1,
+                affectType: AffectType.INCREASE_LIGHT_DMG_RECEIVED,
+                value:
+                  bond === 1
+                    ? 0.1
+                    : bond === 2
+                      ? 0.15
+                      : bond === 3
+                        ? 0.2
+                        : bond === 4
+                          ? 0.2
+                          : 0.2,
+              },
+            },
+          },
+        };
+        triggerPassive(buff, gameState, position);
+        const buff2: Buff = {
+          id: "806-ult-2",
+          name: "受到傷害增加(最多1層)",
+          type: 4,
+          condition: Condition.ULTIMATE,
+          duration: 100,
+          _4: {
+            increaseStack: 1,
+            targetSkill: "806-ult-2-1",
+            target: Target.ENEMY,
+            applyBuff: {
+              id: "806-ult-2-1",
+              name: "受到傷害增加(最多1層)",
+              type: 3,
+              condition: Condition.NONE,
+              duration: 100,
+              _3: {
+                id: "806-ult-2-1",
+                name: "受到傷害增加(最多1層)",
+                stack: 1,
+                maxStack: bond === 1 ? 1 : bond === 2 ? 2 : 2,
+                affectType: AffectType.INCREASE_DMG_RECEIVED,
+                value: bond === 1 ? 0.1 : bond === 2 ? 0.1 : 0.1,
+              },
+            },
+          },
+        };
+        triggerPassive(buff2, gameState, position);
+      }
+      if (bond > 1) {
+        gameState.characters.forEach((character, index) => {
+          gameState.characters[index].buff = [
+            ...gameState.characters[index].buff,
+            {
+              id: "806-ult-3",
+              name: "攻擊力",
+              type: 0,
+              condition: Condition.NONE,
+              duration: 100,
+              _0: {
+                affectType: AffectType.ATK,
+                value: 0.1,
+              },
+            },
+          ];
+        });
+      }
+
+      calcUltDamage(
+        position,
+        bond === 1
+          ? 5.2
+          : bond === 2
+            ? 5.5
+            : bond === 3
+              ? 5.8
+              : bond === 4
+                ? 6.1
+                : 6.4,
+        gameState,
+        false,
+        Target.ENEMY,
+        "ultimate",
+      );
       break;
   }
 }

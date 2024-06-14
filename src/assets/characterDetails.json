@@ -2984,5 +2984,25 @@
       "cd": 4
     },
     "potentialType": 2
+  },
+  {
+    "id": "806",
+    "rarity": 3,
+    "tags": {
+      "attribute": 3,
+      "position": 5,
+      "race": -1,
+      "body": -1,
+      "oppai": -1,
+      "rank": -1,
+      "else": [],
+      "available": false
+    },
+    "stats": {
+      "initATK": 897.6,
+      "initHP": 3924.8,
+      "cd": 4
+    },
+    "potentialType": 2
   }
 ]
