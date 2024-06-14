@@ -63,6 +63,8 @@ export default function SelectCharacterPage() {
         "802",
         "804",
         "805",
+        "806",
+        "813",
       ];
       if (available.includes(key)) {
         const find = characterDetails.find((item) => item.id === key);
